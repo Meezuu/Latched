@@ -133,7 +133,21 @@
       "Bash(npm --version)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(ssh-keygen -t ed25519 -C \"codywray@gmail.com\" -f ~/.ssh/id_ed25519 -N \"\")",
+      "Bash(ssh -T git@github.com)",
+      "Bash(sips -g all /Users/austinwray/tensiontrack/public/tb2-plastic.png)",
+      "Bash(qlmanage -t -s 1200 -o /Users/austinwray/tensiontrack/public/ /Users/austinwray/tensiontrack/public/og-source.svg)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/austinwray/tensiontrack/public/og-source.svg.png)",
+      "Bash(sips --cropToHeightWidth 630 1200 /Users/austinwray/tensiontrack/public/og-image.png)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/austinwray/tensiontrack/public/og-image.png)",
+      "WebFetch(domain:latched.vercel.app)",
+      "Bash(qlmanage -t -s 630 -o /Users/austinwray/tensiontrack/public/ /Users/austinwray/tensiontrack/public/og-source.svg)",
+      "Bash(sips -g pixelWidth -g pixelHeight \"/Users/austinwray/Pictures/Photos Library.photoslibrary/resources/renders/4/4503A159-B00D-419E-B73D-B83943A0BE47_1_201_a.jpeg\")",
+      "Bash(open *)"
     ]
   }
 }
