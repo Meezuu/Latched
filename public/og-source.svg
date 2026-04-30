@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0d0d0d"/>
+
+  <!-- Grid lines (horizontal) -->
+  <line x1="0" y1="105" x2="1200" y2="105" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="0" y1="210" x2="1200" y2="210" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="0" y1="315" x2="1200" y2="315" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="0" y1="420" x2="1200" y2="420" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="0" y1="525" x2="1200" y2="525" stroke="#1e1e1e" stroke-width="1"/>
+
+  <!-- Grid lines (vertical) -->
+  <line x1="150" y1="0" x2="150" y2="630" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="300" y1="0" x2="300" y2="630" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="450" y1="0" x2="450" y2="630" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="600" y1="0" x2="600" y2="630" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="750" y1="0" x2="750" y2="630" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="900" y1="0" x2="900" y2="630" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="1050" y1="0" x2="1050" y2="630" stroke="#1e1e1e" stroke-width="1"/>
+
+  <!-- Simulated hold rings (scattered across board area) -->
+  <!-- Start holds (green) -->
+  <circle cx="280" cy="540" r="16" fill="none" stroke="#22c55e" stroke-width="3" opacity="0.9"/>
+  <circle cx="420" cy="520" r="16" fill="none" stroke="#22c55e" stroke-width="3" opacity="0.9"/>
+
+  <!-- Hand holds (blue) -->
+  <circle cx="350" cy="380" r="14" fill="none" stroke="#60a5fa" stroke-width="2.5" opacity="0.85"/>
+  <circle cx="500" cy="340" r="14" fill="none" stroke="#60a5fa" stroke-width="2.5" opacity="0.85"/>
+  <circle cx="290" cy="290" r="14" fill="none" stroke="#60a5fa" stroke-width="2.5" opacity="0.85"/>
+  <circle cx="460" cy="240" r="14" fill="none" stroke="#60a5fa" stroke-width="2.5" opacity="0.85"/>
+  <circle cx="380" cy="160" r="14" fill="none" stroke="#60a5fa" stroke-width="2.5" opacity="0.85"/>
+
+  <!-- Foot holds (muted) -->
+  <circle cx="320" cy="460" r="11" fill="none" stroke="#4b5563" stroke-width="2" opacity="0.7"/>
+  <circle cx="440" cy="430" r="11" fill="none" stroke="#4b5563" stroke-width="2" opacity="0.7"/>
+  <circle cx="260" cy="360" r="11" fill="none" stroke="#4b5563" stroke-width="2" opacity="0.7"/>
+  <circle cx="520" cy="420" r="11" fill="none" stroke="#4b5563" stroke-width="2" opacity="0.7"/>
+  <circle cx="400" cy="310" r="11" fill="none" stroke="#4b5563" stroke-width="2" opacity="0.7"/>
+  <circle cx="340" cy="220" r="11" fill="none" stroke="#4b5563" stroke-width="2" opacity="0.7"/>
+  <circle cx="490" cy="180" r="11" fill="none" stroke="#4b5563" stroke-width="2" opacity="0.7"/>
+
+  <!-- Top hold (red) -->
+  <circle cx="390" cy="80" r="16" fill="none" stroke="#f87171" stroke-width="3" opacity="0.9"/>
+
+  <!-- Diagonal accent line -->
+  <line x1="600" y1="630" x2="1200" y2="0" stroke="#7c3aed" stroke-width="1.5" opacity="0.15"/>
+  <line x1="650" y1="630" x2="1200" y2="50" stroke="#7c3aed" stroke-width="1" opacity="0.1"/>
+
+  <!-- Right side: app branding -->
+  <!-- App name -->
+  <text x="750" y="260" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="96" font-weight="700" fill="#ffffff" letter-spacing="-3">Latched</text>
+
+  <!-- Tagline -->
+  <text x="752" y="320" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="28" font-weight="400" fill="#6b7280" letter-spacing="1">Tension Board 2 — Problem Finder</text>
+
+  <!-- Feature chips -->
+  <rect x="752" y="370" width="160" height="40" rx="20" fill="#1a1a1a" stroke="#374151" stroke-width="1"/>
+  <text x="832" y="396" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="500" fill="#9ca3af" text-anchor="middle">3D board view</text>
+
+  <rect x="926" y="370" width="160" height="40" rx="20" fill="#1a1a1a" stroke="#374151" stroke-width="1"/>
+  <text x="1006" y="396" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="500" fill="#9ca3af" text-anchor="middle">injury filter</text>
+
+  <rect x="752" y="424" width="160" height="40" rx="20" fill="#1a1a1a" stroke="#374151" stroke-width="1"/>
+  <text x="832" y="450" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="500" fill="#9ca3af" text-anchor="middle">beta logging</text>
+
+  <rect x="926" y="424" width="160" height="40" rx="20" fill="#1a1a1a" stroke="#374151" stroke-width="1"/>
+  <text x="1006" y="450" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="500" fill="#9ca3af" text-anchor="middle">free forever</text>
+
+  <!-- Divider line between board area and text -->
+  <line x1="680" y1="60" x2="680" y2="570" stroke="#1e1e1e" stroke-width="2"/>
+
+  <!-- Bottom URL -->
+  <text x="752" y="560" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="22" fill="#374151" letter-spacing="0.5">latched.vercel.app</text>
+</svg>
