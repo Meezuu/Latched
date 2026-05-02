@@ -30,9 +30,11 @@ const KNOWN_MIRROR_GYMS = new Set([
 const TB2_GYMS_URL = "https://raw.githubusercontent.com/Stevie-Ray/hangtime-climbing-boards/main/geojson/tensionboardapp2.geojson";
 const GYMS_CACHE_KEY = "tt_tb2_gyms_v1";
 const HOME_GYM_KEY    = "tt_home_gym_v1";
-const MY_PROBLEMS_KEY = "tt_my_problems_v1";
-const SESSIONS_KEY    = "tt_sessions_v1";
-const ANGLE_KEY       = "tt_angle_v1";
+const MY_PROBLEMS_KEY  = "tt_my_problems_v1";
+const SESSIONS_KEY     = "tt_sessions_v1";
+const ANGLE_KEY        = "tt_angle_v1";
+const FELT_GRADE_KEY   = "tt_felt_grade_v1";
+const SETTINGS_KEY     = "tt_settings_v1";
 const GYMS_CACHE_TTL  = 24 * 60 * 60 * 1000;
 
 function lsGet(key, fallback) {
@@ -1068,6 +1070,10 @@ export default function App() {
   const [injuryLeft, setInjuryLeft]       = useState(false);
   const [injuryRight, setInjuryRight]     = useState(false);
 
+  // Felt grade + settings
+  const [feltGradeLog, setFeltGradeLog] = useState(() => lsGet(FELT_GRADE_KEY, {}));
+  const [settings, setSettings]         = useState(() => lsGet(SETTINGS_KEY, { showFeltGrade: false }));
+
   // Beta logging
   const [betaLog, setBetaLog]     = useState(() => lsGet("tt_beta_v1", {}));
   const [betaMode, setBetaMode]   = useState(false);
@@ -1297,6 +1303,23 @@ export default function App() {
     showToast("BETA CLEARED");
   }
 
+  function saveFeltGrade(uuid, grade) {
+    const updated = { ...feltGradeLog, [uuid]: grade };
+    setFeltGradeLog(updated);
+    lsSet(FELT_GRADE_KEY, updated);
+  }
+  function clearFeltGrade(uuid) {
+    const updated = { ...feltGradeLog };
+    delete updated[uuid];
+    setFeltGradeLog(updated);
+    lsSet(FELT_GRADE_KEY, updated);
+  }
+  function updateSetting(key, value) {
+    const updated = { ...settings, [key]: value };
+    setSettings(updated);
+    lsSet(SETTINGS_KEY, updated);
+  }
+
   function commitSend(problem, grade, notes) {
     const isPersonal = !!problem.id && !problem.uuid;
     if (isPersonal) {
@@ -1389,6 +1412,33 @@ export default function App() {
   const card = (extra={}) => ({ background:T.bg2, border:`1px solid ${T.border}`, borderRadius:6, padding:"11px 13px", ...extra });
   const btnPri = { background:T.white, border:"none", color:T.bg, borderRadius:4, padding:"8px 13px", cursor:"pointer", fontSize:10, fontFamily:"'Geist Mono',monospace", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.05em" };
   const btnSec = { background:T.bg3, border:`1px solid ${T.border}`, color:T.text2, borderRadius:4, padding:"8px 11px", cursor:"pointer", fontSize:10, fontFamily:"'Geist Mono',monospace", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.05em" };
+
+  function settingsCard() {
+    return (
+      <>
+        <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",letterSpacing:"0.12em",marginBottom:8,marginTop:4}}>SETTINGS</div>
+        <div style={card({marginBottom:8})}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
+            <div>
+              <div style={{fontSize:12,color:T.text,marginBottom:2}}>Felt Grade</div>
+              <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",lineHeight:1.5}}>Show your felt grade alongside the setter grade on climb cards</div>
+            </div>
+            <button onClick={()=>updateSetting("showFeltGrade", !settings.showFeltGrade)} style={{
+              width:42, height:22, borderRadius:999, border:"none", cursor:"pointer",
+              ...(settings.showFeltGrade ? NOISE_BG : {background:T.bg3}),
+              position:"relative", flexShrink:0,
+            }}>
+              <div style={{
+                width:16, height:16, background:T.white, borderRadius:"50%",
+                position:"absolute", top:3, transition:"left 0.18s",
+                left: settings.showFeltGrade ? 23 : 3,
+              }}/>
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <div style={{ height:"100svh", background:T.bg, color:T.text, fontFamily:"'Geist',sans-serif", display:"flex", flexDirection:"column", overflow:"hidden" }}>
@@ -1523,6 +1573,9 @@ export default function App() {
                         <div style={{ display:"flex", alignItems:"center", gap:7, marginBottom:4, flexWrap:"wrap" }}>
                           <span style={{ fontFamily:"'Geist',sans-serif", fontWeight:700, fontSize:12 }}>{climb.name}</span>
                           <GradePill grade={climb.grade} small/>
+                          {settings.showFeltGrade && feltGradeLog[climb.uuid] && (
+                            <span style={{fontSize:8,fontFamily:"'Geist Mono',monospace",color:T.text3,letterSpacing:"0.04em"}}>felt {feltGradeLog[climb.uuid]}</span>
+                          )}
                           {tracked?.sends > 0 && <span style={{fontSize:8,fontFamily:"'Geist Mono',monospace",color:T.purple,background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,borderRadius:999,padding:"1px 6px"}}>SENT {tracked.sends}✓</span>}
                           {tracked && !tracked.sends && <span style={{fontSize:8,fontFamily:"'Geist Mono',monospace",color:T.text3,background:T.bg3,border:`1px solid ${T.border}`,borderRadius:999,padding:"1px 6px"}}>{tracked.attempts} ATT</span>}
                           {betaLog[climb.uuid] && <span style={{fontSize:8,fontFamily:"'Geist Mono',monospace",color:"#3b82f6",background:"rgba(59,130,246,0.10)",border:"1px solid rgba(59,130,246,0.30)",borderRadius:999,padding:"1px 6px"}}>β BETA</span>}
@@ -1593,6 +1646,9 @@ export default function App() {
                       <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:4,flexWrap:"wrap"}}>
                         <span style={{fontFamily:"'Geist',sans-serif",fontWeight:700,fontSize:12}}>{c.name}</span>
                         <GradePill grade={c.grade} small/>
+                        {settings.showFeltGrade && feltGradeLog[c.uuid] && (
+                          <span style={{fontSize:8,fontFamily:"'Geist Mono',monospace",color:T.text3,letterSpacing:"0.04em"}}>felt {feltGradeLog[c.uuid]}</span>
+                        )}
                         <span style={{fontSize:8,color:T.purple,fontFamily:"'Geist Mono',monospace",border:`1px solid ${T.purpleBrd}`,borderRadius:999,padding:"1px 6px"}}>TB2</span>
                       </div>
                       <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",display:"flex",gap:10}}>
@@ -1767,9 +1823,12 @@ export default function App() {
                 sub: [...followedSetters].slice(0,3).map(s=>`@${s}`).join(", "),
               });
               if (events.length === 0) return (
-                <div style={card({textAlign:"center",padding:"24px 0",color:T.text3,fontSize:11,fontFamily:"'Geist Mono',monospace"})}>
-                  LOG SESSIONS AND SENDS TO SEE ACTIVITY
-                </div>
+                <>
+                  <div style={card({textAlign:"center",padding:"24px 0",color:T.text3,fontSize:11,fontFamily:"'Geist Mono',monospace",marginBottom:12})}>
+                    LOG SESSIONS AND SENDS TO SEE ACTIVITY
+                  </div>
+                  {settingsCard()}
+                </>
               );
               return (
                 <>
@@ -1787,6 +1846,7 @@ export default function App() {
                       </div>
                     </div>
                   ))}
+                  {settingsCard()}
                 </>
               );
             })()}
@@ -2017,7 +2077,7 @@ export default function App() {
                 <>
                   <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13,textTransform:"uppercase"}}>{boardProblem.name}</div>
                   <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",marginTop:1,display:"flex",gap:5,alignItems:"center"}}>
-                    <span>{boardProblem.grade} · {boardProblem.angle}°</span>
+                    <span>{boardProblem.grade}{settings.showFeltGrade && feltGradeLog[boardProblem?.uuid] ? ` → felt ${feltGradeLog[boardProblem.uuid]}` : ""} · {boardProblem.angle}°</span>
                     {boardProblem.setter && (
                       <button onClick={()=>setSetterProfile(boardProblem.setter)} style={{background:"none",border:"none",color:T.text2,cursor:"pointer",padding:0,fontFamily:"'Geist Mono',monospace",fontSize:9,textDecoration:"underline",textDecorationColor:T.text3,textUnderlineOffset:"3px"}}>
                         @{boardProblem.setter}
@@ -2109,6 +2169,30 @@ export default function App() {
                   <button onClick={()=>logAttempt(boardProblem,false)} style={btnSec}>ATT</button>
                   <button onClick={()=>logAttempt(boardProblem,true)} style={btnPri}>SEND ✓</button>
                 </div>
+                {/* Felt grade row */}
+                {boardProblem.uuid && (
+                  <div style={{marginTop:8}}>
+                    <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",letterSpacing:"0.1em",marginBottom:5}}>
+                      FELT GRADE{feltGradeLog[boardProblem.uuid] && <span style={{color:T.text2,marginLeft:5}}>· {feltGradeLog[boardProblem.uuid]} <span onClick={()=>clearFeltGrade(boardProblem.uuid)} style={{cursor:"pointer",opacity:0.6}}>✕</span></span>}
+                    </div>
+                    <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
+                      {GRADES.filter(g => {
+                        const si = GRADES.indexOf(boardProblem.grade);
+                        const gi = GRADES.indexOf(g);
+                        return gi >= Math.max(0, si - 2) && gi <= Math.min(GRADES.length - 1, si + 3);
+                      }).map(g => (
+                        <button key={g} onClick={() => feltGradeLog[boardProblem.uuid] === g ? clearFeltGrade(boardProblem.uuid) : saveFeltGrade(boardProblem.uuid, g)} style={{
+                          padding:"5px 9px", borderRadius:R, cursor:"pointer",
+                          fontFamily:"'Geist Mono',monospace", fontWeight:700, fontSize:9,
+                          background: feltGradeLog[boardProblem.uuid] === g ? T.purpleDim : T.bg3,
+                          border: `1px solid ${feltGradeLog[boardProblem.uuid] === g ? T.purpleBrd : T.border}`,
+                          color: feltGradeLog[boardProblem.uuid] === g ? T.purple : T.text3,
+                        }}>{g}{g === boardProblem.grade ? " ·" : ""}</button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Beta logging row */}
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:8}}>
                   <button onClick={()=>startBeta(boardProblem)} style={{
