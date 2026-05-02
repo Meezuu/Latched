@@ -1420,8 +1420,8 @@ export default function App() {
         <div style={card({marginBottom:8})}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
             <div>
-              <div style={{fontSize:12,color:T.text,marginBottom:2}}>Felt Grade</div>
-              <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",lineHeight:1.5}}>Show your felt grade alongside the setter grade on climb cards</div>
+              <div style={{fontSize:12,color:T.text,marginBottom:2}}>Consensus Grade</div>
+              <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",lineHeight:1.5}}>Show your consensus grade alongside the setter grade on climb cards</div>
             </div>
             <button onClick={()=>updateSetting("showFeltGrade", !settings.showFeltGrade)} style={{
               width:42, height:22, borderRadius:999, border:"none", cursor:"pointer",
@@ -1574,7 +1574,7 @@ export default function App() {
                           <span style={{ fontFamily:"'Geist',sans-serif", fontWeight:700, fontSize:12 }}>{climb.name}</span>
                           <GradePill grade={climb.grade} small/>
                           {settings.showFeltGrade && feltGradeLog[climb.uuid] && (
-                            <span style={{fontSize:8,fontFamily:"'Geist Mono',monospace",color:T.text3,letterSpacing:"0.04em"}}>felt {feltGradeLog[climb.uuid]}</span>
+                            <span style={{fontSize:8,fontFamily:"'Geist Mono',monospace",color:T.text3,letterSpacing:"0.04em"}}>consensus {feltGradeLog[climb.uuid]}</span>
                           )}
                           {tracked?.sends > 0 && <span style={{fontSize:8,fontFamily:"'Geist Mono',monospace",color:T.purple,background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,borderRadius:999,padding:"1px 6px"}}>SENT {tracked.sends}✓</span>}
                           {tracked && !tracked.sends && <span style={{fontSize:8,fontFamily:"'Geist Mono',monospace",color:T.text3,background:T.bg3,border:`1px solid ${T.border}`,borderRadius:999,padding:"1px 6px"}}>{tracked.attempts} ATT</span>}
@@ -1647,7 +1647,7 @@ export default function App() {
                         <span style={{fontFamily:"'Geist',sans-serif",fontWeight:700,fontSize:12}}>{c.name}</span>
                         <GradePill grade={c.grade} small/>
                         {settings.showFeltGrade && feltGradeLog[c.uuid] && (
-                          <span style={{fontSize:8,fontFamily:"'Geist Mono',monospace",color:T.text3,letterSpacing:"0.04em"}}>felt {feltGradeLog[c.uuid]}</span>
+                          <span style={{fontSize:8,fontFamily:"'Geist Mono',monospace",color:T.text3,letterSpacing:"0.04em"}}>consensus {feltGradeLog[c.uuid]}</span>
                         )}
                         <span style={{fontSize:8,color:T.purple,fontFamily:"'Geist Mono',monospace",border:`1px solid ${T.purpleBrd}`,borderRadius:999,padding:"1px 6px"}}>TB2</span>
                       </div>
@@ -2077,7 +2077,7 @@ export default function App() {
                 <>
                   <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13,textTransform:"uppercase"}}>{boardProblem.name}</div>
                   <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",marginTop:1,display:"flex",gap:5,alignItems:"center"}}>
-                    <span>{boardProblem.grade}{settings.showFeltGrade && feltGradeLog[boardProblem?.uuid] ? ` → felt ${feltGradeLog[boardProblem.uuid]}` : ""} · {boardProblem.angle}°</span>
+                    <span>{boardProblem.grade}{settings.showFeltGrade && feltGradeLog[boardProblem?.uuid] ? ` → consensus ${feltGradeLog[boardProblem.uuid]}` : ""} · {boardProblem.angle}°</span>
                     {boardProblem.setter && (
                       <button onClick={()=>setSetterProfile(boardProblem.setter)} style={{background:"none",border:"none",color:T.text2,cursor:"pointer",padding:0,fontFamily:"'Geist Mono',monospace",fontSize:9,textDecoration:"underline",textDecorationColor:T.text3,textUnderlineOffset:"3px"}}>
                         @{boardProblem.setter}
@@ -2169,11 +2169,11 @@ export default function App() {
                   <button onClick={()=>logAttempt(boardProblem,false)} style={btnSec}>ATT</button>
                   <button onClick={()=>logAttempt(boardProblem,true)} style={btnPri}>SEND ✓</button>
                 </div>
-                {/* Felt grade row */}
+                {/* Consensus grade row */}
                 {boardProblem.uuid && (
                   <div style={{marginTop:8}}>
                     <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",letterSpacing:"0.1em",marginBottom:5}}>
-                      FELT GRADE{feltGradeLog[boardProblem.uuid] && <span style={{color:T.text2,marginLeft:5}}>· {feltGradeLog[boardProblem.uuid]} <span onClick={()=>clearFeltGrade(boardProblem.uuid)} style={{cursor:"pointer",opacity:0.6}}>✕</span></span>}
+                      CONSENSUS GRADE{feltGradeLog[boardProblem.uuid] && <span style={{color:T.text2,marginLeft:5}}>· {feltGradeLog[boardProblem.uuid]} <span onClick={()=>clearFeltGrade(boardProblem.uuid)} style={{cursor:"pointer",opacity:0.6}}>✕</span></span>}
                     </div>
                     <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
                       {GRADES.filter(g => {
