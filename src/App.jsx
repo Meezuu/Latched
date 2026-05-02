@@ -1073,6 +1073,7 @@ export default function App() {
   // Felt grade + settings
   const [feltGradeLog, setFeltGradeLog] = useState(() => lsGet(FELT_GRADE_KEY, {}));
   const [settings, setSettings]         = useState(() => lsGet(SETTINGS_KEY, { showFeltGrade: false }));
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   // Beta logging
   const [betaLog, setBetaLog]     = useState(() => lsGet("tt_beta_v1", {}));
@@ -1413,30 +1414,18 @@ export default function App() {
   const btnPri = { background:T.white, border:"none", color:T.bg, borderRadius:4, padding:"8px 13px", cursor:"pointer", fontSize:10, fontFamily:"'Geist Mono',monospace", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.05em" };
   const btnSec = { background:T.bg3, border:`1px solid ${T.border}`, color:T.text2, borderRadius:4, padding:"8px 11px", cursor:"pointer", fontSize:10, fontFamily:"'Geist Mono',monospace", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.05em" };
 
-  function settingsCard() {
+  function settingsButton() {
     return (
-      <>
-        <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",letterSpacing:"0.12em",marginBottom:8,marginTop:4}}>SETTINGS</div>
-        <div style={card({marginBottom:8})}>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
-            <div>
-              <div style={{fontSize:12,color:T.text,marginBottom:2}}>Consensus Grade</div>
-              <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",lineHeight:1.5}}>Show your consensus grade alongside the setter grade on climb cards</div>
-            </div>
-            <button onClick={()=>updateSetting("showFeltGrade", !settings.showFeltGrade)} style={{
-              width:42, height:22, borderRadius:999, border:"none", cursor:"pointer",
-              ...(settings.showFeltGrade ? NOISE_BG : {background:T.bg3}),
-              position:"relative", flexShrink:0,
-            }}>
-              <div style={{
-                width:16, height:16, background:T.white, borderRadius:"50%",
-                position:"absolute", top:3, transition:"left 0.18s",
-                left: settings.showFeltGrade ? 23 : 3,
-              }}/>
-            </button>
-          </div>
-        </div>
-      </>
+      <button onClick={()=>setSettingsOpen(true)} style={{
+        width:"100%", background:T.bg2, border:`1px solid ${T.border}`,
+        color:T.text2, borderRadius:6, padding:"12px 13px", cursor:"pointer",
+        fontSize:12, fontFamily:"'Geist',sans-serif", fontWeight:600,
+        display:"flex", alignItems:"center", justifyContent:"space-between",
+        marginTop:4,
+      }}>
+        <span>Settings</span>
+        <span style={{fontSize:14, color:T.text3}}>›</span>
+      </button>
     );
   }
 
@@ -1827,7 +1816,7 @@ export default function App() {
                   <div style={card({textAlign:"center",padding:"24px 0",color:T.text3,fontSize:11,fontFamily:"'Geist Mono',monospace",marginBottom:12})}>
                     LOG SESSIONS AND SENDS TO SEE ACTIVITY
                   </div>
-                  {settingsCard()}
+                  {settingsButton()}
                 </>
               );
               return (
@@ -1846,7 +1835,7 @@ export default function App() {
                       </div>
                     </div>
                   ))}
-                  {settingsCard()}
+                  {settingsButton()}
                 </>
               );
             })()}
@@ -2553,6 +2542,40 @@ export default function App() {
               style={{...btnPri, width:"100%", padding:"13px", fontSize:13}}>
               SAVE SEND
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── SETTINGS MODAL ── */}
+      {settingsOpen && (
+        <div style={{position:"fixed",inset:0,background:T.bg,zIndex:700,display:"flex",flexDirection:"column",overflow:"hidden"}}>
+          <div style={{padding:"12px 14px",borderBottom:`1px solid ${T.border}`,display:"flex",alignItems:"center",gap:10,background:T.bg2,flexShrink:0}}>
+            <button onClick={()=>setSettingsOpen(false)} style={{background:"none",border:"none",color:T.text2,fontSize:22,cursor:"pointer",padding:"0 4px",lineHeight:1}}>←</button>
+            <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13,textTransform:"uppercase"}}>Settings</div>
+          </div>
+          <div style={{flex:1,overflowY:"auto",padding:"20px 14px"}}>
+            <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",letterSpacing:"0.12em",marginBottom:10}}>GRADES</div>
+            <div style={card({marginBottom:8})}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
+                <div>
+                  <div style={{fontSize:13,color:T.text,fontWeight:600,marginBottom:3}}>Consensus Grade</div>
+                  <div style={{fontSize:10,color:T.text3,fontFamily:"'Geist Mono',monospace",lineHeight:1.5}}>Show community consensus grade alongside the setter grade on climb cards</div>
+                </div>
+                <button onClick={()=>updateSetting("showFeltGrade", !settings.showFeltGrade)} style={{
+                  width:46, height:26, borderRadius:999, border:"none", cursor:"pointer",
+                  background: settings.showFeltGrade ? T.purple : T.bg3,
+                  position:"relative", flexShrink:0,
+                  transition:"background 0.2s",
+                }}>
+                  <div style={{
+                    width:18, height:18, background:T.white, borderRadius:"50%",
+                    position:"absolute", top:4, transition:"left 0.2s",
+                    left: settings.showFeltGrade ? 24 : 4,
+                    boxShadow:"0 1px 3px rgba(0,0,0,0.4)",
+                  }}/>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
