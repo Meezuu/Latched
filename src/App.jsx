@@ -824,8 +824,8 @@ function GymMap({ homeGym, onSetHomeGym, onSeeGymClimbs }) {
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
     mapRef.current = L.map(containerRef.current, { zoomControl: true }).setView([25, 10], 2);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      attribution:'© <a href="https://carto.com/">CARTO</a>', maxZoom:19,
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+      attribution:'© <a href="https://carto.com/">CARTO</a> © <a href="https://www.openstreetmap.org/copyright">OSM</a>', maxZoom:19,
     }).addTo(mapRef.current);
   }, []);
 
