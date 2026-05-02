@@ -437,7 +437,9 @@ function Board({ problem, editMode, editRole, onHoldTap, placements = PLACEMENTS
         const isFoot   = role === "foot";
         const isFinish = role === "finish";
         const isStart  = role === "start";
-        const hr = isFoot ? r * 0.72 : r;
+        const isBottom = p.y >= 89;
+        const rr = isBottom ? r * 1.22 : r;
+        const hr = isFoot ? rr * 0.72 : rr;
 
         ctx.save();
 
