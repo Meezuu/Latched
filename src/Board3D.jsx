@@ -17,7 +17,7 @@ const FLOOR_Y = -(BH / 2) - KICK_H;
 // Camera
 const CAM_POLAR     = Math.PI * 0.530;   // angle from zenith — slightly above horizontal
 const CAM_LOOKAT    = new THREE.Vector3(0, 0.5, 0);
-const CAM_RADIUS_MIN = 14;
+const CAM_RADIUS_MIN = 5;
 const CAM_RADIUS_MAX = 26;
 const CAM_RADIUS_DEF = 20;
 const AZ_DEFAULT    = 30;               // degrees — gives instant 3-D sense on load
@@ -352,7 +352,7 @@ function ActiveRings({ placements, activeMap, mirror }) {
 }
 
 // ─── Camera rig ───────────────────────────────────────────────────────────────
-function CameraRig({ azimuthRef, panYRef }) {
+function CameraRig({ azimuthRef, panYRef, invertPanRef }) {
   const { camera, gl } = useThree();
   const radiusRef   = useRef(CAM_RADIUS_DEF);
   const smoothAz    = useRef(AZ_DEFAULT * Math.PI / 180);
@@ -418,7 +418,8 @@ function CameraRig({ azimuthRef, panYRef }) {
       rotVel.current = (newAz - prevAz) / dt * 6;  // deg/frame at 60fps
       prevAz = azimuthRef.current;
       azimuthRef.current = newAz;
-      panYRef.current = clamp(panYRef.current + dy * PAN_SCALE, PAN_MIN, PAN_MAX);
+      const panDir = invertPanRef?.current ? -1 : 1;
+      panYRef.current = clamp(panYRef.current + dy * PAN_SCALE * panDir, PAN_MIN, PAN_MAX);
 
       lastX = e.touches[0].clientX;
       lastY = e.touches[0].clientY;
@@ -456,8 +457,9 @@ function CameraRig({ azimuthRef, panYRef }) {
       if (!dragging) return;
       const dx = e.clientX - startX;
       const dy = startY - e.clientY;
+      const panDir = invertPanRef?.current ? -1 : 1;
       azimuthRef.current = clamp(azStart - dx * ROT_SCALE_MS, AZ_MIN, AZ_MAX);
-      panYRef.current    = clamp(panStart + dy * PAN_SCALE, PAN_MIN, PAN_MAX);
+      panYRef.current    = clamp(panStart + dy * PAN_SCALE * panDir, PAN_MIN, PAN_MAX);
     };
     const onMouseUp = () => { dragging = false; };
 
@@ -634,7 +636,7 @@ function FloorGrid() {
 // }
 
 // ─── Scene ────────────────────────────────────────────────────────────────────
-function Scene({ problem, placements, mirror, angle, azimuthRef, panYRef }) {
+function Scene({ problem, placements, mirror, angle, azimuthRef, panYRef, invertPanRef }) {
   const tilt = ((angle ?? 40) * Math.PI) / 180;
 
   const activeMap = useMemo(() => {
@@ -654,7 +656,7 @@ function Scene({ problem, placements, mirror, angle, azimuthRef, panYRef }) {
       {/* frontal fill — shoots straight at the board face to light hold surfaces */}
       <directionalLight position={[0, 2, 20]}   intensity={0.9}  color="#fff8f0" />
 
-      <CameraRig azimuthRef={azimuthRef} panYRef={panYRef} />
+      <CameraRig azimuthRef={azimuthRef} panYRef={panYRef} invertPanRef={invertPanRef} />
 
       {/* Board group — pivots at bottom edge */}
       <group position={[0, -(BH / 2), 0]}>
@@ -758,6 +760,8 @@ class Canvas3DErrorBoundary extends Component {
 export default function Board3D({ problem, placements, mirror, angle, problems = [], onNavigate }) {
   const azimuthRef                    = useRef(AZ_DEFAULT);
   const panYRef                       = useRef(0);
+  const invertPanRef                  = useRef(false);
+  const [invertPan, setInvertPan]     = useState(false);
   const [hintVisible, setHintVisible] = useState(true);
   const [loaded,      setLoaded]      = useState(false);
   const [localAngle, setLocalAngle]   = useState(angle ?? 40);
@@ -803,6 +807,7 @@ export default function Board3D({ problem, placements, mirror, angle, problems =
             angle={localAngle}
             azimuthRef={azimuthRef}
             panYRef={panYRef}
+            invertPanRef={invertPanRef}
           />
         </Canvas>
       </Canvas3DErrorBoundary>
@@ -824,6 +829,23 @@ export default function Board3D({ problem, placements, mirror, angle, problems =
 
       <ClimbInfo problem={problem} />
       <Legend    problem={problem} />
+
+      {/* Pan direction toggle */}
+      <button
+        onClick={() => {
+          invertPanRef.current = !invertPanRef.current;
+          setInvertPan(v => !v);
+        }}
+        title={invertPan ? "Pan: inverted" : "Pan: normal"}
+        style={{
+          position:"absolute", top:14, left:14,
+          background:"rgba(0,0,0,0.55)", border:"1px solid rgba(255,255,255,0.14)",
+          borderRadius:6, padding:"5px 9px", cursor:"pointer",
+          fontFamily:"'Geist Mono',monospace", fontSize:9,
+          color: invertPan ? "rgba(168,85,247,0.9)" : "rgba(255,255,255,0.35)",
+          letterSpacing:"0.08em", pointerEvents:"all", lineHeight:1,
+        }}
+      >{invertPan ? "↕ INV" : "↕ PAN"}</button>
 
       {hasPrev && (
         <button onClick={goPrev} style={{
