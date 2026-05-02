@@ -231,9 +231,44 @@ function LogoE({ size=32 }) {
   );
 }
 
-// Active Logo — change this letter to switch: A B C D E
-const LOGO_VARIANT = "C";
-const LOGO_MAP = { A:LogoA, B:LogoB, C:LogoC, D:LogoD, E:LogoE };
+// F: OG image geometry — 8-circle ring + connecting arcs + central diamond
+function LogoF({ size=32 }) {
+  const cx=32, cy=32, Rr=14, cr=4, di=6.5;
+  const pts = Array.from({length:8}, (_,i) => {
+    const a=(i*45-90)*Math.PI/180;
+    return { x:cx+Rr*Math.cos(a), y:cy+Rr*Math.sin(a) };
+  });
+  const arcs = pts.map((p1,i) => {
+    const p2=pts[(i+1)%8];
+    const mx=(p1.x+p2.x)/2, my=(p1.y+p2.y)/2;
+    const cpx=mx+(cx-mx)*0.38, cpy=my+(cy-my)*0.38;
+    return `M${p1.x.toFixed(1)},${p1.y.toFixed(1)} Q${cpx.toFixed(1)},${cpy.toFixed(1)} ${p2.x.toFixed(1)},${p2.y.toFixed(1)}`;
+  }).join(' ');
+  const diamond=`M${cx},${cy-di} L${cx+di},${cy} L${cx},${cy+di} L${cx-di},${cy} Z`;
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64">
+      <defs>
+        <clipPath id="lf"><circle cx="32" cy="32" r="32"/></clipPath>
+        <filter id="gf" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="1.4" result="b"/>
+          <feFlood floodColor="#ffffff" floodOpacity="0.75" result="c"/>
+          <feComposite in="c" in2="b" operator="in" result="glow"/>
+          <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <circle cx="32" cy="32" r="32" fill="#060410"/>
+      <g clipPath="url(#lf)" filter="url(#gf)" stroke="white" fill="none" strokeLinecap="round" opacity="0.82">
+        {pts.map((p,i)=><circle key={i} cx={p.x.toFixed(1)} cy={p.y.toFixed(1)} r={cr} strokeWidth="1" {...P}/>)}
+        <path d={diamond} strokeWidth="1" {...P}/>
+        <path d={arcs} strokeWidth="0.75" {...PT} opacity="0.85"/>
+      </g>
+    </svg>
+  );
+}
+
+// Active Logo — change this letter to switch: A B C D E F
+const LOGO_VARIANT = "F";
+const LOGO_MAP = { A:LogoA, B:LogoB, C:LogoC, D:LogoD, E:LogoE, F:LogoF };
 function Logo({ size=32 }) {
   const L = LOGO_MAP[LOGO_VARIANT] ?? LogoA;
   return <L size={size}/>;
