@@ -445,7 +445,7 @@ function Board({ problem, editMode, editRole, onHoldTap, placements = PLACEMENTS
         ctx.shadowColor = color;
         ctx.shadowBlur  = isFoot ? 14 : 30;
         ctx.strokeStyle = color;
-        ctx.lineWidth   = isFoot ? 2.0 : 3.0;
+        ctx.lineWidth   = isFoot ? 2.0 : 3.5;
         ctx.globalAlpha = isFoot ? 0.75 : 1.0;
 
         if (isFinish) {
@@ -466,16 +466,7 @@ function Board({ problem, editMode, editRole, onHoldTap, placements = PLACEMENTS
           ctx.beginPath(); ctx.arc(cx, cy, hr * 0.50, 0, Math.PI * 2); ctx.stroke();
         }
 
-        // fill
-        ctx.shadowBlur  = 0;
-        ctx.fillStyle   = color;
-        ctx.globalAlpha = isFoot ? 0.28 : 0.42;
-        ctx.beginPath(); ctx.arc(cx, cy, hr, 0, Math.PI * 2); ctx.fill();
-
-        // center pip — anchors the hold visually
-        ctx.globalAlpha = isFoot ? 0.70 : 1.0;
-        ctx.fillStyle   = color;
-        ctx.beginPath(); ctx.arc(cx, cy, isFoot ? 1.5 : 2.2, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 0;
 
         ctx.restore();
       });
