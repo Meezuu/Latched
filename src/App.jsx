@@ -35,6 +35,7 @@ const SESSIONS_KEY     = "tt_sessions_v1";
 const ANGLE_KEY        = "tt_angle_v1";
 const FELT_GRADE_KEY   = "tt_felt_grade_v1";
 const SETTINGS_KEY     = "tt_settings_v1";
+const HOLD_QUALITY_KEY = "tt_hold_quality_v1";
 const GYMS_CACHE_TTL  = 24 * 60 * 60 * 1000;
 
 function lsGet(key, fallback) {
@@ -1105,6 +1106,9 @@ export default function App() {
   const [injuryLeft, setInjuryLeft]       = useState(false);
   const [injuryRight, setInjuryRight]     = useState(false);
 
+  // Hold quality (injury filter data)
+  const [holdQualityLog, setHoldQualityLog] = useState(() => lsGet(HOLD_QUALITY_KEY, {}));
+
   // Felt grade + settings
   const [feltGradeLog, setFeltGradeLog] = useState(() => lsGet(FELT_GRADE_KEY, {}));
   const [settings, setSettings]         = useState(() => lsGet(SETTINGS_KEY, { showFeltGrade: false }));
@@ -1227,27 +1231,12 @@ export default function App() {
       if (filterSent === "project"  && (!myClimbMap[c.uuid] || myClimbMap[c.uuid]?.sends > 0)) return false;
       if (sq && !c.name.toLowerCase().includes(sq) && !c.setter.toLowerCase().includes(sq)) return false;
 
-      // Injury filter — use logged beta when available, else positional heuristic
+      // Injury filter — only use logged hold quality data, no heuristic
       if (injuryLeft || injuryRight) {
-        const pl = isMirror ? PLACEMENTS_MIRROR : PLACEMENTS;
-        const handRoles = new Set(["start", "hand", "finish"]);
-        const loggedBeta = betaLog[c.uuid]?.holdAssignments;
-        for (const hold of c.holds) {
-          if (!handRoles.has(hold.role)) continue;
-          let usesLeft = false, usesRight = false;
-          if (loggedBeta?.[hold.id]) {
-            const asgn = loggedBeta[hold.id];
-            usesLeft  = asgn === "left"  || asgn === "match";
-            usesRight = asgn === "right" || asgn === "match";
-          } else {
-            const p = pl[hold.id]; if (!p) continue;
-            const visuallyLeft = isMirror ? p.x >= 50 : p.x < 50;
-            usesLeft  = visuallyLeft;
-            usesRight = !visuallyLeft;
-          }
-          if (injuryLeft  && usesLeft)  return false;
-          if (injuryRight && usesRight) return false;
-        }
+        const hq = holdQualityLog[c.uuid];
+        if (!hq) return false;
+        if (injuryLeft  && hq.leftCrimps  > 0) return false;
+        if (injuryRight && hq.rightCrimps > 0) return false;
       }
 
       return true;
@@ -1265,7 +1254,7 @@ export default function App() {
     return result;
   }, [activeCommunityClimbs, gradeMin, gradeMax, filterAngle, classicsOnly, filterSetter,
       filterMinAscents, filterMinQuality, filterDateAfter, filterDateBefore,
-      filterSent, sortBy, search, myClimbMap, injuryLeft, injuryRight, isMirror, betaLog]);
+      filterSent, sortBy, search, myClimbMap, injuryLeft, injuryRight, isMirror, betaLog, holdQualityLog]);
 
   useEffect(() => { setCommunityPage(30); }, [gradeMin, gradeMax, filterAngle, classicsOnly, filterSetter,
     filterMinAscents, filterMinQuality, filterDateAfter, filterDateBefore, filterSent, sortBy, search]);
@@ -1356,7 +1345,16 @@ export default function App() {
     lsSet(SETTINGS_KEY, updated);
   }
 
-  function commitSend(problem, grade, notes) {
+  function commitSend(problem, grade, notes, holdQuality) {
+    if (holdQuality && problem.uuid &&
+        (holdQuality.leftCrimps !== null || holdQuality.rightCrimps !== null)) {
+      const updated = { ...holdQualityLog, [problem.uuid]: {
+        leftCrimps:  holdQuality.leftCrimps  ?? 0,
+        rightCrimps: holdQuality.rightCrimps ?? 0,
+      }};
+      setHoldQualityLog(updated);
+      lsSet(HOLD_QUALITY_KEY, updated);
+    }
     const isPersonal = !!problem.id && !problem.uuid;
     if (isPersonal) {
       setMyProblems(prev => prev.map(p => p.id !== problem.id ? p :
@@ -1390,7 +1388,7 @@ export default function App() {
     if (!problem) return;
     if (sent) {
       // Intercept sends → open review modal
-      setSendReview({ problem, grade: problem.grade || "V?", notes: "" });
+      setSendReview({ problem, grade: problem.grade || "V?", notes: "", holdQuality: { leftCrimps: null, rightCrimps: null } });
       return;
     }
     // Attempts go straight through
@@ -2569,11 +2567,35 @@ export default function App() {
               onChange={e=>setSendReview(r=>({...r,notes:e.target.value}))}
               placeholder="How'd it feel? Key moves, conditions, beta…"
               rows={3}
-              style={{...inp, resize:"none", marginBottom:16}}
+              style={{...inp, resize:"none", marginBottom:20}}
             />
 
+            {/* Injury filter survey */}
+            {sendReview.problem.uuid && (
+              <div style={{background:T.bg3,border:`1px solid ${T.border}`,borderRadius:8,padding:"14px",marginBottom:16}}>
+                <div style={{fontSize:9,color:T.purple,fontFamily:"'Geist Mono',monospace",letterSpacing:"0.1em",marginBottom:4}}>HELP IMPROVE THE INJURY FILTER</div>
+                <div style={{fontSize:11,color:T.text2,marginBottom:14,lineHeight:1.5}}>How many crimps or bad edges does this climb have?</div>
+                {[["leftCrimps","Left hand"],["rightCrimps","Right hand"]].map(([key,label])=>(
+                  <div key={key} style={{marginBottom:12}}>
+                    <div style={{fontSize:9,color:T.text3,fontFamily:"'Geist Mono',monospace",letterSpacing:"0.08em",marginBottom:6}}>{label.toUpperCase()}</div>
+                    <div style={{display:"flex",gap:5}}>
+                      {[0,1,2,3,4,5].map(n=>(
+                        <button key={n} onClick={()=>setSendReview(r=>({...r,holdQuality:{...r.holdQuality,[key]:n}}))} style={{
+                          flex:1, padding:"7px 0", borderRadius:R, cursor:"pointer",
+                          fontFamily:"'Geist Mono',monospace", fontWeight:700, fontSize:11,
+                          background: sendReview.holdQuality[key]===n ? T.purple : T.bg2,
+                          border: `1px solid ${sendReview.holdQuality[key]===n ? T.purple : T.border}`,
+                          color: sendReview.holdQuality[key]===n ? T.white : T.text3,
+                        }}>{n===5?"5+":n}</button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
             <button
-              onClick={()=>commitSend(sendReview.problem, sendReview.grade, sendReview.notes)}
+              onClick={()=>commitSend(sendReview.problem, sendReview.grade, sendReview.notes, sendReview.holdQuality)}
               style={{...btnPri, width:"100%", padding:"13px", fontSize:13}}>
               SAVE SEND
             </button>
