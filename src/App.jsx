@@ -445,7 +445,7 @@ function Board({ problem, editMode, editRole, onHoldTap, placements = PLACEMENTS
         ctx.shadowColor = color;
         ctx.shadowBlur  = isFoot ? 14 : 30;
         ctx.strokeStyle = color;
-        ctx.lineWidth   = isFoot ? 2.0 : 3.5;
+        ctx.lineWidth   = isFoot ? 1.2 : 2.0;
         ctx.globalAlpha = isFoot ? 0.75 : 1.0;
 
         if (isFinish) {
