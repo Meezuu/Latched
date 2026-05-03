@@ -398,10 +398,7 @@ function Board({ problem, editMode, editRole, onHoldTap, placements = PLACEMENTS
     }
     ctx.globalAlpha = 1;
 
-    // Mirror boards are mounted in the opposite orientation — same hole coordinates
-    // in the DB, but physically left↔right swapped when facing the board.
-    // Flip the canvas x so holds render from the viewer's perspective.
-    const px = (normX) => mirrorLayout ? (1 - normX / 100) * w : (normX / 100) * w;
+    const px = (normX) => (normX / 100) * w;
     const py = (normY) => (normY / 100) * h;
 
     // ── 3. Grid — ring outline for every hold position, always visible
@@ -534,7 +531,7 @@ function Board({ problem, editMode, editRole, onHoldTap, placements = PLACEMENTS
   // Hit-target SVG — used for both edit mode and beta logging mode
   const svgHolds = useMemo(() => Object.entries(placements).map(([pid, p]) => ({
     id: Number(pid),
-    cx: mirrorLayout ? (1 - p.x / 100) * w : (p.x / 100) * w,
+    cx: (p.x / 100) * w,
     cy: (p.y / 100) * h,
   })), [w, h, placements, mirrorLayout]);
 
