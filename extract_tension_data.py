@@ -5,8 +5,8 @@ Extracts TB2 Spray AND Mirror data from tension.db and writes JSON files for Ten
 ── Outputs ──────────────────────────────────────────────────────────────────
   src/data/placements.json           Spray hold layout  (bundled in JS)
   src/data/placements_mirror.json    Mirror hold layout (bundled in JS)
-  public/data/climbs.json            Top 25 000 Spray community climbs
-  public/data/climbs_mirror.json     Top 25 000 Mirror community climbs
+  public/data/climbs.json            All Spray community climbs
+  public/data/climbs_mirror.json     All Mirror community climbs
   public/data/personal_climbs.json   Personal Spray climbs
   public/data/personal_climbs_mirror.json  Personal Mirror climbs
 
@@ -148,7 +148,7 @@ def row_to_climb(row):
     }
 
 # ── Helper: extract community climbs for a layout ────────────────────────────
-def extract_community_climbs(layout_id, limit=25000):
+def extract_community_climbs(layout_id):
     cur.execute("""
         SELECT
             c.uuid, c.name, c.setter_username, c.angle, c.frames, c.created_at,
@@ -158,8 +158,7 @@ def extract_community_climbs(layout_id, limit=25000):
         WHERE  c.layout_id  = ?
           AND  c.is_listed  = 1
         ORDER  BY (cs.quality_average * log(cs.ascensionist_count + 1)) DESC
-        LIMIT  ?
-    """, (layout_id, limit))
+    """, (layout_id,))
     result = []
     for row in cur.fetchall():
         c = row_to_climb(row)
