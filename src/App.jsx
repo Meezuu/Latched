@@ -291,9 +291,9 @@ function LogoGallery() {
         <div key={id} style={{ display:"flex", flexDirection:"column",
           alignItems:"center", gap:5, padding:"0 10px" }}>
           <L size={52}/>
-          <div style={{ fontFamily:"var(--mono-font)", fontSize:9,
+          <div style={{ fontFamily:"'Space Grotesk',sans-serif", fontSize:9,
             color:"#a855f7", letterSpacing:"0.12em", fontWeight:700 }}>{id}</div>
-          <div style={{ fontFamily:"var(--mono-font)", fontSize:6.5,
+          <div style={{ fontFamily:"'Space Grotesk',sans-serif", fontSize:6.5,
             color:"#443355", letterSpacing:"0.07em" }}>{label}</div>
         </div>
       ))}
@@ -496,7 +496,7 @@ function Board({ problem, editMode, editRole, onHoldTap, placements = PLACEMENTS
           ctx.shadowBlur = 0; ctx.fillStyle = color; ctx.globalAlpha = 0.28;
           ctx.beginPath(); ctx.arc(cx, cy, br, 0, Math.PI*2); ctx.fill();
           ctx.globalAlpha = 1; ctx.fillStyle = color;
-          ctx.font = `700 ${Math.max(8,w*0.021)}px var(--mono-font)`;
+          ctx.font = `700 ${Math.max(8,w*0.021)}px 'Space Grotesk',sans-serif`;
           ctx.textAlign = "center"; ctx.textBaseline = "middle";
           ctx.fillText(asgn === "match" ? "M" : asgn[0].toUpperCase(), cx, cy);
         }
@@ -524,7 +524,7 @@ function Board({ problem, editMode, editRole, onHoldTap, placements = PLACEMENTS
         ctx.strokeStyle = color; ctx.lineWidth = 1.2; ctx.stroke();
         // label
         ctx.fillStyle = "rgba(255,255,255,0.70)";
-        ctx.font = `600 7px var(--mono-font)`;
+        ctx.font = `600 7px 'Space Grotesk',sans-serif`;
         ctx.fillText(label, lx + dotLR * 2 + gap, ly + 2.5);
       });
     }
@@ -577,7 +577,7 @@ function AngleSel({ value, onChange }) {
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end" }}>
-        <span style={{ fontSize:9, color:T.text3, fontFamily:"var(--mono-font)", letterSpacing:"0.12em", textTransform:"uppercase" }}>Board Angle</span>
+        <span style={{ fontSize:9, color:T.text3, fontFamily:"'Space Grotesk',sans-serif", letterSpacing:"0.12em", textTransform:"uppercase" }}>Board Angle</span>
         <div style={{ display:"flex", alignItems:"baseline", gap:2 }}>
           <span style={{ fontFamily:"'Geist',sans-serif", fontWeight:800, fontSize:32, color:T.white, lineHeight:1 }}>{value}</span>
           <span style={{ fontFamily:"'Geist',sans-serif", fontWeight:800, fontSize:14, color:T.purple }}>°</span>
@@ -589,7 +589,7 @@ function AngleSel({ value, onChange }) {
             flex:1, background:a===value?T.white:T.bg3,
             border:`1px solid ${a===value?T.white:T.border}`,
             color:a===value?T.bg:T.text3, borderRadius:R, padding:"5px 0",
-            fontSize:10, cursor:"pointer", fontFamily:"var(--mono-font)",
+            fontSize:10, cursor:"pointer", fontFamily:"'Space Grotesk',sans-serif",
             fontWeight:a===value?700:400, transition:"all 0.1s",
           }}>{a}</button>
         ))}
@@ -602,7 +602,7 @@ function AngleSel({ value, onChange }) {
             stroke={T.white} strokeWidth="1.8" strokeLinecap="round"/>
           <circle cx="4" cy="36" r="2" fill={T.purple}/>
         </svg>
-        <span style={{ fontSize:10, color:T.text2, fontFamily:"var(--mono-font)" }}>{desc} · {value}°</span>
+        <span style={{ fontSize:10, color:T.text2, fontFamily:"'Space Grotesk',sans-serif" }}>{desc} · {value}°</span>
       </div>
     </div>
   );
@@ -611,7 +611,7 @@ function AngleSel({ value, onChange }) {
 function GradePill({ grade, sent, small }) {
   return (
     <span style={{
-      fontFamily:"var(--mono-font)", fontSize:small?8:9, fontWeight:700,
+      fontFamily:"'Space Grotesk',sans-serif", fontSize:small?8:9, fontWeight:700,
       color:sent?T.bg:T.purple, ...(sent?NOISE_BG:{background:T.purpleDim}),
       border:`1px solid ${sent?T.purple:T.purpleBrd}`,
       padding:small?"1px 5px":"2px 7px", borderRadius:3,
@@ -840,10 +840,10 @@ function GymMap({ homeGym, onSetHomeGym, onSeeGymClimbs }) {
     const addrText = data.address || (addressCache[gym.id] ? addressCache[gym.id].replace('\n', ', ') : null);
     const addrLine = addrText
       ? `<div style="font-size:10px;color:#888;line-height:1.5;margin-top:4px;">${escHtml(addrText)}</div>`
-      : `<div style="font-size:9px;color:#444;font-family:var(--mono-font);margin-top:4px;" data-addr-id="${escHtml(String(gym.id))}">loading address…</div>`;
+      : `<div style="font-size:9px;color:#444;font-family:'Space Grotesk',sans-serif;margin-top:4px;" data-addr-id="${escHtml(String(gym.id))}">loading address…</div>`;
 
     // Build social links — only include ones with real URLs
-    const linkStyle = "display:flex;align-items:center;gap:6px;padding:7px 10px;background:#1e1e1e;border:1px solid #2e2e2e;border-radius:4px;text-decoration:none;font-size:9px;font-family:var(--mono-font);letter-spacing:0.06em;color:#aaa;flex:1;white-space:nowrap;";
+    const linkStyle = "display:flex;align-items:center;gap:6px;padding:7px 10px;background:#1e1e1e;border:1px solid #2e2e2e;border-radius:4px;text-decoration:none;font-size:9px;font-family:'Space Grotesk',sans-serif;letter-spacing:0.06em;color:#aaa;flex:1;white-space:nowrap;";
     const mapsLink = `<a href="https://www.google.com/maps/search/?api=1&query=${gym.lat},${gym.lng}" target="_blank" rel="noopener" style="${linkStyle}color:#7a7aff;">
       <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
       MAPS</a>`;
@@ -887,7 +887,7 @@ function GymMap({ homeGym, onSetHomeGym, onSeeGymClimbs }) {
           ${avatarHtml}
           <div style="flex:1;min-width:0;">
             <div style="font-weight:700;font-size:13px;color:#f0f0f0;line-height:1.25;letter-spacing:-0.01em;">${escHtml(gym.name)}</div>
-            <div style="font-size:8px;color:#444;font-family:var(--mono-font);letter-spacing:0.08em;margin-top:2px;">@${escHtml(gym.username)}</div>
+            <div style="font-size:8px;color:#444;font-family:'Space Grotesk',sans-serif;letter-spacing:0.08em;margin-top:2px;">@${escHtml(gym.username)}</div>
             ${addrLine}
           </div>
         </div>
@@ -901,11 +901,11 @@ function GymMap({ homeGym, onSetHomeGym, onSeeGymClimbs }) {
 
       <div style="padding:10px 14px 12px;display:flex;flex-direction:column;gap:5px;">
         <button data-action="set-home-gym"
-          style="width:100%;padding:8px 0;background:${isHome?"rgba(168,85,247,0.18)":"transparent"};border:1px solid ${isHome?"rgba(168,85,247,0.5)":"#2a2a2a"};color:${isHome?"#a855f7":"#666"};border-radius:4px;font-size:8px;font-family:var(--mono-font);letter-spacing:0.08em;cursor:pointer;font-weight:700;">
+          style="width:100%;padding:8px 0;background:${isHome?"rgba(168,85,247,0.18)":"transparent"};border:1px solid ${isHome?"rgba(168,85,247,0.5)":"#2a2a2a"};color:${isHome?"#a855f7":"#666"};border-radius:4px;font-size:8px;font-family:'Space Grotesk',sans-serif;letter-spacing:0.08em;cursor:pointer;font-weight:700;">
           ${isHome ? "▲ HOME GYM" : "SET AS HOME GYM"}
         </button>
         <button data-action="see-gym-climbs"
-          style="width:100%;padding:8px 0;background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.35);color:#9333ea;border-radius:4px;font-size:8px;font-family:var(--mono-font);letter-spacing:0.08em;cursor:pointer;font-weight:700;">
+          style="width:100%;padding:8px 0;background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.35);color:#9333ea;border-radius:4px;font-size:8px;font-family:'Space Grotesk',sans-serif;letter-spacing:0.08em;cursor:pointer;font-weight:700;">
           VIEW ALL CLIMBS →
         </button>
       </div>
@@ -997,9 +997,9 @@ function GymMap({ homeGym, onSetHomeGym, onSeeGymClimbs }) {
           <GymAvatar gym={homeGym} size={32}/>
           <div style={{ flex:1, minWidth:0 }}>
             <div style={{ fontSize:12, fontFamily:"'Geist',sans-serif", fontWeight:700, color:T.white, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{homeGym.name}</div>
-            <div style={{ fontSize:8, color:T.text3, fontFamily:"var(--mono-font)", letterSpacing:"0.07em", marginTop:2 }}>HOME · @{homeGym.username}</div>
+            <div style={{ fontSize:8, color:T.text3, fontFamily:"'Space Grotesk',sans-serif", letterSpacing:"0.07em", marginTop:2 }}>HOME · @{homeGym.username}</div>
           </div>
-          <button onClick={() => onSetHomeGym(null)} style={{ background:"none", border:"none", color:T.text3, cursor:"pointer", fontSize:8, fontFamily:"var(--mono-font)", letterSpacing:"0.06em", flexShrink:0, padding:"4px 0" }}>CHANGE</button>
+          <button onClick={() => onSetHomeGym(null)} style={{ background:"none", border:"none", color:T.text3, cursor:"pointer", fontSize:8, fontFamily:"'Space Grotesk',sans-serif", letterSpacing:"0.06em", flexShrink:0, padding:"4px 0" }}>CHANGE</button>
         </div>
       )}
 
@@ -1025,7 +1025,7 @@ function GymMap({ homeGym, onSetHomeGym, onSeeGymClimbs }) {
                 <GymAvatar gym={gym} size={30}/>
                 <div style={{ flex:1 }}>
                   <div style={{ fontSize:12, fontFamily:"'Geist',sans-serif", fontWeight:700, color:T.text }}>{gym.name}</div>
-                  <div style={{ fontSize:9, color:T.text3, fontFamily:"var(--mono-font)", marginTop:2 }}>@{gym.username}</div>
+                  <div style={{ fontSize:9, color:T.text3, fontFamily:"'Space Grotesk',sans-serif", marginTop:2 }}>@{gym.username}</div>
                 </div>
                 {isHome && <span style={{ fontSize:10, color:T.purple }}>★</span>}
                 <span style={{ fontSize:10, color:T.purple }}>→</span>
@@ -1033,7 +1033,7 @@ function GymMap({ homeGym, onSetHomeGym, onSeeGymClimbs }) {
             );
           })}
           {filtered.length > 50 && (
-            <div style={{ fontSize:9, color:T.text3, fontFamily:"var(--mono-font)", textAlign:"center", padding:"4px 0" }}>
+            <div style={{ fontSize:9, color:T.text3, fontFamily:"'Space Grotesk',sans-serif", textAlign:"center", padding:"4px 0" }}>
               +{filtered.length - 50} more — narrow your search
             </div>
           )}
@@ -1041,7 +1041,7 @@ function GymMap({ homeGym, onSetHomeGym, onSeeGymClimbs }) {
       )}
 
       {!search && !loading && (
-        <div style={{ fontSize:9, color:T.text3, fontFamily:"var(--mono-font)", letterSpacing:"0.1em", textAlign:"center" }}>
+        <div style={{ fontSize:9, color:T.text3, fontFamily:"'Space Grotesk',sans-serif", letterSpacing:"0.1em", textAlign:"center" }}>
           {gyms.length} TB2 GYMS WORLDWIDE · TAP A PIN TO SEE DETAILS
         </div>
       )}
@@ -1120,19 +1120,13 @@ export default function App() {
   const [attNote, setAttNote]             = useState("");
   const [toast, setToast]                 = useState(null);
   const [sendReview, setSendReview]       = useState(null); // { problem, grade, notes }
-  const [devFont, setDevFont]             = useState("mono"); // "mono" | "grotesk"
 
   useEffect(() => {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&family=Syne:wght@800&display=swap";
+    link.href = "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;700&family=Syne:wght@800&display=swap";
     document.head.appendChild(link);
   }, []);
-
-  useEffect(() => {
-    const val = devFont === "mono" ? "'Space Mono',monospace" : "'Space Grotesk',sans-serif";
-    document.documentElement.style.setProperty("--mono-font", val);
-  }, [devFont]);
 
   useEffect(() => {
     setClimbsLoading(true);
@@ -1443,8 +1437,8 @@ export default function App() {
     outline:"none", fontFamily:"'Geist',sans-serif", boxSizing:"border-box",
   };
   const card = (extra={}) => ({ background:T.bg2, border:`1px solid ${T.border}`, borderRadius:6, padding:"11px 13px", ...extra });
-  const btnPri = { background:T.white, border:"none", color:T.bg, borderRadius:4, padding:"8px 13px", cursor:"pointer", fontSize:10, fontFamily:"var(--mono-font)", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.05em" };
-  const btnSec = { background:T.bg3, border:`1px solid ${T.border}`, color:T.text2, borderRadius:4, padding:"8px 11px", cursor:"pointer", fontSize:10, fontFamily:"var(--mono-font)", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.05em" };
+  const btnPri = { background:T.white, border:"none", color:T.bg, borderRadius:4, padding:"8px 13px", cursor:"pointer", fontSize:10, fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.05em" };
+  const btnSec = { background:T.bg3, border:`1px solid ${T.border}`, color:T.text2, borderRadius:4, padding:"8px 11px", cursor:"pointer", fontSize:10, fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.05em" };
 
   function settingsButton() {
     return (
@@ -1464,18 +1458,6 @@ export default function App() {
   return (
     <div style={{ height:"100svh", background:T.bg, color:T.text, fontFamily:"'Geist',sans-serif", display:"flex", flexDirection:"column", overflow:"hidden" }}>
 
-      {/* DEV: font toggle */}
-      <div style={{ display:"flex", justifyContent:"center", gap:1, padding:"4px 0", background:"#1a0a2e", borderBottom:"1px solid #2d1a4a", flexShrink:0 }}>
-        {["mono","grotesk"].map(f => (
-          <button key={f} onClick={() => setDevFont(f)} style={{
-            background: devFont===f ? "#a855f7" : "transparent",
-            border: "none", borderRadius:3, color: devFont===f ? "#fff" : "#7c5fa0",
-            fontSize:9, fontFamily:"'Space Mono',monospace", letterSpacing:"0.08em",
-            padding:"2px 10px", cursor:"pointer"
-          }}>Space {f==="mono"?"Mono":"Grotesk"}</button>
-        ))}
-      </div>
-
       {splash && <SplashScreen onDone={() => setSplash(false)}/>}
 
       {/* HEADER */}
@@ -1489,7 +1471,7 @@ export default function App() {
             <div>
               <div style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:13, letterSpacing:"0.02em", textTransform:"uppercase", lineHeight:1, color:T.white }}>La<span style={{color:"#a855f7"}}>t</span>ched</div>
               <div style={{ marginTop:3 }}>
-                <span style={{ fontSize:9, color:T.text3, fontFamily:"var(--mono-font)", letterSpacing:"0.07em" }}>
+                <span style={{ fontSize:9, color:T.text3, fontFamily:"'Space Grotesk',sans-serif", letterSpacing:"0.07em" }}>
                   {homeGym ? homeGym.name.toUpperCase() : "NO GYM"} · {angle}°
                 </span>
               </div>
@@ -1498,7 +1480,7 @@ export default function App() {
           {/* right: action buttons */}
           <div style={{ display:"flex", gap:5, justifyContent:"flex-end" }}>
             <button onClick={() => setCreateOpen(true)} style={{ background:"transparent", border:`1px solid ${T.border2}`, color:T.text2, borderRadius:4, padding:"5px 12px", fontSize:18, cursor:"pointer", lineHeight:1, fontWeight:300 }}>+</button>
-            <button onClick={() => setLogOpen(true)} style={{ background:T.bg3, border:`1px solid ${T.border}`, color:T.text, borderRadius:4, padding:"5px 11px", fontSize:9, cursor:"pointer", fontFamily:"var(--mono-font)", fontWeight:700, letterSpacing:"0.06em" }}>SESSION</button>
+            <button onClick={() => setLogOpen(true)} style={{ background:T.bg3, border:`1px solid ${T.border}`, color:T.text, borderRadius:4, padding:"5px 11px", fontSize:9, cursor:"pointer", fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, letterSpacing:"0.06em" }}>SESSION</button>
           </div>
         </div>
       </div>
@@ -1509,7 +1491,7 @@ export default function App() {
           <button key={t} onClick={() => setTab(t)} style={{
             flex:1, background:"none", border:"none", color:tab===t?T.white:T.text3,
             padding:"8px 0", cursor:"pointer", fontSize:8,
-            fontFamily:"var(--mono-font)", fontWeight:700, letterSpacing:"0.08em", textTransform:"uppercase",
+            fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, letterSpacing:"0.08em", textTransform:"uppercase",
             borderBottom:`1px solid ${tab===t?T.purple:"transparent"}`, transition:"color 0.1s",
           }}>{t}</button>
         ))}
@@ -1535,7 +1517,7 @@ export default function App() {
                   background: climbSource===key ? T.bg3 : "transparent",
                   border:`1px solid ${climbSource===key ? T.border2 : T.border}`,
                   color: climbSource===key ? T.white : T.text3,
-                  fontSize:9, fontFamily:"var(--mono-font)", fontWeight:700, textTransform:"uppercase",
+                  fontSize:9, fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, textTransform:"uppercase",
                   letterSpacing:"0.06em",
                 }}>{label}</button>
               ))}
@@ -1558,7 +1540,7 @@ export default function App() {
                     border:`1px solid ${anyFilter?T.purple:T.border}`,
                     color:anyFilter?T.white:T.text2,
                     borderRadius:R, padding:"0 12px", cursor:"pointer",
-                    fontSize:9, fontFamily:"var(--mono-font)", fontWeight:700, flexShrink:0,
+                    fontSize:9, fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, flexShrink:0,
                   }}>{anyFilter ? `FILTER ·${[gradeMin||gradeMax?` ${gradeMin||"V0"}–${gradeMax||"V15"}`:"", filterAngle!==null?` ${filterAngle}°`:"", filterSent?` ${filterSent}`:"", classicsOnly?" classic":""].filter(Boolean).join("")}` : "FILTER"}</button>
                 );
               })()}
@@ -1567,29 +1549,29 @@ export default function App() {
             {/* Active filter chips */}
             {climbSource==="community" && (
               <div style={{display:"flex",gap:5,flexWrap:"wrap",marginBottom:8}}>
-                {(gradeMin||gradeMax) && <span onClick={()=>{setGradeMin(null);setGradeMax(null);}} style={{fontSize:9,fontFamily:"var(--mono-font)",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>{gradeMin||"V0"}–{gradeMax||"V15"} ✕</span>}
-                {filterAngle!==null && <span onClick={()=>setFilterAngle(null)} style={{fontSize:9,fontFamily:"var(--mono-font)",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>{filterAngle}° ✕</span>}
-                {filterSent && <span onClick={()=>setFilterSent(null)} style={{fontSize:9,fontFamily:"var(--mono-font)",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>{filterSent} ✕</span>}
-                {filterMinAscents && <span onClick={()=>setFilterMinAscents(null)} style={{fontSize:9,fontFamily:"var(--mono-font)",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>{filterMinAscents}+ ascents ✕</span>}
-                {filterMinQuality && <span onClick={()=>setFilterMinQuality(null)} style={{fontSize:9,fontFamily:"var(--mono-font)",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>★{filterMinQuality}+ ✕</span>}
-                {classicsOnly && <span onClick={()=>setClassicsOnly(false)} style={{fontSize:9,fontFamily:"var(--mono-font)",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>Classics ✕</span>}
-                {filterSetter && <span onClick={()=>setFilterSetter(null)} style={{fontSize:9,fontFamily:"var(--mono-font)",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>@{filterSetter} ✕</span>}
-                {filterDateAfter && <span onClick={()=>setFilterDateAfter("")} style={{fontSize:9,fontFamily:"var(--mono-font)",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>after {filterDateAfter} ✕</span>}
-                {filterDateBefore && <span onClick={()=>setFilterDateBefore("")} style={{fontSize:9,fontFamily:"var(--mono-font)",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>before {filterDateBefore} ✕</span>}
-                {sortBy!=="quality" && <span onClick={()=>setSortBy("quality")} style={{fontSize:9,fontFamily:"var(--mono-font)",background:T.bg3,border:`1px solid ${T.border}`,color:T.text3,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>sort: {sortBy} ✕</span>}
-                {injuryLeft  && <span onClick={()=>setInjuryLeft(false)}  style={{fontSize:9,fontFamily:"var(--mono-font)",background:"rgba(255,60,60,0.12)",border:"1px solid rgba(255,60,60,0.4)",color:"#ff6060",borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>✕ left hand injury</span>}
-                {injuryRight && <span onClick={()=>setInjuryRight(false)} style={{fontSize:9,fontFamily:"var(--mono-font)",background:"rgba(255,60,60,0.12)",border:"1px solid rgba(255,60,60,0.4)",color:"#ff6060",borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>✕ right hand injury</span>}
+                {(gradeMin||gradeMax) && <span onClick={()=>{setGradeMin(null);setGradeMax(null);}} style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>{gradeMin||"V0"}–{gradeMax||"V15"} ✕</span>}
+                {filterAngle!==null && <span onClick={()=>setFilterAngle(null)} style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>{filterAngle}° ✕</span>}
+                {filterSent && <span onClick={()=>setFilterSent(null)} style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>{filterSent} ✕</span>}
+                {filterMinAscents && <span onClick={()=>setFilterMinAscents(null)} style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>{filterMinAscents}+ ascents ✕</span>}
+                {filterMinQuality && <span onClick={()=>setFilterMinQuality(null)} style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>★{filterMinQuality}+ ✕</span>}
+                {classicsOnly && <span onClick={()=>setClassicsOnly(false)} style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>Classics ✕</span>}
+                {filterSetter && <span onClick={()=>setFilterSetter(null)} style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>@{filterSetter} ✕</span>}
+                {filterDateAfter && <span onClick={()=>setFilterDateAfter("")} style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>after {filterDateAfter} ✕</span>}
+                {filterDateBefore && <span onClick={()=>setFilterDateBefore("")} style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>before {filterDateBefore} ✕</span>}
+                {sortBy!=="quality" && <span onClick={()=>setSortBy("quality")} style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",background:T.bg3,border:`1px solid ${T.border}`,color:T.text3,borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>sort: {sortBy} ✕</span>}
+                {injuryLeft  && <span onClick={()=>setInjuryLeft(false)}  style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",background:"rgba(255,60,60,0.12)",border:"1px solid rgba(255,60,60,0.4)",color:"#ff6060",borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>✕ left hand injury</span>}
+                {injuryRight && <span onClick={()=>setInjuryRight(false)} style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",background:"rgba(255,60,60,0.12)",border:"1px solid rgba(255,60,60,0.4)",color:"#ff6060",borderRadius:999,padding:"3px 8px",cursor:"pointer"}}>✕ right hand injury</span>}
               </div>
             )}
 
             {climbSource === "community" && (
               <>
                 {climbsLoading ? (
-                  <div style={{textAlign:"center",padding:"40px 0",color:T.text3,fontSize:11,fontFamily:"var(--mono-font)",letterSpacing:"0.1em"}}>
+                  <div style={{textAlign:"center",padding:"40px 0",color:T.text3,fontSize:11,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em"}}>
                     LOADING CLIMBS…
                   </div>
                 ) : (
-                <div style={{ fontSize:8, color:T.text3, fontFamily:"var(--mono-font)", letterSpacing:"0.1em", marginBottom:8 }}>
+                <div style={{ fontSize:8, color:T.text3, fontFamily:"'Space Grotesk',sans-serif", letterSpacing:"0.1em", marginBottom:8 }}>
                   {filteredCommunity.length.toLocaleString()} / {activeCommunityClimbs.length.toLocaleString()} CLIMBS
                 </div>
                 )}
@@ -1607,15 +1589,15 @@ export default function App() {
                           <span style={{ fontFamily:"'Geist',sans-serif", fontWeight:700, fontSize:12 }}>{climb.name}</span>
                           <GradePill grade={climb.grade} small/>
                           {settings.showFeltGrade && feltGradeLog[climb.uuid] && (
-                            <span style={{fontSize:8,fontFamily:"var(--mono-font)",color:T.text3,letterSpacing:"0.04em"}}>consensus {feltGradeLog[climb.uuid]}</span>
+                            <span style={{fontSize:8,fontFamily:"'Space Grotesk',sans-serif",color:T.text3,letterSpacing:"0.04em"}}>consensus {feltGradeLog[climb.uuid]}</span>
                           )}
-                          {tracked?.sends > 0 && <span style={{fontSize:8,fontFamily:"var(--mono-font)",color:T.purple,background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,borderRadius:999,padding:"1px 6px"}}>SENT {tracked.sends}✓</span>}
-                          {tracked && !tracked.sends && <span style={{fontSize:8,fontFamily:"var(--mono-font)",color:T.text3,background:T.bg3,border:`1px solid ${T.border}`,borderRadius:999,padding:"1px 6px"}}>{tracked.attempts} ATT</span>}
-                          {betaLog[climb.uuid] && <span style={{fontSize:8,fontFamily:"var(--mono-font)",color:"#3b82f6",background:"rgba(59,130,246,0.10)",border:"1px solid rgba(59,130,246,0.30)",borderRadius:999,padding:"1px 6px"}}>β BETA</span>}
+                          {tracked?.sends > 0 && <span style={{fontSize:8,fontFamily:"'Space Grotesk',sans-serif",color:T.purple,background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,borderRadius:999,padding:"1px 6px"}}>SENT {tracked.sends}✓</span>}
+                          {tracked && !tracked.sends && <span style={{fontSize:8,fontFamily:"'Space Grotesk',sans-serif",color:T.text3,background:T.bg3,border:`1px solid ${T.border}`,borderRadius:999,padding:"1px 6px"}}>{tracked.attempts} ATT</span>}
+                          {betaLog[climb.uuid] && <span style={{fontSize:8,fontFamily:"'Space Grotesk',sans-serif",color:"#3b82f6",background:"rgba(59,130,246,0.10)",border:"1px solid rgba(59,130,246,0.30)",borderRadius:999,padding:"1px 6px"}}>β BETA</span>}
                         </div>
-                        <div style={{ fontSize:9, color:T.text3, fontFamily:"var(--mono-font)", display:"flex", gap:10, alignItems:"center" }}>
+                        <div style={{ fontSize:9, color:T.text3, fontFamily:"'Space Grotesk',sans-serif", display:"flex", gap:10, alignItems:"center" }}>
                           <span>{climb.angle}°</span>
-                          <button onClick={e=>{e.stopPropagation();setSetterProfile(climb.setter);}} style={{background:"none",border:"none",color:T.text2,cursor:"pointer",padding:0,fontFamily:"var(--mono-font)",fontSize:9,textDecoration:"underline",textDecorationColor:T.text3,textUnderlineOffset:"3px"}}>@{climb.setter}</button>
+                          <button onClick={e=>{e.stopPropagation();setSetterProfile(climb.setter);}} style={{background:"none",border:"none",color:T.text2,cursor:"pointer",padding:0,fontFamily:"'Space Grotesk',sans-serif",fontSize:9,textDecoration:"underline",textDecorationColor:T.text3,textUnderlineOffset:"3px"}}>@{climb.setter}</button>
                           <span style={{ marginLeft:"auto" }}>★{climb.quality.toFixed(1)} · {climb.ascents.toLocaleString()}</span>
                         </div>
                       </div>
@@ -1626,7 +1608,7 @@ export default function App() {
                         <Board problem={climb} placements={isMirror ? PLACEMENTS_MIRROR : PLACEMENTS} mirrorLayout={isMirror}/>
                         <div style={{ display:"flex", gap:6, marginTop:10 }}>
                           <button onClick={e=>{e.stopPropagation();setBoardProblem(climb);setBoardModalOpen(true);}}
-                            style={{flex:1,background:T.bg3,border:`1px solid ${T.border}`,color:T.text,borderRadius:R,padding:"8px",cursor:"pointer",fontSize:10,fontFamily:"var(--mono-font)",letterSpacing:"0.08em"}}>
+                            style={{flex:1,background:T.bg3,border:`1px solid ${T.border}`,color:T.text,borderRadius:R,padding:"8px",cursor:"pointer",fontSize:10,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.08em"}}>
                             VIEW ON BOARD →
                           </button>
                           <button onClick={e=>{e.stopPropagation();logAttempt(climb,false)}} style={btnSec}>ATT</button>
@@ -1639,7 +1621,7 @@ export default function App() {
 
                 {communityPage < filteredCommunity.length && (
                   <button onClick={() => setCommunityPage(p=>p+30)}
-                    style={{width:"100%",background:T.bg2,border:`1px solid ${T.border}`,color:T.text2,borderRadius:R,padding:"10px",cursor:"pointer",fontSize:10,fontFamily:"var(--mono-font)",letterSpacing:"0.08em",marginTop:4}}>
+                    style={{width:"100%",background:T.bg2,border:`1px solid ${T.border}`,color:T.text2,borderRadius:R,padding:"10px",cursor:"pointer",fontSize:10,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.08em",marginTop:4}}>
                     LOAD MORE ({(filteredCommunity.length-communityPage).toLocaleString()} remaining)
                   </button>
                 )}
@@ -1660,13 +1642,13 @@ export default function App() {
               const totalMine = localMine.length + dbMine.length;
               return totalMine === 0 ? (
                 <div style={card({textAlign:"center",padding:"32px 16px"})}>
-                  <div style={{fontSize:10,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:8}}>NO PERSONAL CLIMBS YET</div>
+                  <div style={{fontSize:10,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:8}}>NO PERSONAL CLIMBS YET</div>
                   <div style={{fontSize:12,color:T.text2,marginBottom:16}}>Set one with the + button or add your TB2 username to the extract script</div>
                   <button onClick={()=>setCreateOpen(true)} style={{...btnPri,...NOISE_BG,color:T.white}}>SET A CLIMB</button>
                 </div>
               ) : (<>
               {dbMine.length > 0 && (
-                <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:8}}>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:8}}>
                   FROM TB2 · {dbMine.length} CLIMBS
                 </div>
               )}
@@ -1680,11 +1662,11 @@ export default function App() {
                         <span style={{fontFamily:"'Geist',sans-serif",fontWeight:700,fontSize:12}}>{c.name}</span>
                         <GradePill grade={c.grade} small/>
                         {settings.showFeltGrade && feltGradeLog[c.uuid] && (
-                          <span style={{fontSize:8,fontFamily:"var(--mono-font)",color:T.text3,letterSpacing:"0.04em"}}>consensus {feltGradeLog[c.uuid]}</span>
+                          <span style={{fontSize:8,fontFamily:"'Space Grotesk',sans-serif",color:T.text3,letterSpacing:"0.04em"}}>consensus {feltGradeLog[c.uuid]}</span>
                         )}
-                        <span style={{fontSize:8,color:T.purple,fontFamily:"var(--mono-font)",border:`1px solid ${T.purpleBrd}`,borderRadius:999,padding:"1px 6px"}}>TB2</span>
+                        <span style={{fontSize:8,color:T.purple,fontFamily:"'Space Grotesk',sans-serif",border:`1px solid ${T.purpleBrd}`,borderRadius:999,padding:"1px 6px"}}>TB2</span>
                       </div>
-                      <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",display:"flex",gap:10}}>
+                      <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",display:"flex",gap:10}}>
                         <span>{c.angle}°</span>
                         {c.ascents > 0 && <span>{c.ascents.toLocaleString()} ascents</span>}
                         {c.quality > 0 && <span style={{marginLeft:"auto"}}>★{c.quality.toFixed(1)}</span>}
@@ -1696,7 +1678,7 @@ export default function App() {
                       <Board problem={c} placements={isMirror ? PLACEMENTS_MIRROR : PLACEMENTS} mirrorLayout={isMirror}/>
                       <div style={{display:"flex",gap:6,marginTop:10}}>
                         <button onClick={e=>{e.stopPropagation();setBoardProblem(c);setBoardModalOpen(true);}}
-                          style={{flex:1,background:T.bg3,border:`1px solid ${T.border}`,color:T.text,borderRadius:R,padding:"8px",cursor:"pointer",fontSize:10,fontFamily:"var(--mono-font)"}}>
+                          style={{flex:1,background:T.bg3,border:`1px solid ${T.border}`,color:T.text,borderRadius:R,padding:"8px",cursor:"pointer",fontSize:10,fontFamily:"'Space Grotesk',sans-serif"}}>
                           VIEW ON BOARD →
                         </button>
                         <button onClick={e=>{e.stopPropagation();logAttempt(c,false)}} style={btnSec}>ATT</button>
@@ -1707,7 +1689,7 @@ export default function App() {
                 </div>
               ))}
               {localMine.length > 0 && dbMine.length > 0 && (
-                <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",margin:"12px 0 8px"}}>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",margin:"12px 0 8px"}}>
                   SET LOCALLY · {localMine.length} CLIMBS
                 </div>
               )}
@@ -1721,7 +1703,7 @@ export default function App() {
                         <span style={{fontFamily:"'Geist',sans-serif",fontWeight:700,fontSize:12}}>{p.name}</span>
                         <GradePill grade={p.grade} sent={p.sends>0} small/>
                       </div>
-                      <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",display:"flex",gap:10}}>
+                      <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",display:"flex",gap:10}}>
                         <span>{p.angle}°</span>
                         <span style={{marginLeft:"auto"}}>{p.attempts}att · {p.sends}✓</span>
                       </div>
@@ -1742,7 +1724,7 @@ export default function App() {
                         <button onClick={e=>{e.stopPropagation();logAttempt(p,true)}} style={btnPri}>SEND ✓</button>
                       </div>
                       <button onClick={e=>{e.stopPropagation();setBoardProblem(p);setBoardModalOpen(true);}}
-                        style={{marginTop:8,width:"100%",background:"transparent",border:`1px solid ${T.border}`,color:T.text3,borderRadius:R,padding:"7px",cursor:"pointer",fontSize:10,fontFamily:"var(--mono-font)",letterSpacing:"0.08em"}}>
+                        style={{marginTop:8,width:"100%",background:"transparent",border:`1px solid ${T.border}`,color:T.text3,borderRadius:R,padding:"7px",cursor:"pointer",fontSize:10,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.08em"}}>
                         VIEW ON BOARD →
                       </button>
                     </div>
@@ -1787,7 +1769,7 @@ export default function App() {
                     {profile.username || "Set your username"}
                   </div>
                   {homeGym && (
-                    <div style={{fontSize:9,color:T.purple,fontFamily:"var(--mono-font)",letterSpacing:"0.08em",marginBottom:4}}>
+                    <div style={{fontSize:9,color:T.purple,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.08em",marginBottom:4}}>
                       {homeGym.name.toUpperCase()}
                     </div>
                   )}
@@ -1801,7 +1783,7 @@ export default function App() {
                 <button onClick={()=>{setDraftProfile({...profile});setEditProfileOpen(true);}} style={{
                   background:T.bg3,border:`1px solid ${T.border}`,color:T.text2,
                   borderRadius:R,padding:"5px 11px",cursor:"pointer",
-                  fontSize:9,fontFamily:"var(--mono-font)",fontWeight:700,
+                  fontSize:9,fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,
                   flexShrink:0,
                 }}>EDIT</button>
               </div>
@@ -1811,7 +1793,7 @@ export default function App() {
                 {[["SENDS",totalSends],["ATTEMPTS",totalAtt],["CLIMBS",myProblems.length],["SESSIONS",sessions.length]].map(([l,v],i,arr) => (
                   <div key={l} style={{flex:1,textAlign:"center",borderRight:i<arr.length-1?`1px solid ${T.border}`:"none"}}>
                     <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:20,color:T.white,lineHeight:1}}>{v}</div>
-                    <div style={{fontSize:7,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginTop:3}}>{l}</div>
+                    <div style={{fontSize:7,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginTop:3}}>{l}</div>
                   </div>
                 ))}
               </div>
@@ -1821,13 +1803,13 @@ export default function App() {
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}}>
               <div style={card({textAlign:"center",padding:"12px 8px"})}>
                 <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:28,color:T.white,lineHeight:1}}>{sendRate}%</div>
-                <div style={{fontSize:7,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginTop:4}}>SEND RATE</div>
+                <div style={{fontSize:7,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginTop:4}}>SEND RATE</div>
               </div>
               <div style={card({textAlign:"center",padding:"12px 8px"})}>
                 <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:28,color:T.white,lineHeight:1}}>
                   {followedSetters.size}
                 </div>
-                <div style={{fontSize:7,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginTop:4}}>FOLLOWING</div>
+                <div style={{fontSize:7,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginTop:4}}>FOLLOWING</div>
               </div>
             </div>
 
@@ -1857,7 +1839,7 @@ export default function App() {
               });
               if (events.length === 0) return (
                 <>
-                  <div style={card({textAlign:"center",padding:"24px 0",color:T.text3,fontSize:11,fontFamily:"var(--mono-font)",marginBottom:12})}>
+                  <div style={card({textAlign:"center",padding:"24px 0",color:T.text3,fontSize:11,fontFamily:"'Space Grotesk',sans-serif",marginBottom:12})}>
                     LOG SESSIONS AND SENDS TO SEE ACTIVITY
                   </div>
                   {settingsButton()}
@@ -1865,7 +1847,7 @@ export default function App() {
               );
               return (
                 <>
-                  <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:10}}>RECENT ACTIVITY</div>
+                  <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:10}}>RECENT ACTIVITY</div>
                   {events.map((e,i) => (
                     <div key={i} style={{...card(),marginBottom:6,display:"flex",gap:12,alignItems:"flex-start"}}>
                       <div style={{
@@ -1875,7 +1857,7 @@ export default function App() {
                       }}>{e.icon}</div>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{fontSize:12,color:T.text,lineHeight:1.5}}>{e.text}</div>
-                        <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",marginTop:2}}>{e.sub}</div>
+                        <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",marginTop:2}}>{e.sub}</div>
                       </div>
                     </div>
                   ))}
@@ -1896,15 +1878,15 @@ export default function App() {
               if (!todaySess) return null;
               return (
                 <div style={{...card({marginBottom:14}), borderLeft:`3px solid ${T.purple}`}}>
-                  <div style={{fontSize:9,color:T.purple,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:8}}>TODAY</div>
+                  <div style={{fontSize:9,color:T.purple,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:8}}>TODAY</div>
                   <div style={{display:"flex",gap:16}}>
                     <div>
                       <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:28,color:T.white,lineHeight:1}}>{todaySess.totalAttempts||0}</div>
-                      <div style={{fontSize:8,color:T.text3,fontFamily:"var(--mono-font)",marginTop:3}}>ATTEMPTS</div>
+                      <div style={{fontSize:8,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",marginTop:3}}>ATTEMPTS</div>
                     </div>
                     <div>
                       <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:28,color:T.purple,lineHeight:1}}>{todaySess.sends||0}</div>
-                      <div style={{fontSize:8,color:T.text3,fontFamily:"var(--mono-font)",marginTop:3}}>SENDS</div>
+                      <div style={{fontSize:8,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",marginTop:3}}>SENDS</div>
                     </div>
                   </div>
                 </div>
@@ -1915,7 +1897,7 @@ export default function App() {
               {[["SENDS",totalSends],["ATTEMPTS",totalAtt],["SEND RATE",sendRate+"%"],["MY CLIMBS",myProblems.length]].map(([l,v]) => (
                 <div key={l} style={card({textAlign:"center"})}>
                   <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:30,color:T.white,lineHeight:1}}>{v}</div>
-                  <div style={{fontSize:8,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginTop:4}}>{l}</div>
+                  <div style={{fontSize:8,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginTop:4}}>{l}</div>
                 </div>
               ))}
             </div>
@@ -1923,18 +1905,18 @@ export default function App() {
             {/* Grade pyramid */}
             {myProblems.length > 0 && (
               <div style={card({marginBottom:12})}>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:12}}>SEND PYRAMID</div>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:12}}>SEND PYRAMID</div>
                 {GRADES.map(g => {
                   const sent = myProblems.filter(p=>p.grade===g&&p.sends>0).length;
                   const tot  = myProblems.filter(p=>p.grade===g).length;
                   if (!tot) return null;
                   return (
                     <div key={g} style={{display:"flex",alignItems:"center",gap:8,marginBottom:7}}>
-                      <span style={{width:26,fontSize:10,fontFamily:"var(--mono-font)",fontWeight:700,color:sent>0?T.white:T.text3}}>{g}</span>
+                      <span style={{width:26,fontSize:10,fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:sent>0?T.white:T.text3}}>{g}</span>
                       <div style={{flex:1,background:T.bg3,borderRadius:2,height:5,overflow:"hidden"}}>
                         <div style={{width:`${(sent/tot)*100}%`,height:"100%",background:sent>0?T.purple:T.border,borderRadius:2}}/>
                       </div>
-                      <span style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",width:28,textAlign:"right"}}>{sent}/{tot}</span>
+                      <span style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",width:28,textAlign:"right"}}>{sent}/{tot}</span>
                     </div>
                   );
                 })}
@@ -1944,12 +1926,12 @@ export default function App() {
             {/* Projects */}
             {myProblems.filter(p=>p.sends===0&&p.attempts>0).length > 0 && (
               <div style={card({marginBottom:12})}>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:10}}>PROJECTS</div>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:10}}>PROJECTS</div>
                 {myProblems.filter(p=>p.sends===0&&p.attempts>0).sort((a,b)=>b.attempts-a.attempts).map(p => (
                   <div key={p.id} style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
                     <GradePill grade={p.grade} small/>
                     <span style={{flex:1,fontSize:12,fontFamily:"'Geist',sans-serif",fontWeight:700}}>{p.name}</span>
-                    <span style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)"}}>{p.attempts}att</span>
+                    <span style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif"}}>{p.attempts}att</span>
                   </div>
                 ))}
               </div>
@@ -1957,12 +1939,12 @@ export default function App() {
 
             {/* Sessions */}
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-              <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em"}}>SESSION LOG</div>
+              <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em"}}>SESSION LOG</div>
               <button onClick={()=>setLogOpen(true)} style={{background:T.white,border:"none",color:T.bg,borderRadius:R,padding:"4px 10px",cursor:"pointer",fontSize:9,fontFamily:"'Geist',sans-serif",fontWeight:800,textTransform:"uppercase"}}>+ LOG</button>
             </div>
             {sessions.length === 0 ? (
               <div style={card({textAlign:"center",padding:"20px"})}>
-                <div style={{fontSize:11,color:T.text3,fontFamily:"var(--mono-font)"}}>No sessions yet</div>
+                <div style={{fontSize:11,color:T.text3,fontFamily:"'Space Grotesk',sans-serif"}}>No sessions yet</div>
               </div>
             ) : sessions.map((s,i) => (
               <div key={i} style={card({marginBottom:8})}>
@@ -1970,7 +1952,7 @@ export default function App() {
                   <span style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13}}>{s.date}</span>
                   <Feel val={s.feel}/>
                 </div>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.08em",marginBottom:s.notes?5:0}}>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.08em",marginBottom:s.notes?5:0}}>
                   {s.duration}MIN · {s.totalAttempts}ATT · {s.sends}SENDS
                 </div>
                 {s.notes && <div style={{fontSize:12,color:T.text2}}>{s.notes}</div>}
@@ -1988,22 +1970,22 @@ export default function App() {
             <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:16,textTransform:"uppercase",marginBottom:16}}>LOG SESSION</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
               <div>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:4}}>DATE</div>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:4}}>DATE</div>
                 <input type="date" value={newSess.date} onChange={e=>setNewSess(s=>({...s,date:e.target.value}))} style={inp}/>
               </div>
               <div>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:4}}>DURATION (MIN)</div>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:4}}>DURATION (MIN)</div>
                 <input type="number" value={newSess.duration} onChange={e=>setNewSess(s=>({...s,duration:Number(e.target.value)}))} style={inp}/>
               </div>
             </div>
             <div style={{marginBottom:12}}>
-              <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:6}}>FEEL</div>
+              <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:6}}>FEEL</div>
               <Feel val={newSess.feel} onClick={n=>setNewSess(s=>({...s,feel:n}))}/>
             </div>
             <textarea value={newSess.notes} onChange={e=>setNewSess(s=>({...s,notes:e.target.value}))}
               placeholder="Session notes…" rows={2} style={{...inp,marginBottom:14,resize:"none"}}/>
             <div style={{display:"flex",gap:8}}>
-              <button onClick={()=>setLogOpen(false)} style={{flex:1,background:T.bg3,border:`1px solid ${T.border}`,color:T.text,borderRadius:R,padding:"11px",cursor:"pointer",fontSize:11,fontFamily:"var(--mono-font)"}}>CANCEL</button>
+              <button onClick={()=>setLogOpen(false)} style={{flex:1,background:T.bg3,border:`1px solid ${T.border}`,color:T.text,borderRadius:R,padding:"11px",cursor:"pointer",fontSize:11,fontFamily:"'Space Grotesk',sans-serif"}}>CANCEL</button>
               <button onClick={()=>{setSessions(p=>[{...newSess,totalAttempts:0,sends:0},...p]);setLogOpen(false);}}
                 style={{flex:2,...btnPri,padding:"11px",fontSize:12}}>SAVE SESSION</button>
             </div>
@@ -2039,7 +2021,7 @@ export default function App() {
               {ROLES.map(role => (
                 <button key={role} onClick={()=>setDraftRole(role)} style={{
                   flex:1, padding:"7px 0", fontSize:9, borderRadius:R, cursor:"pointer",
-                  fontFamily:"var(--mono-font)", fontWeight:700, textTransform:"uppercase",
+                  fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, textTransform:"uppercase",
                   background:draftRole===role ? ROLE_COLOR[role]+"28" : T.bg3,
                   border:`1px solid ${draftRole===role ? ROLE_COLOR[role] : T.border}`,
                   color:draftRole===role ? ROLE_COLOR[role] : T.text3,
@@ -2051,7 +2033,7 @@ export default function App() {
             <div style={{borderTop:`1px solid ${T.border}`,margin:"4px 0 18px"}}/>
 
             {/* ② Name */}
-            <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:5}}>NAME</div>
+            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:5}}>NAME</div>
             <input value={draftClimb.name} onChange={e=>setDraftClimb(c=>({...c,name:e.target.value}))}
               placeholder="What do you call it?" style={{...inp,marginBottom:16,fontSize:14}}/>
 
@@ -2059,12 +2041,12 @@ export default function App() {
             <div style={{...card(), marginBottom:16}}><AngleSel value={draftClimb.angle} onChange={v=>setDraftClimb(c=>({...c,angle:v}))}/></div>
 
             {/* ④ Grade */}
-            <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:6}}>GRADE</div>
+            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:6}}>GRADE</div>
             <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:16}}>
               {GRADES.map(g => (
                 <button key={g} onClick={()=>setDraftClimb(c=>({...c,grade:g}))} style={{
                   padding:"5px 11px", borderRadius:R, fontSize:10, cursor:"pointer",
-                  fontFamily:"var(--mono-font)", fontWeight:700,
+                  fontFamily:"'Space Grotesk',sans-serif", fontWeight:700,
                   ...(draftClimb.grade===g?NOISE_BG:{background:T.bg3}),
                   border:`1px solid ${draftClimb.grade===g?T.purple:T.border}`,
                   color:draftClimb.grade===g?T.white:T.text3,
@@ -2073,7 +2055,7 @@ export default function App() {
             </div>
 
             {/* ⑤ Description */}
-            <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:5}}>DESCRIPTION</div>
+            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:5}}>DESCRIPTION</div>
             <textarea value={draftClimb.notes} onChange={e=>setDraftClimb(c=>({...c,notes:e.target.value}))}
               placeholder="Beta, key positions, sequences…" rows={3} style={{...inp,marginBottom:16,resize:"none"}}/>
 
@@ -2081,7 +2063,7 @@ export default function App() {
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",background:T.bg2,border:`1px solid ${T.border}`,borderRadius:R,padding:"12px 14px"}}>
               <div>
                 <div style={{fontSize:12,color:T.text,marginBottom:2}}>Match finish</div>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)"}}>Both hands allowed on top hold</div>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif"}}>Both hands allowed on top hold</div>
               </div>
               <button onClick={()=>setDraftClimb(c=>({...c,match:!c.match}))} style={{
                 width:42, height:22, borderRadius:999, border:"none", cursor:"pointer",
@@ -2109,10 +2091,10 @@ export default function App() {
               {boardProblem ? (
                 <>
                   <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13,textTransform:"uppercase"}}>{boardProblem.name}</div>
-                  <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",marginTop:1,display:"flex",gap:5,alignItems:"center"}}>
+                  <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",marginTop:1,display:"flex",gap:5,alignItems:"center"}}>
                     <span>{boardProblem.grade}{settings.showFeltGrade && feltGradeLog[boardProblem?.uuid] ? ` → consensus ${feltGradeLog[boardProblem.uuid]}` : ""} · {boardProblem.angle}°</span>
                     {boardProblem.setter && (
-                      <button onClick={()=>setSetterProfile(boardProblem.setter)} style={{background:"none",border:"none",color:T.text2,cursor:"pointer",padding:0,fontFamily:"var(--mono-font)",fontSize:9,textDecoration:"underline",textDecorationColor:T.text3,textUnderlineOffset:"3px"}}>
+                      <button onClick={()=>setSetterProfile(boardProblem.setter)} style={{background:"none",border:"none",color:T.text2,cursor:"pointer",padding:0,fontFamily:"'Space Grotesk',sans-serif",fontSize:9,textDecoration:"underline",textDecorationColor:T.text3,textUnderlineOffset:"3px"}}>
                         @{boardProblem.setter}
                       </button>
                     )}
@@ -2124,7 +2106,7 @@ export default function App() {
               <button onClick={()=>setEditMode(v=>!v)} style={{
                 ...(editMode?NOISE_BG:{background:T.bg3}), border:`1px solid ${editMode?T.purple:T.border}`,
                 color:editMode?T.white:T.text2, borderRadius:R, padding:"5px 11px",
-                fontSize:9, cursor:"pointer", fontFamily:"var(--mono-font)", fontWeight:700,
+                fontSize:9, cursor:"pointer", fontFamily:"'Space Grotesk',sans-serif", fontWeight:700,
               }}>{editMode?"DONE":"EDIT"}</button>
             )}
           </div>
@@ -2137,7 +2119,7 @@ export default function App() {
                 flex:1, padding:"13px 0", background:"none", border:"none",
                 borderBottom: !view3d ? `2px solid ${T.text}` : "2px solid transparent",
                 color: !view3d ? T.text : T.text3,
-                fontFamily:"var(--mono-font)", fontSize:11, fontWeight:700,
+                fontFamily:"'Space Grotesk',sans-serif", fontSize:11, fontWeight:700,
                 letterSpacing:"0.10em", cursor:"pointer", transition:"color .12s",
               }}
             >BOARD</button>
@@ -2147,7 +2129,7 @@ export default function App() {
                 flex:1, padding:"13px 0", background:"none", border:"none",
                 borderBottom: view3d ? `2px solid ${T.purple}` : "2px solid transparent",
                 color: view3d ? T.purple : T.text3,
-                fontFamily:"var(--mono-font)", fontSize:11, fontWeight:700,
+                fontFamily:"'Space Grotesk',sans-serif", fontSize:11, fontWeight:700,
                 letterSpacing:"0.10em", cursor:"pointer", transition:"color .12s",
               }}
             >3D VIEW</button>
@@ -2158,7 +2140,7 @@ export default function App() {
             <div style={{flex:1,position:"relative"}}>
               <Suspense fallback={
                 <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",
-                  background:"#090909",color:T.text3,fontFamily:"var(--mono-font)",fontSize:10,letterSpacing:"0.1em"}}>
+                  background:"#090909",color:T.text3,fontFamily:"'Space Grotesk',sans-serif",fontSize:10,letterSpacing:"0.1em"}}>
                   LOADING 3D…
                 </div>
               }>
@@ -2180,12 +2162,12 @@ export default function App() {
 
             {editMode && (
               <div style={{marginTop:10}}>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:6}}>TAP HOLDS TO ASSIGN ROLE</div>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:6}}>TAP HOLDS TO ASSIGN ROLE</div>
                 <div style={{display:"flex",gap:5}}>
                   {ROLES.map(role => (
                     <button key={role} onClick={()=>setEditRole(role)} style={{
                       flex:1,padding:"7px 0",fontSize:9,borderRadius:R,cursor:"pointer",
-                      fontFamily:"var(--mono-font)",fontWeight:700,textTransform:"uppercase",
+                      fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,textTransform:"uppercase",
                       background:editRole===role?ROLE_COLOR[role]+"22":T.bg3,
                       border:`1px solid ${editRole===role?ROLE_COLOR[role]:T.border}`,
                       color:editRole===role?ROLE_COLOR[role]:T.text3,
@@ -2205,7 +2187,7 @@ export default function App() {
                 {/* Consensus grade row */}
                 {boardProblem.uuid && (
                   <div style={{marginTop:8}}>
-                    <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:5}}>
+                    <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:5}}>
                       CONSENSUS GRADE{feltGradeLog[boardProblem.uuid] && <span style={{color:T.text2,marginLeft:5}}>· {feltGradeLog[boardProblem.uuid]} <span onClick={()=>clearFeltGrade(boardProblem.uuid)} style={{cursor:"pointer",opacity:0.6}}>✕</span></span>}
                     </div>
                     <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
@@ -2216,7 +2198,7 @@ export default function App() {
                       }).map(g => (
                         <button key={g} onClick={() => feltGradeLog[boardProblem.uuid] === g ? clearFeltGrade(boardProblem.uuid) : saveFeltGrade(boardProblem.uuid, g)} style={{
                           padding:"5px 9px", borderRadius:R, cursor:"pointer",
-                          fontFamily:"var(--mono-font)", fontWeight:700, fontSize:9,
+                          fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:9,
                           background: feltGradeLog[boardProblem.uuid] === g ? T.purpleDim : T.bg3,
                           border: `1px solid ${feltGradeLog[boardProblem.uuid] === g ? T.purpleBrd : T.border}`,
                           color: feltGradeLog[boardProblem.uuid] === g ? T.purple : T.text3,
@@ -2231,7 +2213,7 @@ export default function App() {
                   <button onClick={()=>startBeta(boardProblem)} style={{
                     background:"none", border:`1px solid ${T.border}`, color:T.text3,
                     borderRadius:R, padding:"5px 10px", cursor:"pointer",
-                    fontSize:9, fontFamily:"var(--mono-font)", fontWeight:700,
+                    fontSize:9, fontFamily:"'Space Grotesk',sans-serif", fontWeight:700,
                   }}>
                     {betaLog[boardProblem.uuid] ? "✎ EDIT BETA" : "+ LOG BETA"}
                   </button>
@@ -2240,9 +2222,9 @@ export default function App() {
                       {["left","right","match"].map(a => {
                         const count = Object.values(betaLog[boardProblem.uuid].holdAssignments||{}).filter(v=>v===a).length;
                         if (!count) return null;
-                        return <span key={a} style={{fontSize:8,fontFamily:"var(--mono-font)",color:BETA_COLORS[a]}}>{count}{a[0].toUpperCase()}</span>;
+                        return <span key={a} style={{fontSize:8,fontFamily:"'Space Grotesk',sans-serif",color:BETA_COLORS[a]}}>{count}{a[0].toUpperCase()}</span>;
                       })}
-                      <button onClick={()=>clearBeta(boardProblem.uuid)} style={{background:"none",border:"none",color:T.text3,cursor:"pointer",fontSize:8,fontFamily:"var(--mono-font)",padding:"0 2px"}}>✕</button>
+                      <button onClick={()=>clearBeta(boardProblem.uuid)} style={{background:"none",border:"none",color:T.text3,cursor:"pointer",fontSize:8,fontFamily:"'Space Grotesk',sans-serif",padding:"0 2px"}}>✕</button>
                     </div>
                   )}
                 </div>
@@ -2252,7 +2234,7 @@ export default function App() {
             {/* Beta logging mode UI */}
             {!editMode && boardProblem && betaMode && (
               <div style={{marginTop:12}}>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:8}}>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:8}}>
                   TAP HOLDS TO ASSIGN — FOOT HOLDS IGNORED
                 </div>
                 {/* Hand selector */}
@@ -2260,14 +2242,14 @@ export default function App() {
                   {[["left","L HAND"],["right","R HAND"],["match","MATCH"]].map(([hand,label])=>(
                     <button key={hand} onClick={()=>setBetaHand(hand)} style={{
                       flex:1, padding:"9px 0", borderRadius:R, cursor:"pointer",
-                      fontFamily:"var(--mono-font)", fontWeight:700, fontSize:9,
+                      fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:9,
                       background: betaHand===hand ? BETA_COLORS[hand]+"22" : T.bg3,
                       border: `1px solid ${betaHand===hand ? BETA_COLORS[hand] : T.border}`,
                       color: betaHand===hand ? BETA_COLORS[hand] : T.text3,
                     }}>{label}</button>
                   ))}
                 </div>
-                <div style={{fontSize:8,color:T.text3,fontFamily:"var(--mono-font)",marginBottom:10}}>
+                <div style={{fontSize:8,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",marginBottom:10}}>
                   Tap again to clear · {Object.keys(betaDraft).length} holds assigned
                 </div>
                 <div style={{display:"flex",gap:6}}>
@@ -2299,7 +2281,7 @@ export default function App() {
                 setFilterSent(null);setFilterMinAscents(null);setFilterMinQuality(null);
                 setFilterDateAfter("");setFilterDateBefore("");setSortBy("quality");
                 setInjuryLeft(false);setInjuryRight(false);
-              }} style={{background:"none",border:`1px solid ${T.border}`,color:T.text3,borderRadius:R,padding:"4px 10px",cursor:"pointer",fontSize:9,fontFamily:"var(--mono-font)"}}>
+              }} style={{background:"none",border:`1px solid ${T.border}`,color:T.text3,borderRadius:R,padding:"4px 10px",cursor:"pointer",fontSize:9,fontFamily:"'Space Grotesk',sans-serif"}}>
                 CLEAR ALL
               </button>
             </div>
@@ -2307,12 +2289,12 @@ export default function App() {
             <div style={{overflowY:"auto",flex:1,padding:"16px 16px 8px"}}>
 
               {/* SORT */}
-              <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:7}}>SORT BY</div>
+              <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:7}}>SORT BY</div>
               <div style={{display:"flex",gap:4,flexWrap:"wrap",marginBottom:20}}>
                 {[["quality","★ Quality"],["ascents","Popularity"],["difficulty","Hardest"],["grade","Grade"],["date","Newest"]].map(([v,l])=>(
                   <button key={v} onClick={()=>setSortBy(v)} style={{
                     padding:"6px 11px",borderRadius:R,fontSize:10,cursor:"pointer",
-                    fontFamily:"var(--mono-font)",fontWeight:700,
+                    fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,
                     background:sortBy===v?T.white:T.bg3,
                     border:`1px solid ${sortBy===v?T.white:T.border}`,
                     color:sortBy===v?T.bg:T.text3,
@@ -2322,8 +2304,8 @@ export default function App() {
 
               {/* GRADE RANGE — single row, two-tap selection */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:7}}>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em"}}>GRADE RANGE</div>
-                <div style={{fontSize:9,fontFamily:"var(--mono-font)",color:T.text2}}>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em"}}>GRADE RANGE</div>
+                <div style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",color:T.text2}}>
                   <span style={{color:T.purple,fontWeight:700}}>{gradeMin||"V0"}</span>
                   <span style={{color:T.text3}}> → </span>
                   <span style={{color:T.accentLight,fontWeight:700}}>{gradeMax||"V15"}</span>
@@ -2340,7 +2322,7 @@ export default function App() {
                   return (
                     <button key={g} onClick={()=>handleGradeTap(g)} style={{
                       padding:"6px 10px", borderRadius:R, fontSize:9, cursor:"pointer",
-                      fontFamily:"var(--mono-font)", fontWeight:700,
+                      fontFamily:"'Space Grotesk',sans-serif", fontWeight:700,
                       ...(isMin || isMax ? NOISE_BG : {background: inRange ? "rgba(168,85,247,0.18)" : T.bg3}),
                       border:`1px solid ${isMin ? T.purple : isMax ? T.accentLight : inRange ? T.purpleBrd : T.border}`,
                       color: isMin || isMax ? T.white : inRange ? T.accentLight : T.text3,
@@ -2348,17 +2330,17 @@ export default function App() {
                   );
                 })}
               </div>
-              <div style={{fontSize:8,color:T.text3,fontFamily:"var(--mono-font)",marginBottom:20}}>
+              <div style={{fontSize:8,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",marginBottom:20}}>
                 Tap to set start · tap again to set end
               </div>
 
               {/* ANGLE */}
-              <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:7}}>ANGLE</div>
+              <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:7}}>ANGLE</div>
               <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:20}}>
                 {ALL_ANGLES.map(a=>(
                   <button key={a} onClick={()=>setFilterAngle(filterAngle===a?null:a)} style={{
                     padding:"6px 10px",borderRadius:R,fontSize:9,cursor:"pointer",
-                    fontFamily:"var(--mono-font)",fontWeight:700,
+                    fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,
                     ...(filterAngle===a?NOISE_BG:{background:T.bg3}),
                     border:`1px solid ${filterAngle===a?T.purple:T.border}`,
                     color:filterAngle===a?T.white:T.text3,
@@ -2367,12 +2349,12 @@ export default function App() {
               </div>
 
               {/* STATUS */}
-              <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:7}}>MY STATUS</div>
+              <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:7}}>MY STATUS</div>
               <div style={{display:"flex",gap:4,marginBottom:20}}>
                 {[[null,"All"],["not-sent","Not Sent"],["sent","Sent ✓"],["project","Project"]].map(([v,l])=>(
                   <button key={String(v)} onClick={()=>setFilterSent(filterSent===v?null:v)} style={{
                     flex:1,padding:"7px 4px",borderRadius:R,fontSize:9,cursor:"pointer",
-                    fontFamily:"var(--mono-font)",fontWeight:700,textAlign:"center",
+                    fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,textAlign:"center",
                     ...(filterSent===v?NOISE_BG:{background:T.bg3}),
                     border:`1px solid ${filterSent===v?T.purple:T.border}`,
                     color:filterSent===v?T.white:T.text3,
@@ -2383,12 +2365,12 @@ export default function App() {
               {/* QUALITY + ASCENTS */}
               <div style={{display:"flex",gap:12,marginBottom:20}}>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:7}}>MIN QUALITY</div>
+                  <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:7}}>MIN QUALITY</div>
                   <div style={{display:"flex",gap:3}}>
                     {[1,1.5,2,2.5,3].map(q=>(
                       <button key={q} onClick={()=>setFilterMinQuality(filterMinQuality===q?null:q)} style={{
                         flex:1,padding:"6px 0",borderRadius:R,fontSize:9,cursor:"pointer",
-                        fontFamily:"var(--mono-font)",fontWeight:700,
+                        fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,
                         ...(filterMinQuality===q?NOISE_BG:{background:T.bg3}),
                         border:`1px solid ${filterMinQuality===q?T.purple:T.border}`,
                         color:filterMinQuality===q?T.white:T.text3,
@@ -2397,12 +2379,12 @@ export default function App() {
                   </div>
                 </div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:7}}>MIN ASCENTS</div>
+                  <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:7}}>MIN ASCENTS</div>
                   <div style={{display:"flex",gap:3}}>
                     {[[null,"Any"],[10,"10+"],[50,"50+"],[200,"200+"],[500,"500+"]].map(([v,l])=>(
                       <button key={String(v)} onClick={()=>setFilterMinAscents(filterMinAscents===v?null:v)} style={{
                         flex:1,padding:"6px 0",borderRadius:R,fontSize:8,cursor:"pointer",
-                        fontFamily:"var(--mono-font)",fontWeight:700,
+                        fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,
                         ...(filterMinAscents===v?NOISE_BG:{background:T.bg3}),
                         border:`1px solid ${filterMinAscents===v?T.purple:T.border}`,
                         color:filterMinAscents===v?T.white:T.text3,
@@ -2413,15 +2395,15 @@ export default function App() {
               </div>
 
               {/* DATE SET */}
-              <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:7}}>DATE SET</div>
+              <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:7}}>DATE SET</div>
               <div style={{display:"flex",gap:10,marginBottom:20}}>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:8,color:T.text3,fontFamily:"var(--mono-font)",marginBottom:4}}>AFTER</div>
+                  <div style={{fontSize:8,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",marginBottom:4}}>AFTER</div>
                   <input type="date" value={filterDateAfter} onChange={e=>setFilterDateAfter(e.target.value)}
                     style={{...inp,fontSize:11,padding:"7px 10px"}}/>
                 </div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:8,color:T.text3,fontFamily:"var(--mono-font)",marginBottom:4}}>BEFORE</div>
+                  <div style={{fontSize:8,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",marginBottom:4}}>BEFORE</div>
                   <input type="date" value={filterDateBefore} onChange={e=>setFilterDateBefore(e.target.value)}
                     style={{...inp,fontSize:11,padding:"7px 10px"}}/>
                 </div>
@@ -2430,12 +2412,12 @@ export default function App() {
               {/* INJURY FILTER */}
               <div style={{marginBottom:20}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:4}}>
-                  <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em"}}>INJURY FILTER</div>
+                  <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em"}}>INJURY FILTER</div>
                   {(injuryLeft||injuryRight) && (
-                    <button onClick={()=>{setInjuryLeft(false);setInjuryRight(false);}} style={{background:"none",border:"none",color:"#ff6060",cursor:"pointer",fontSize:8,fontFamily:"var(--mono-font)",padding:0}}>CLEAR</button>
+                    <button onClick={()=>{setInjuryLeft(false);setInjuryRight(false);}} style={{background:"none",border:"none",color:"#ff6060",cursor:"pointer",fontSize:8,fontFamily:"'Space Grotesk',sans-serif",padding:0}}>CLEAR</button>
                   )}
                 </div>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",marginBottom:10}}>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",marginBottom:10}}>
                   Hide climbs that load an injured hand
                 </div>
 
@@ -2457,18 +2439,18 @@ export default function App() {
                         <path d="M16 15V9a2 2 0 0 1 4 0v6" stroke={active?"#ff4444":T.text3} strokeWidth="1.6" strokeLinecap="round"/>
                         <path d="M20 15v-3a2 2 0 0 1 4 0v5c0 4-2.5 7-7 7H14c-2.5 0-4.5-1-6-3l-2-3a1.8 1.8 0 0 1 2.8-2.2L10 18V10" stroke={active?"#ff4444":T.text3} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
-                      <div style={{fontSize:9,fontFamily:"var(--mono-font)",fontWeight:700,
+                      <div style={{fontSize:9,fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,
                         color:active?"#ff4444":T.text3,letterSpacing:"0.08em"}}>
                         {label === "L" ? "LEFT" : "RIGHT"} HAND
                       </div>
-                      <div style={{fontSize:8,fontFamily:"var(--mono-font)",
+                      <div style={{fontSize:8,fontFamily:"'Space Grotesk',sans-serif",
                         color:active?"#ff6060":"transparent",letterSpacing:"0.06em"}}>
                         ● INJURED
                       </div>
                     </button>
                   ))}
                 </div>
-                <div style={{fontSize:8,color:T.text3,fontFamily:"var(--mono-font)",lineHeight:1.5}}>
+                <div style={{fontSize:8,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",lineHeight:1.5}}>
                   Checks start, hand & finish holds only · foot holds ignored
                 </div>
               </div>
@@ -2477,7 +2459,7 @@ export default function App() {
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",background:T.bg3,border:`1px solid ${T.border}`,borderRadius:R,padding:"13px 14px",marginBottom:8}}>
                 <div>
                   <div style={{fontSize:13,color:T.text,marginBottom:2}}>Classics only</div>
-                  <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)"}}>Quality ≥ 3.0 · 200+ ascents</div>
+                  <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif"}}>Quality ≥ 3.0 · 200+ ascents</div>
                 </div>
                 <button onClick={()=>setClassicsOnly(v=>!v)} style={{
                   width:44,height:23,borderRadius:999,border:"none",cursor:"pointer",flexShrink:0,
@@ -2516,7 +2498,7 @@ export default function App() {
               <button onClick={()=>{setFilterSetter(null);setSetterOpen(false);}} style={{
                 background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,color:T.purple,
                 borderRadius:R,padding:"8px",cursor:"pointer",marginBottom:8,flexShrink:0,
-                fontSize:9,fontFamily:"var(--mono-font)",fontWeight:700,
+                fontSize:9,fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,
               }}>CLEAR — @{filterSetter}</button>
             )}
             <div style={{overflowY:"auto",flex:1,gap:5,display:"flex",flexDirection:"column"}}>
@@ -2534,7 +2516,7 @@ export default function App() {
                     display:"flex",justifyContent:"space-between",alignItems:"center",textAlign:"left",
                   }}>
                   <span style={{fontFamily:"'Geist',sans-serif",fontWeight:600,fontSize:13}}>@{s.name}</span>
-                  <span style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)"}}>{s.count} climbs</span>
+                  <span style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif"}}>{s.count} climbs</span>
                 </button>
               ))}
             </div>
@@ -2553,18 +2535,18 @@ export default function App() {
           }}>
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:20}}>
               <div style={{flex:1}}>
-                <div style={{fontSize:9,color:T.purple,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:3}}>SEND LOGGED ✓</div>
+                <div style={{fontSize:9,color:T.purple,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:3}}>SEND LOGGED ✓</div>
                 <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:18}}>{sendReview.problem.name}</div>
               </div>
               <button onClick={()=>setSendReview(null)} style={{background:"none",border:"none",color:T.text3,fontSize:22,cursor:"pointer",lineHeight:1}}>✕</button>
             </div>
 
-            <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:8}}>YOUR GRADE</div>
+            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:8}}>YOUR GRADE</div>
             <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:20}}>
               {GRADES.map(g => (
                 <button key={g} onClick={()=>setSendReview(r=>({...r,grade:g}))} style={{
                   padding:"7px 12px", borderRadius:R, cursor:"pointer", fontSize:12,
-                  fontFamily:"var(--mono-font)", fontWeight:700,
+                  fontFamily:"'Space Grotesk',sans-serif", fontWeight:700,
                   ...(sendReview.grade===g ? NOISE_BG : {background:T.bg3}),
                   border:`1px solid ${sendReview.grade===g ? T.purple : T.border}`,
                   color:sendReview.grade===g ? T.white : T.text,
@@ -2572,7 +2554,7 @@ export default function App() {
               ))}
             </div>
 
-            <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:8}}>NOTES</div>
+            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:8}}>NOTES</div>
             <textarea
               value={sendReview.notes}
               onChange={e=>setSendReview(r=>({...r,notes:e.target.value}))}
@@ -2584,16 +2566,16 @@ export default function App() {
             {/* Injury filter survey */}
             {sendReview.problem.uuid && (
               <div style={{background:T.bg3,border:`1px solid ${T.border}`,borderRadius:8,padding:"14px",marginBottom:16}}>
-                <div style={{fontSize:9,color:T.purple,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:4}}>HELP IMPROVE THE INJURY FILTER</div>
+                <div style={{fontSize:9,color:T.purple,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:4}}>HELP IMPROVE THE INJURY FILTER</div>
                 <div style={{fontSize:11,color:T.text2,marginBottom:14,lineHeight:1.5}}>How many crimps or bad edges does this climb have?</div>
                 {[["leftCrimps","Left hand"],["rightCrimps","Right hand"]].map(([key,label])=>(
                   <div key={key} style={{marginBottom:12}}>
-                    <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.08em",marginBottom:6}}>{label.toUpperCase()}</div>
+                    <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.08em",marginBottom:6}}>{label.toUpperCase()}</div>
                     <div style={{display:"flex",gap:5}}>
                       {[0,1,2,3,4,5].map(n=>(
                         <button key={n} onClick={()=>setSendReview(r=>({...r,holdQuality:{...r.holdQuality,[key]:n}}))} style={{
                           flex:1, padding:"7px 0", borderRadius:R, cursor:"pointer",
-                          fontFamily:"var(--mono-font)", fontWeight:700, fontSize:11,
+                          fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:11,
                           background: sendReview.holdQuality[key]===n ? T.purple : T.bg2,
                           border: `1px solid ${sendReview.holdQuality[key]===n ? T.purple : T.border}`,
                           color: sendReview.holdQuality[key]===n ? T.white : T.text3,
@@ -2622,12 +2604,12 @@ export default function App() {
             <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13,textTransform:"uppercase"}}>Settings</div>
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"20px 14px"}}>
-            <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.12em",marginBottom:10}}>GRADES</div>
+            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:10}}>GRADES</div>
             <div style={card({marginBottom:8})}>
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
                 <div>
                   <div style={{fontSize:13,color:T.text,fontWeight:600,marginBottom:3}}>Consensus Grade</div>
-                  <div style={{fontSize:10,color:T.text3,fontFamily:"var(--mono-font)",lineHeight:1.5}}>Show community consensus grade alongside the setter grade on climb cards</div>
+                  <div style={{fontSize:10,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",lineHeight:1.5}}>Show community consensus grade alongside the setter grade on climb cards</div>
                 </div>
                 <button onClick={()=>updateSetting("showFeltGrade", !settings.showFeltGrade)} style={{
                   width:46, height:26, borderRadius:999, border:"none", cursor:"pointer",
@@ -2672,7 +2654,7 @@ export default function App() {
                 </div>
               )}
               <div>
-                <label style={{display:"block",background:T.bg3,border:`1px solid ${T.border}`,color:T.text2,borderRadius:R,padding:"7px 14px",cursor:"pointer",fontSize:9,fontFamily:"var(--mono-font)",fontWeight:700,textTransform:"uppercase"}}>
+                <label style={{display:"block",background:T.bg3,border:`1px solid ${T.border}`,color:T.text2,borderRadius:R,padding:"7px 14px",cursor:"pointer",fontSize:9,fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,textTransform:"uppercase"}}>
                   UPLOAD PHOTO
                   <input type="file" accept="image/*" style={{display:"none"}} onChange={e=>{
                     const file = e.target.files?.[0];
@@ -2683,7 +2665,7 @@ export default function App() {
                   }}/>
                 </label>
                 {draftProfile.avatarDataUrl && (
-                  <button onClick={()=>setDraftProfile(p=>({...p,avatarDataUrl:""}))} style={{background:"none",border:"none",color:T.text3,cursor:"pointer",fontSize:9,fontFamily:"var(--mono-font)",marginTop:6,padding:0}}>
+                  <button onClick={()=>setDraftProfile(p=>({...p,avatarDataUrl:""}))} style={{background:"none",border:"none",color:T.text3,cursor:"pointer",fontSize:9,fontFamily:"'Space Grotesk',sans-serif",marginTop:6,padding:0}}>
                     REMOVE PHOTO
                   </button>
                 )}
@@ -2691,12 +2673,12 @@ export default function App() {
             </div>
 
             {/* Username */}
-            <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:5}}>USERNAME</div>
+            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:5}}>USERNAME</div>
             <input value={draftProfile.username} onChange={e=>setDraftProfile(p=>({...p,username:e.target.value}))}
               placeholder="Your name or handle" style={{...inp,marginBottom:14,fontSize:14}}/>
 
             {/* Bio */}
-            <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.1em",marginBottom:5}}>BIO</div>
+            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:5}}>BIO</div>
             <textarea value={draftProfile.bio} onChange={e=>setDraftProfile(p=>({...p,bio:e.target.value}))}
               placeholder="What do you climb? Where? Why?" rows={3}
               style={{...inp,resize:"none",marginBottom:18}}/>
@@ -2728,7 +2710,7 @@ export default function App() {
                 <SetterAvatar username={setterProfile} size={46}/>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:16}}>@{setterProfile}</div>
-                  <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",letterSpacing:"0.06em",marginTop:3}}>
+                  <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.06em",marginTop:3}}>
                     {setterClimbs.length} CLIMBS
                     {setterClimbs.length > 0 && ` · ★${(setterClimbs.reduce((a,c)=>a+c.quality,0)/setterClimbs.length).toFixed(2)} AVG`}
                   </div>
@@ -2757,7 +2739,7 @@ export default function App() {
                       <div key={g} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,flex:1,minWidth:0}}>
                         <div style={{width:"100%",background:T.purple,borderRadius:"2px 2px 0 0",
                           height:Math.max(3,Math.round((dist[g]/max)*22)),opacity:0.72}}/>
-                        <div style={{fontSize:6,color:T.text3,fontFamily:"var(--mono-font)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"clip"}}>{g}</div>
+                        <div style={{fontSize:6,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"clip"}}>{g}</div>
                       </div>
                     ))}
                   </div>
@@ -2768,7 +2750,7 @@ export default function App() {
             {/* Climb list */}
             <div style={{overflowY:"auto",flex:1,padding:"10px 16px 40px"}}>
               {setterClimbs.length === 0 ? (
-                <div style={{textAlign:"center",padding:"40px 0",color:T.text3,fontSize:11,fontFamily:"var(--mono-font)",letterSpacing:"0.1em"}}>
+                <div style={{textAlign:"center",padding:"40px 0",color:T.text3,fontSize:11,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em"}}>
                   NO CLIMBS IN LOADED DATA
                 </div>
               ) : setterClimbs.map(c => {
@@ -2783,9 +2765,9 @@ export default function App() {
                         <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:4,flexWrap:"wrap"}}>
                           <span style={{fontFamily:"'Geist',sans-serif",fontWeight:700,fontSize:12}}>{c.name}</span>
                           <GradePill grade={c.grade} small/>
-                          {tracked?.sends>0 && <span style={{fontSize:8,fontFamily:"var(--mono-font)",color:T.purple,background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,borderRadius:999,padding:"1px 6px"}}>SENT {tracked.sends}✓</span>}
+                          {tracked?.sends>0 && <span style={{fontSize:8,fontFamily:"'Space Grotesk',sans-serif",color:T.purple,background:T.purpleDim,border:`1px solid ${T.purpleBrd}`,borderRadius:999,padding:"1px 6px"}}>SENT {tracked.sends}✓</span>}
                         </div>
-                        <div style={{fontSize:9,color:T.text3,fontFamily:"var(--mono-font)",display:"flex",gap:10}}>
+                        <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",display:"flex",gap:10}}>
                           <span>{c.angle}°</span>
                           <span style={{marginLeft:"auto"}}>★{c.quality.toFixed(1)} · {c.ascents.toLocaleString()}</span>
                         </div>
@@ -2804,7 +2786,7 @@ export default function App() {
         <div style={{
           position:"fixed", bottom:32, left:"50%", transform:"translateX(-50%)",
           background:T.white, color:T.bg, borderRadius:R, padding:"10px 18px",
-          fontSize:11, fontFamily:"var(--mono-font)", fontWeight:700,
+          fontSize:11, fontFamily:"'Space Grotesk',sans-serif", fontWeight:700,
           letterSpacing:"0.08em", zIndex:9999, pointerEvents:"none",
           boxShadow:"0 4px 24px rgba(0,0,0,0.4)",
         }}>{toast}</div>
