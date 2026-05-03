@@ -937,7 +937,7 @@ function GymMap({ homeGym, onSetHomeGym, onSeeGymClimbs }) {
           const homeBtn   = el.querySelector('[data-action="set-home-gym"]');
           const climbsBtn = el.querySelector('[data-action="see-gym-climbs"]');
           if (homeBtn)   homeBtn.onclick   = () => { onSetHomeGym(gym); map.closePopup(); };
-          if (climbsBtn) climbsBtn.onclick = () => { onSeeGymClimbs(); map.closePopup(); };
+          if (climbsBtn) climbsBtn.onclick = () => { onSeeGymClimbs(gym); map.closePopup(); };
         }
 
         // Fetch address when popup opens — skip if curated address exists in GYM_DATA
@@ -954,7 +954,7 @@ function GymMap({ homeGym, onSetHomeGym, onSeeGymClimbs }) {
             const hb = el2.querySelector('[data-action="set-home-gym"]');
             const cb = el2.querySelector('[data-action="see-gym-climbs"]');
             if (hb) hb.onclick = () => { onSetHomeGym(gym); map.closePopup(); };
-            if (cb) cb.onclick = () => { onSeeGymClimbs(); map.closePopup(); };
+            if (cb) cb.onclick = () => { onSeeGymClimbs(gym); map.closePopup(); };
           }
         });
       });
@@ -1156,7 +1156,8 @@ export default function App() {
     lsSet(PROFILE_KEY, p);
   }
 
-  function handleSeeGymClimbs() {
+  function handleSeeGymClimbs(gym) {
+    if (gym) setHomeGym(gym);
     setFilterSetter(null);
     setClimbSource("community");
     setTab("Climbs");
