@@ -90,6 +90,7 @@ const IMG_ASPECT = 1144 / 1080;
 // Preload board images at module level so they're ready before any Board mounts
 const WOOD_IMG    = new Image(); WOOD_IMG.src    = "/tb2-wood.png";
 const PLASTIC_IMG = new Image(); PLASTIC_IMG.src = "/tb2-plastic.png";
+const MIRROR_IMG  = new Image(); MIRROR_IMG.src  = "/tb2-mirror.png";
 
 const SAMPLE_PROBLEMS = [
   { id:"my-1", name:"Pizza Box", grade:"V3", angle:40, style:["Technical"],
@@ -342,17 +343,25 @@ function Board({ problem, editMode, editRole, onHoldTap, placements = PLACEMENTS
   const containerRef = useRef(null);
   const canvasRef    = useRef(null);
   const [w, setW]    = useState(320);
-  const [ready, setReady] = useState(WOOD_IMG.complete && PLASTIC_IMG.complete);
+  const [ready, setReady] = useState(
+    mirrorLayout ? MIRROR_IMG.complete : (WOOD_IMG.complete && PLASTIC_IMG.complete)
+  );
 
   useEffect(() => {
     if (ready) return;
-    let n = 0;
-    const done = () => { if (++n === 2) setReady(true); };
-    WOOD_IMG.addEventListener("load",    done, { once: true });
-    PLASTIC_IMG.addEventListener("load", done, { once: true });
-    if (WOOD_IMG.complete)    done();
-    if (PLASTIC_IMG.complete) done();
-  }, [ready]);
+    if (mirrorLayout) {
+      const done = () => setReady(true);
+      MIRROR_IMG.addEventListener("load", done, { once: true });
+      if (MIRROR_IMG.complete) done();
+    } else {
+      let n = 0;
+      const done = () => { if (++n === 2) setReady(true); };
+      WOOD_IMG.addEventListener("load",    done, { once: true });
+      PLASTIC_IMG.addEventListener("load", done, { once: true });
+      if (WOOD_IMG.complete)    done();
+      if (PLASTIC_IMG.complete) done();
+    }
+  }, [ready, mirrorLayout]);
 
   useEffect(() => {
     const ro = new ResizeObserver(() => {
@@ -384,14 +393,9 @@ function Board({ problem, editMode, editRole, onHoldTap, placements = PLACEMENTS
     ctx.fillStyle = "#161616";
     ctx.fillRect(0, 0, w, h);
 
-    // ── 2. Board images — flip horizontally for mirror layout
+    // ── 2. Board images
     if (mirrorLayout) {
-      ctx.save();
-      ctx.translate(w, 0);
-      ctx.scale(-1, 1);
-      ctx.globalAlpha = 0.58; ctx.drawImage(WOOD_IMG,    0, 0, w, h);
-      ctx.globalAlpha = 0.68; ctx.drawImage(PLASTIC_IMG, 0, 0, w, h);
-      ctx.restore();
+      ctx.globalAlpha = 0.80; ctx.drawImage(MIRROR_IMG, 0, 0, w, h);
     } else {
       ctx.globalAlpha = 0.58; ctx.drawImage(WOOD_IMG,    0, 0, w, h);
       ctx.globalAlpha = 0.68; ctx.drawImage(PLASTIC_IMG, 0, 0, w, h);
