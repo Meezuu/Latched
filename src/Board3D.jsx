@@ -32,10 +32,11 @@ const PAN_SCALE     = 0.016;           // world-units per screen pixel
 // ─── Preload textures at module init so first render has no flash ─────────────
 useTexture.preload("/tb2-plastic.png");
 useTexture.preload("/tb2-wood.png");
+useTexture.preload("/tb2-mirror.png");
 
 // ─── Coordinate helpers ───────────────────────────────────────────────────────
-function toWorld(normX, normY, mirror) {
-  const x = mirror ? (1 - normX / 100) * BW - BW / 2 : (normX / 100) * BW - BW / 2;
+function toWorld(normX, normY) {
+  const x = (normX / 100) * BW - BW / 2;
   const y = -(normY / 100) * BH + BH / 2;
   return [x, y];
 }
@@ -144,7 +145,7 @@ function InactiveHoldBumps({ placements, activeMap, mirror }) {
   useEffect(() => {
     flushInstances(domeRef.current, byArch.dome, (mesh, i, col, [pid, p]) => {
       const id = Number(pid);
-      const [x, y] = toWorld(p.x, p.y, mirror);
+      const [x, y] = toWorld(p.x, p.y);
       const rz = frand(id, 1) * Math.PI * 2;
       const r  = 0.088 + frand(id, 2) * 0.072;
       applyMatrix(mesh, i, x, y, 0.007, r, r * 0.44, r, rz);
@@ -156,7 +157,7 @@ function InactiveHoldBumps({ placements, activeMap, mirror }) {
   useEffect(() => {
     flushInstances(blockRef.current, byArch.block, (mesh, i, col, [pid, p]) => {
       const id = Number(pid);
-      const [x, y] = toWorld(p.x, p.y, mirror);
+      const [x, y] = toWorld(p.x, p.y);
       const rz = frand(id, 1) * Math.PI * 2;
       const r  = 0.082 + frand(id, 2) * 0.046;
       applyMatrix(mesh, i, x, y, 0.006, r, r * 0.88, r * 0.54, rz);
@@ -168,7 +169,7 @@ function InactiveHoldBumps({ placements, activeMap, mirror }) {
   useEffect(() => {
     flushInstances(footRef.current, byArch.foot, (mesh, i, col, [pid, p]) => {
       const id = Number(pid);
-      const [x, y] = toWorld(p.x, p.y, mirror);
+      const [x, y] = toWorld(p.x, p.y);
       const rz = frand(id, 1) * Math.PI * 2;
       const r  = 0.058 + frand(id, 2) * 0.022;
       applyMatrix(mesh, i, x, y, 0.003, r * 0.78, r * 0.62, r * 0.14, rz);
@@ -235,7 +236,7 @@ function ActiveHoldBodies({ placements, activeMap, mirror }) {
   useEffect(() => {
     flushInstances(domeRef.current, byArch.dome, (mesh, i, col, [pid, p, role]) => {
       const id = Number(pid);
-      const [x, y] = toWorld(p.x, p.y, mirror);
+      const [x, y] = toWorld(p.x, p.y);
       const rz = frand(id, 1) * Math.PI * 2;
       const r  = 0.128 + frand(id, 2) * 0.058;
       applyMatrix(mesh, i, x, y, 0.030, r, r * 0.64, r, rz);
@@ -247,7 +248,7 @@ function ActiveHoldBodies({ placements, activeMap, mirror }) {
   useEffect(() => {
     flushInstances(blockRef.current, byArch.block, (mesh, i, col, [pid, p, role]) => {
       const id = Number(pid);
-      const [x, y] = toWorld(p.x, p.y, mirror);
+      const [x, y] = toWorld(p.x, p.y);
       const rz = frand(id, 1) * Math.PI * 2;
       const r  = 0.118 + frand(id, 2) * 0.048;
       applyMatrix(mesh, i, x, y, 0.028, r, r * 0.88, r * 0.56, rz);
@@ -259,7 +260,7 @@ function ActiveHoldBodies({ placements, activeMap, mirror }) {
   useEffect(() => {
     flushInstances(footRef.current, byArch.foot, (mesh, i, col, [pid, p, role]) => {
       const id = Number(pid);
-      const [x, y] = toWorld(p.x, p.y, mirror);
+      const [x, y] = toWorld(p.x, p.y);
       const rz = frand(id, 1) * Math.PI * 2;
       const r  = 0.080 + frand(id, 2) * 0.028;
       applyMatrix(mesh, i, x, y, 0.016, r * 0.78, r * 0.62, r * 0.16, rz);
@@ -309,7 +310,7 @@ function ActiveRings({ placements, activeMap, mirror }) {
     ring.count = glow.count = active.length;
     const col = new THREE.Color();
     active.forEach(([pid, p], i) => {
-      const [x, y]    = toWorld(p.x, p.y, mirror);
+      const [x, y]    = toWorld(p.x, p.y);
       const roleColor = ROLE_COLOR[activeMap[Number(pid)]] ?? ROLE_COLOR_FALLBACK;
       applyMatrix(glow, i, x, y, 0.010, 1.5, 1.5, 1, 0);
       col.set(roleColor);
@@ -502,21 +503,36 @@ function CameraRig({ azimuthRef, panYRef, invertPanRef }) {
 // ─── Board face ───────────────────────────────────────────────────────────────
 function BoardFace({ mirror }) {
   const [plastic, wood] = useTexture(["/tb2-plastic.png", "/tb2-wood.png"]);
+  const mirrorTex = useTexture("/tb2-mirror.png");
 
   useMemo(() => {
     for (const tex of [plastic, wood]) {
       tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
-      tex.repeat.x = mirror ? -1 : 1;
-      tex.offset.x = mirror ? 1  : 0;
       tex.needsUpdate = true;
     }
-  }, [plastic, wood, mirror]);
+    mirrorTex.wrapS = mirrorTex.wrapT = THREE.ClampToEdgeWrapping;
+    mirrorTex.needsUpdate = true;
+  }, [plastic, wood, mirrorTex]);
+
+  if (mirror) {
+    return (
+      <group>
+        <mesh>
+          <planeGeometry args={[BW, BH]} />
+          <meshStandardMaterial color="#1c1c1c" roughness={1.0} metalness={0} />
+        </mesh>
+        <mesh position={[0, 0, 0.003]} renderOrder={1}>
+          <planeGeometry args={[BW, BH]} />
+          <meshBasicMaterial map={mirrorTex} transparent opacity={0.80} depthWrite={false} />
+        </mesh>
+      </group>
+    );
+  }
 
   return (
     <group>
       <mesh>
         <planeGeometry args={[BW, BH]} />
-        {/* fully matte — no specular at any angle */}
         <meshStandardMaterial color="#1c1c1c" roughness={1.0} metalness={0} />
       </mesh>
       <mesh position={[0, 0, 0.003]} renderOrder={1}>
