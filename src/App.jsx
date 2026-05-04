@@ -1238,7 +1238,10 @@ export default function App() {
     });
 
     result.sort((a, b) => {
-      if (sortBy === "quality")    return b.quality - a.quality;
+      if (sortBy === "quality") {
+        const score = c => Math.pow(c.quality, 1.5) * Math.log(c.ascents + 1);
+        return score(b) - score(a);
+      }
       if (sortBy === "ascents")    return b.ascents - a.ascents;
       if (sortBy === "difficulty") return (b.difficulty||0) - (a.difficulty||0);
       if (sortBy === "grade")      return GRADES.indexOf(b.grade) - GRADES.indexOf(a.grade);
