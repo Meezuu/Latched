@@ -1313,21 +1313,28 @@ export default function App() {
       if (!prev) return prev;
       const ex = prev.holds.find(h => h.id === holdId);
       const LIMITED = ["start", "finish"];
-      const MAX = 2;
+
+      // Helper: drop the last-added hold with a given role
+      const dropLast = (holds, role) => {
+        const idx = holds.map((h,i) => h.role === role ? i : -1).filter(i => i >= 0);
+        if (!idx.length) return holds;
+        return holds.filter((_, i) => i !== idx[idx.length - 1]);
+      };
+
       if (ex) {
         // Tapping same role removes it
         if (ex.role === draftRole) return {...prev, holds: prev.holds.filter(h => h.id !== holdId)};
-        // Changing role — if target role is limited, check count
-        if (LIMITED.includes(draftRole)) {
-          const count = prev.holds.filter(h => h.role === draftRole).length;
-          if (count >= MAX) return prev;
+        // Changing role to a limited one at max — swap out the last hold of that role
+        if (LIMITED.includes(draftRole) && prev.holds.filter(h => h.role === draftRole).length >= 2) {
+          const swapped = dropLast(prev.holds, draftRole);
+          return {...prev, holds: swapped.map(h => h.id === holdId ? {...h, role: draftRole} : h)};
         }
         return {...prev, holds: prev.holds.map(h => h.id === holdId ? {...h, role: draftRole} : h)};
       }
-      // Adding new hold — check limit for start/finish
-      if (LIMITED.includes(draftRole)) {
-        const count = prev.holds.filter(h => h.role === draftRole).length;
-        if (count >= MAX) return prev;
+
+      // Adding new hold — if limited role is full, swap out the last one
+      if (LIMITED.includes(draftRole) && prev.holds.filter(h => h.role === draftRole).length >= 2) {
+        return {...prev, holds: [...dropLast(prev.holds, draftRole), {id: holdId, role: draftRole}]};
       }
       return {...prev, holds: [...prev.holds, {id: holdId, role: draftRole}]};
     });
@@ -2144,25 +2151,15 @@ export default function App() {
                 {/* Role selector — pinned at bottom */}
                 {!createView3d && (
                   <div style={{padding:"10px 14px 14px",background:T.bg,flexShrink:0,display:"flex",gap:5}}>
-                    {ROLES.map(role => {
-                      const isLimited = role === "start" || role === "finish";
-                      const count = draftClimb.holds.filter(h => h.role === role).length;
-                      const atMax = isLimited && count >= 2;
-                      const isActive = draftRole === role;
-                      return (
-                        <button key={role} onClick={()=>setDraftRole(role)} style={{
-                          flex:1, padding:"6px 0 5px", fontSize:9, borderRadius:R, cursor:"pointer",
-                          fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, textTransform:"uppercase",
-                          background:isActive ? ROLE_COLOR[role]+"28" : T.bg3,
-                          border:`1px solid ${isActive ? ROLE_COLOR[role] : T.border}`,
-                          color:isActive ? ROLE_COLOR[role] : T.text3,
-                          opacity: atMax && !isActive ? 0.4 : 1,
-                        }}>
-                          <div>{role}</div>
-                          {isLimited && <div style={{fontSize:7,marginTop:2,opacity:0.7}}>{count}/2</div>}
-                        </button>
-                      );
-                    })}
+                    {ROLES.map(role => (
+                      <button key={role} onClick={()=>setDraftRole(role)} style={{
+                        flex:1, padding:"8px 0", fontSize:9, borderRadius:R, cursor:"pointer",
+                        fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, textTransform:"uppercase",
+                        background:draftRole===role ? ROLE_COLOR[role]+"28" : T.bg3,
+                        border:`1px solid ${draftRole===role ? ROLE_COLOR[role] : T.border}`,
+                        color:draftRole===role ? ROLE_COLOR[role] : T.text3,
+                      }}>{role}</button>
+                    ))}
                   </div>
                 )}
               </div>
