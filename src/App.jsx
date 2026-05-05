@@ -2119,6 +2119,17 @@ export default function App() {
               <div style={{padding:"11px 14px",borderBottom:`1px solid ${T.border}`,display:"flex",alignItems:"center",gap:10,background:T.bg2,flexShrink:0}}>
                 <button onClick={()=>setCreateOpen(false)} style={{background:"none",border:"none",color:T.text2,fontSize:22,lineHeight:1,cursor:"pointer",padding:"0 2px"}}>←</button>
                 <div style={{flex:1,fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13,textTransform:"uppercase",letterSpacing:"0.01em"}}>Set a Climb</div>
+                <div style={{display:"flex",gap:4,marginRight:6}}>
+                  {["2D","3D"].map(v => (
+                    <button key={v} onClick={()=>setCreateView3d(v==="3D")} style={{
+                      background:(v==="3D")===createView3d ? T.bg4 : "none",
+                      border:`1px solid ${(v==="3D")===createView3d ? T.border2 : "transparent"}`,
+                      color:(v==="3D")===createView3d ? T.white : T.text3,
+                      borderRadius:4, padding:"4px 9px", fontSize:9, cursor:"pointer",
+                      fontFamily:"'Space Grotesk',sans-serif", fontWeight:700,
+                    }}>{v}</button>
+                  ))}
+                </div>
                 <button onClick={()=>setCreateStep("details")} style={{...NOISE_BG,border:"none",color:T.white,borderRadius:R,padding:"6px 14px",fontSize:10,cursor:"pointer",fontFamily:"'Geist',sans-serif",fontWeight:800}}>
                   NEXT →
                 </button>
@@ -2126,22 +2137,30 @@ export default function App() {
 
               {/* Board — fills remaining space */}
               <div style={{flex:1,display:"flex",flexDirection:"column",overflow:"hidden"}}>
-                <div style={{flex:1,overflow:"hidden",padding:"10px 14px 0",display:"flex",flexDirection:"column",justifyContent:"center"}}>
-                  <Board problem={draftClimb} editMode={true} editRole={draftRole} onHoldTap={tapDraftHold} placements={isMirror ? PLACEMENTS_MIRROR : PLACEMENTS} mirrorLayout={isMirror}/>
-                </div>
+                {createView3d ? (
+                  <Suspense fallback={<div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",color:T.text3,fontSize:11}}>Loading…</div>}>
+                    <Board3D problem={draftClimb} placements={isMirror ? PLACEMENTS_MIRROR : PLACEMENTS} mirror={isMirror} angle={draftClimb.angle}/>
+                  </Suspense>
+                ) : (
+                  <div style={{flex:1,overflow:"hidden",padding:"10px 14px 0",display:"flex",flexDirection:"column",justifyContent:"center"}}>
+                    <Board problem={draftClimb} editMode={true} editRole={draftRole} onHoldTap={tapDraftHold} placements={isMirror ? PLACEMENTS_MIRROR : PLACEMENTS} mirrorLayout={isMirror}/>
+                  </div>
+                )}
 
-                {/* Role selector — pinned at bottom */}
-                <div style={{padding:"10px 14px 14px",background:T.bg,flexShrink:0,display:"flex",gap:5}}>
-                  {ROLES.map(role => (
-                    <button key={role} onClick={()=>setDraftRole(role)} style={{
-                      flex:1, padding:"8px 0", fontSize:9, borderRadius:R, cursor:"pointer",
-                      fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, textTransform:"uppercase",
-                      background:draftRole===role ? ROLE_COLOR[role]+"28" : T.bg3,
-                      border:`1px solid ${draftRole===role ? ROLE_COLOR[role] : T.border}`,
-                      color:draftRole===role ? ROLE_COLOR[role] : T.text3,
-                    }}>{role}</button>
-                  ))}
-                </div>
+                {/* Role selector — pinned at bottom, hidden in 3D */}
+                {!createView3d && (
+                  <div style={{padding:"10px 14px 14px",background:T.bg,flexShrink:0,display:"flex",gap:5}}>
+                    {ROLES.map(role => (
+                      <button key={role} onClick={()=>setDraftRole(role)} style={{
+                        flex:1, padding:"8px 0", fontSize:9, borderRadius:R, cursor:"pointer",
+                        fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, textTransform:"uppercase",
+                        background:draftRole===role ? ROLE_COLOR[role]+"28" : T.bg3,
+                        border:`1px solid ${draftRole===role ? ROLE_COLOR[role] : T.border}`,
+                        color:draftRole===role ? ROLE_COLOR[role] : T.text3,
+                      }}>{role}</button>
+                    ))}
+                  </div>
+                )}
               </div>
             </>
           )}

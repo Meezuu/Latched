@@ -537,13 +537,11 @@ function BoardFace({ mirror }) {
       </mesh>
       <mesh position={[0, 0, 0.003]} renderOrder={1}>
         <planeGeometry args={[BW, BH]} />
-        <meshBasicMaterial map={plastic} color="#d0b890" transparent opacity={0.55}
-          blending={THREE.MultiplyBlending} depthWrite={false} />
+        <meshBasicMaterial map={wood} transparent opacity={0.90} depthWrite={false} />
       </mesh>
       <mesh position={[0, 0, 0.006]} renderOrder={2}>
         <planeGeometry args={[BW, BH]} />
-        <meshBasicMaterial map={wood} color="#d0a840" transparent opacity={0.32}
-          blending={THREE.MultiplyBlending} depthWrite={false} />
+        <meshBasicMaterial map={plastic} transparent opacity={0.96} depthWrite={false} />
       </mesh>
     </group>
   );
@@ -679,8 +677,7 @@ function Scene({ problem, placements, mirror, angle, azimuthRef, panYRef, invert
         <group rotation={[tilt, 0, 0]}>
           <group position={[0, BH / 2, 0]}>
             <BoardBody mirror={mirror} />
-            <InactiveHoldBumps placements={placements} activeMap={activeMap} mirror={mirror} />
-            <ActiveRings       placements={placements} activeMap={activeMap} mirror={mirror} />
+            <ActiveRings placements={placements} activeMap={activeMap} mirror={mirror} />
           </group>
         </group>
       </group>
