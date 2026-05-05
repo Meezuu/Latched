@@ -1577,10 +1577,12 @@ export default function App() {
               </div>
             </div>
           </div>
-          {/* right: action buttons */}
+          {/* right: action buttons — only shown once a gym is selected */}
           <div style={{ display:"flex", gap:5, justifyContent:"flex-end" }}>
-            <button onClick={() => setCreateOpen(true)} style={{ background:"transparent", border:`1px solid ${T.border2}`, color:T.text2, borderRadius:4, padding:"5px 12px", fontSize:18, cursor:"pointer", lineHeight:1, fontWeight:300 }}>+</button>
-            <button onClick={() => setLogOpen(true)} style={{ background:T.bg3, border:`1px solid ${T.border}`, color:T.text, borderRadius:4, padding:"5px 11px", fontSize:9, cursor:"pointer", fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, letterSpacing:"0.06em" }}>SESSION</button>
+            {homeGym && <>
+              <button onClick={() => setCreateOpen(true)} style={{ background:"transparent", border:`1px solid ${T.border2}`, color:T.text2, borderRadius:4, padding:"5px 12px", fontSize:18, cursor:"pointer", lineHeight:1, fontWeight:300 }}>+</button>
+              <button onClick={() => setLogOpen(true)} style={{ background:T.bg3, border:`1px solid ${T.border}`, color:T.text, borderRadius:4, padding:"5px 11px", fontSize:9, cursor:"pointer", fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, letterSpacing:"0.06em" }}>SESSION</button>
+            </>}
           </div>
         </div>
       </div>
