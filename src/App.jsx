@@ -36,6 +36,8 @@ const ANGLE_KEY        = "tt_angle_v1";
 const FELT_GRADE_KEY   = "tt_felt_grade_v1";
 const SETTINGS_KEY     = "tt_settings_v1";
 const HOLD_QUALITY_KEY = "tt_hold_quality_v1";
+const SEND_LOG_KEY      = "tt_send_log_v1";
+const FIRST_ASCENTS_KEY = "tt_first_ascents_v1";
 const GYMS_CACHE_TTL  = 24 * 60 * 60 * 1000;
 
 function lsGet(key, fallback) {
@@ -393,32 +395,21 @@ function Board({ problem, editMode, editRole, onHoldTap, placements = PLACEMENTS
     ctx.fillStyle = "#161616";
     ctx.fillRect(0, 0, w, h);
 
-    // ── 2. Board images
+    // ── 2. Board images — full brightness so hold textures read clearly
     if (mirrorLayout) {
-      ctx.globalAlpha = 0.80; ctx.drawImage(MIRROR_IMG, 0, 0, w, h);
+      ctx.globalAlpha = 0.96; ctx.drawImage(MIRROR_IMG, 0, 0, w, h);
     } else {
-      ctx.globalAlpha = 0.58; ctx.drawImage(WOOD_IMG,    0, 0, w, h);
-      ctx.globalAlpha = 0.68; ctx.drawImage(PLASTIC_IMG, 0, 0, w, h);
+      ctx.globalAlpha = 0.90; ctx.drawImage(WOOD_IMG,    0, 0, w, h);
+      ctx.globalAlpha = 0.96; ctx.drawImage(PLASTIC_IMG, 0, 0, w, h);
     }
     ctx.globalAlpha = 1;
 
     const px = (normX) => (normX / 100) * w;
     const py = (normY) => (normY / 100) * h;
 
-    // ── 3. Grid — ring outline for every hold position, always visible
-    const dotR = Math.max(3, w * 0.011);
-    ctx.globalAlpha = hasActive ? 0.18 : 0.38;
-    ctx.strokeStyle = "rgba(255,255,255,0.55)";
-    ctx.lineWidth   = 0.9;
-    Object.values(placements).forEach(p => {
-      ctx.beginPath(); ctx.arc(px(p.x), py(p.y), dotR, 0, Math.PI * 2);
-      ctx.stroke();
-    });
-    ctx.globalAlpha = 1;
-
-    // ── 4. Slight darken when problem active so colored holds pop
+    // ── 3. Subtle darken when problem active so colored holds pop
     if (hasActive) {
-      ctx.fillStyle = "rgba(0,0,0,0.40)";
+      ctx.fillStyle = "rgba(0,0,0,0.22)";
       ctx.fillRect(0, 0, w, h);
     }
 
@@ -1050,6 +1041,50 @@ function GymMap({ homeGym, onSetHomeGym, onSeeGymClimbs }) {
   );
 }
 
+// ─── BADGE ────────────────────────────────────────────────────────────────────
+function BadgeMedal({ lines }) {
+  const W = 68, H = 88;
+  const cx = 34, cy = 31;
+  const outerR = 27, innerR = 22, coreR = 18;
+  const numTeeth = 18;
+  const gold = "#F0B429";
+  const goldDark = "#9A7200";
+  const dark = "#1C1100";
+
+  const teeth = [];
+  for (let i = 0; i < numTeeth * 2; i++) {
+    const a = (i / (numTeeth * 2)) * 2 * Math.PI - Math.PI / 2;
+    const r = i % 2 === 0 ? outerR : innerR;
+    teeth.push(`${(cx + r * Math.cos(a)).toFixed(2)},${(cy + r * Math.sin(a)).toFixed(2)}`);
+  }
+  const rosettePath = `M${teeth.join("L")}Z`;
+
+  const rtop = cy + coreR + 1;
+  const rbot = H - 3;
+  const leftTail  = `${cx-3},${rtop} ${cx-14},${rtop} ${cx-18},${rbot} ${cx-9},${rbot-9} ${cx-2},${rbot}`;
+  const rightTail = `${cx+3},${rtop} ${cx+14},${rtop} ${cx+18},${rbot} ${cx+9},${rbot-9} ${cx+2},${rbot}`;
+
+  const lineH = lines.length > 2 ? 10 : 12;
+  const fontSize = l => l.length <= 2 ? 13 : l.length <= 4 ? 10 : l.length <= 6 ? 8 : 7;
+
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
+      <polygon points={leftTail}  fill={goldDark}/>
+      <polygon points={rightTail} fill={goldDark}/>
+      <path d={rosettePath} fill={gold}/>
+      <circle cx={cx} cy={cy} r={coreR} fill={dark}/>
+      {lines.map((line, i) => (
+        <text key={i}
+          x={cx} y={cy + (i - (lines.length - 1) / 2) * lineH}
+          textAnchor="middle" dominantBaseline="middle"
+          fill={gold} fontSize={fontSize(line)} fontWeight="900"
+          fontFamily="'Space Grotesk', sans-serif" letterSpacing="0.04em"
+        >{line}</text>
+      ))}
+    </svg>
+  );
+}
+
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function App() {
   const [splash, setSplash]         = useState(true);
@@ -1121,6 +1156,8 @@ export default function App() {
   const [attNote, setAttNote]             = useState("");
   const [toast, setToast]                 = useState(null);
   const [sendReview, setSendReview]       = useState(null); // { problem, grade, notes }
+  const [sendLog, setSendLog]             = useState(() => lsGet(SEND_LOG_KEY, []));
+  const [firstAscents, setFirstAscents]   = useState(() => lsGet(FIRST_ASCENTS_KEY, []));
 
   useEffect(() => {
     const link = document.createElement("link");
@@ -1167,6 +1204,8 @@ export default function App() {
   useEffect(() => { lsSet(MY_PROBLEMS_KEY, myProblems); }, [myProblems]);
   useEffect(() => { lsSet(SESSIONS_KEY, sessions); }, [sessions]);
   useEffect(() => { lsSet(ANGLE_KEY, angle); }, [angle]);
+  useEffect(() => { lsSet(SEND_LOG_KEY, sendLog); }, [sendLog]);
+  useEffect(() => { lsSet(FIRST_ASCENTS_KEY, firstAscents); }, [firstAscents]);
   useEffect(() => { setBetaMode(false); setBetaDraft({}); }, [boardProblem]);
 
   const myClimbMap = useMemo(() => {
@@ -1372,10 +1411,18 @@ export default function App() {
       }
     }
     const today = new Date().toISOString().slice(0, 10);
+    const isNightHour = new Date().getHours() >= 22 || new Date().getHours() < 4;
+    setSendLog(prev => [...prev, { date: today, grade }]);
+    if (problem.uuid) {
+      const communityClimb = activeCommunityClimbs.find(c => c.uuid === problem.uuid);
+      if (communityClimb && communityClimb.ascents === 0) {
+        setFirstAscents(prev => prev.includes(problem.uuid) ? prev : [...prev, problem.uuid]);
+      }
+    }
     setSessions(prev => {
       const idx = prev.findIndex(s => s.date === today);
       if (idx >= 0) return prev.map((s,i) => i!==idx ? s : {...s, totalAttempts:(s.totalAttempts||0)+1, sends:(s.sends||0)+1});
-      return [{ date:today, totalAttempts:1, sends:1, duration:0, feel:3, notes:"" }, ...prev];
+      return [{ date:today, totalAttempts:1, sends:1, duration:0, feel:3, notes:"", nightOwl:isNightHour }, ...prev];
     });
     showToast("SEND LOGGED ✓");
     setSendReview(null);
@@ -1409,10 +1456,11 @@ export default function App() {
       }
     }
     const today = new Date().toISOString().slice(0, 10);
+    const isNightHour = new Date().getHours() >= 22 || new Date().getHours() < 4;
     setSessions(prev => {
       const idx = prev.findIndex(s => s.date === today);
       if (idx >= 0) return prev.map((s,i) => i!==idx ? s : {...s, totalAttempts:(s.totalAttempts||0)+1});
-      return [{ date:today, totalAttempts:1, sends:0, duration:0, feel:3, notes:"" }, ...prev];
+      return [{ date:today, totalAttempts:1, sends:0, duration:0, feel:3, notes:"", nightOwl:isNightHour }, ...prev];
     });
     showToast("ATTEMPT LOGGED");
     setAttNote("");
@@ -1435,6 +1483,28 @@ export default function App() {
   const totalSends = myProblems.reduce((a,p) => a+p.sends,   0);
   const totalAtt   = myProblems.reduce((a,p) => a+p.attempts, 0);
   const sendRate   = totalAtt > 0 ? Math.round((totalSends/totalAtt)*100) : 0;
+
+  const FONT_GRADES = ["4","5","5+","6A","6A+","6B","6B+","7A","7A+","7B","7B+","7C","7C+","8A","8A+","8B"];
+  const highestGrade = (() => {
+    if (!myProblems.length) return null;
+    const idxs = myProblems.map(p => GRADES.indexOf(p.grade)).filter(i => i >= 0);
+    const max = idxs.length ? Math.max(...idxs) : -1;
+    return max >= 0 ? GRADES[max] : null;
+  })();
+  const isSetter = !!(profile.username && activeCommunityClimbs.some(
+    c => c.setter?.toLowerCase() === profile.username.toLowerCase()
+  ));
+  const hasFirstAscent = firstAscents.length > 0;
+  const bestPointsDay = (() => {
+    const dayPts = {};
+    sendLog.forEach(({ date, grade }) => {
+      const pts = GRADES.indexOf(grade) + 1;
+      if (pts > 0) dayPts[date] = (dayPts[date] || 0) + pts;
+    });
+    const vals = Object.values(dayPts);
+    return vals.length > 0 ? Math.max(...vals) : 0;
+  })();
+  const isNightOwl = sessions.some(s => s.nightOwl);
 
   const inp = {
     width:"100%", background:T.bg3, border:`1px solid ${T.border}`,
@@ -1801,6 +1871,21 @@ export default function App() {
                     <div style={{fontSize:7,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginTop:3}}>{l}</div>
                   </div>
                 ))}
+              </div>
+              <div style={{paddingTop:10,marginTop:8,borderTop:`1px solid ${T.border}`}}>
+                {(hasFirstAscent || isSetter || highestGrade || bestPointsDay > 0 || isNightOwl) ? (
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                    {hasFirstAscent && <BadgeMedal lines={["FIRST","ASCENT"]}/>}
+                    {isSetter       && <BadgeMedal lines={["SETTER"]}/>}
+                    {highestGrade   && <BadgeMedal lines={[FONT_GRADES[GRADES.indexOf(highestGrade)] || highestGrade, highestGrade]}/>}
+                    {bestPointsDay > 0 && <BadgeMedal lines={[String(bestPointsDay),"PT","DAY"]}/>}
+                    {isNightOwl     && <BadgeMedal lines={["NIGHT","OWL"]}/>}
+                  </div>
+                ) : (
+                  <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.08em"}}>
+                    LOG CLIMBS TO EARN BADGES
+                  </div>
+                )}
               </div>
             </div>
 
