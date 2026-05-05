@@ -1312,9 +1312,22 @@ export default function App() {
     setDraftClimb(prev => {
       if (!prev) return prev;
       const ex = prev.holds.find(h => h.id === holdId);
+      const LIMITED = ["start", "finish"];
+      const MAX = 2;
       if (ex) {
+        // Tapping same role removes it
         if (ex.role === draftRole) return {...prev, holds: prev.holds.filter(h => h.id !== holdId)};
+        // Changing role — if target role is limited, check count
+        if (LIMITED.includes(draftRole)) {
+          const count = prev.holds.filter(h => h.role === draftRole).length;
+          if (count >= MAX) return prev;
+        }
         return {...prev, holds: prev.holds.map(h => h.id === holdId ? {...h, role: draftRole} : h)};
+      }
+      // Adding new hold — check limit for start/finish
+      if (LIMITED.includes(draftRole)) {
+        const count = prev.holds.filter(h => h.role === draftRole).length;
+        if (count >= MAX) return prev;
       }
       return {...prev, holds: [...prev.holds, {id: holdId, role: draftRole}]};
     });
@@ -2131,15 +2144,25 @@ export default function App() {
                 {/* Role selector — pinned at bottom */}
                 {!createView3d && (
                   <div style={{padding:"10px 14px 14px",background:T.bg,flexShrink:0,display:"flex",gap:5}}>
-                    {ROLES.map(role => (
-                      <button key={role} onClick={()=>setDraftRole(role)} style={{
-                        flex:1, padding:"8px 0", fontSize:9, borderRadius:R, cursor:"pointer",
-                        fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, textTransform:"uppercase",
-                        background:draftRole===role ? ROLE_COLOR[role]+"28" : T.bg3,
-                        border:`1px solid ${draftRole===role ? ROLE_COLOR[role] : T.border}`,
-                        color:draftRole===role ? ROLE_COLOR[role] : T.text3,
-                      }}>{role}</button>
-                    ))}
+                    {ROLES.map(role => {
+                      const isLimited = role === "start" || role === "finish";
+                      const count = draftClimb.holds.filter(h => h.role === role).length;
+                      const atMax = isLimited && count >= 2;
+                      const isActive = draftRole === role;
+                      return (
+                        <button key={role} onClick={()=>setDraftRole(role)} style={{
+                          flex:1, padding:"6px 0 5px", fontSize:9, borderRadius:R, cursor:"pointer",
+                          fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, textTransform:"uppercase",
+                          background:isActive ? ROLE_COLOR[role]+"28" : T.bg3,
+                          border:`1px solid ${isActive ? ROLE_COLOR[role] : T.border}`,
+                          color:isActive ? ROLE_COLOR[role] : T.text3,
+                          opacity: atMax && !isActive ? 0.4 : 1,
+                        }}>
+                          <div>{role}</div>
+                          {isLimited && <div style={{fontSize:7,marginTop:2,opacity:0.7}}>{count}/2</div>}
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
               </div>
