@@ -419,7 +419,7 @@ function CameraRig({ azimuthRef, panYRef }) {
       rotVel.current = (newAz - prevAz) / dt * 6;  // deg/frame at 60fps
       prevAz = azimuthRef.current;
       azimuthRef.current = newAz;
-      panYRef.current = clamp(panYRef.current - dy * PAN_SCALE, PAN_MIN, PAN_MAX);
+      panYRef.current = clamp(panYRef.current + dy * PAN_SCALE, PAN_MIN, PAN_MAX);
 
       lastX = e.touches[0].clientX;
       lastY = e.touches[0].clientY;
@@ -458,7 +458,7 @@ function CameraRig({ azimuthRef, panYRef }) {
       const dx = e.clientX - startX;
       const dy = startY - e.clientY;
       azimuthRef.current = clamp(azStart - dx * ROT_SCALE_MS, AZ_MIN, AZ_MAX);
-      panYRef.current    = clamp(panStart - dy * PAN_SCALE, PAN_MIN, PAN_MAX);
+      panYRef.current    = clamp(panStart + dy * PAN_SCALE, PAN_MIN, PAN_MAX);
     };
     const onMouseUp = () => { dragging = false; };
 
