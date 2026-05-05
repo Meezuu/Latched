@@ -1296,10 +1296,15 @@ export default function App() {
   useEffect(() => { setCommunityPage(30); }, [gradeMin, gradeMax, filterAngle, classicsOnly, filterSetter,
     filterMinAscents, filterMinQuality, filterDateAfter, filterDateBefore, filterSent, sortBy, search]);
 
+  const [createStep, setCreateStep] = useState("board"); // "board" | "details"
+  const [createView3d, setCreateView3d] = useState(false);
+
   useEffect(() => {
     if (createOpen) {
       setDraftClimb({ id:"draft", name:"", grade:"V7", angle:40, holds:[], style:"Technical", notes:"", match:true });
       setDraftRole("start");
+      setCreateStep("board");
+      setCreateView3d(false);
     }
   }, [createOpen]);
 
@@ -2083,91 +2088,127 @@ export default function App() {
         </div>
       )}
 
-      {/* ── CREATE CLIMB — board-first full-screen ── */}
+      {/* ── CREATE CLIMB — two-step: board → details ── */}
       {createOpen && draftClimb && (
         <div style={{position:"fixed",inset:0,background:T.bg,zIndex:300,display:"flex",flexDirection:"column"}}>
-          {/* Header */}
-          <div style={{padding:"11px 14px",borderBottom:`1px solid ${T.border}`,display:"flex",alignItems:"center",gap:10,background:T.bg2,flexShrink:0}}>
-            <button onClick={()=>setCreateOpen(false)} style={{background:"none",border:"none",color:T.text2,fontSize:22,lineHeight:1,cursor:"pointer",padding:"0 2px"}}>←</button>
-            <div style={{flex:1,fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13,textTransform:"uppercase",letterSpacing:"0.01em"}}>Set a Climb</div>
-            <button onClick={()=>{
-              if (!draftClimb.name.trim()) return;
-              const p = {...draftClimb, id:`my-${Date.now()}`, name:draftClimb.name.trim(), style:[draftClimb.style], attempts:0, sends:0, liked:false};
-              setMyProblems(prev=>[p,...prev]);
-              setCreateOpen(false);
-            }} style={{...NOISE_BG,border:"none",color:T.white,borderRadius:R,padding:"6px 14px",fontSize:10,cursor:"pointer",fontFamily:"'Geist',sans-serif",fontWeight:800,opacity:draftClimb.name.trim()?1:0.35}}>
-              SAVE
-            </button>
-          </div>
 
-          {/* Scrollable body */}
-          <div style={{flex:1,overflowY:"auto",padding:"14px 14px 48px"}}>
-
-            {/* ① Board — first thing */}
-            <Board problem={draftClimb} editMode={true} editRole={draftRole} onHoldTap={tapDraftHold} placements={isMirror ? PLACEMENTS_MIRROR : PLACEMENTS} mirrorLayout={isMirror}/>
-
-            {/* Role selector */}
-            <div style={{display:"flex",gap:5,margin:"10px 0 18px"}}>
-              {ROLES.map(role => (
-                <button key={role} onClick={()=>setDraftRole(role)} style={{
-                  flex:1, padding:"7px 0", fontSize:9, borderRadius:R, cursor:"pointer",
-                  fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, textTransform:"uppercase",
-                  background:draftRole===role ? ROLE_COLOR[role]+"28" : T.bg3,
-                  border:`1px solid ${draftRole===role ? ROLE_COLOR[role] : T.border}`,
-                  color:draftRole===role ? ROLE_COLOR[role] : T.text3,
-                }}>{role}</button>
-              ))}
-            </div>
-
-            {/* Divider */}
-            <div style={{borderTop:`1px solid ${T.border}`,margin:"4px 0 18px"}}/>
-
-            {/* ② Name */}
-            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:5}}>NAME</div>
-            <input value={draftClimb.name} onChange={e=>setDraftClimb(c=>({...c,name:e.target.value}))}
-              placeholder="What do you call it?" style={{...inp,marginBottom:16,fontSize:14}}/>
-
-            {/* ③ Angle */}
-            <div style={{...card(), marginBottom:16}}><AngleSel value={draftClimb.angle} onChange={v=>setDraftClimb(c=>({...c,angle:v}))}/></div>
-
-            {/* ④ Grade */}
-            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:6}}>GRADE</div>
-            <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:16}}>
-              {GRADES.map(g => (
-                <button key={g} onClick={()=>setDraftClimb(c=>({...c,grade:g}))} style={{
-                  padding:"5px 11px", borderRadius:R, fontSize:10, cursor:"pointer",
-                  fontFamily:"'Space Grotesk',sans-serif", fontWeight:700,
-                  ...(draftClimb.grade===g?NOISE_BG:{background:T.bg3}),
-                  border:`1px solid ${draftClimb.grade===g?T.purple:T.border}`,
-                  color:draftClimb.grade===g?T.white:T.text3,
-                }}>{g}</button>
-              ))}
-            </div>
-
-            {/* ⑤ Description */}
-            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:5}}>DESCRIPTION</div>
-            <textarea value={draftClimb.notes} onChange={e=>setDraftClimb(c=>({...c,notes:e.target.value}))}
-              placeholder="Beta, key positions, sequences…" rows={3} style={{...inp,marginBottom:16,resize:"none"}}/>
-
-            {/* ⑥ Match */}
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",background:T.bg2,border:`1px solid ${T.border}`,borderRadius:R,padding:"12px 14px"}}>
-              <div>
-                <div style={{fontSize:12,color:T.text,marginBottom:2}}>Match finish</div>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif"}}>Both hands allowed on top hold</div>
+          {/* ── STEP 1: Board ── */}
+          {createStep === "board" && (
+            <>
+              {/* Header */}
+              <div style={{padding:"11px 14px",borderBottom:`1px solid ${T.border}`,display:"flex",alignItems:"center",gap:10,background:T.bg2,flexShrink:0}}>
+                <button onClick={()=>setCreateOpen(false)} style={{background:"none",border:"none",color:T.text2,fontSize:22,lineHeight:1,cursor:"pointer",padding:"0 2px"}}>←</button>
+                <div style={{flex:1,fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13,textTransform:"uppercase",letterSpacing:"0.01em"}}>Set a Climb</div>
+                {/* 2D / 3D toggle */}
+                <div style={{display:"flex",gap:4,marginRight:6}}>
+                  {["2D","3D"].map(v => (
+                    <button key={v} onClick={()=>setCreateView3d(v==="3D")} style={{
+                      background: (v==="3D")===createView3d ? T.bg4 : "none",
+                      border:`1px solid ${(v==="3D")===createView3d ? T.border2 : "transparent"}`,
+                      color:(v==="3D")===createView3d ? T.white : T.text3,
+                      borderRadius:4, padding:"4px 9px", fontSize:9, cursor:"pointer",
+                      fontFamily:"'Space Grotesk',sans-serif", fontWeight:700,
+                    }}>{v}</button>
+                  ))}
+                </div>
+                <button onClick={()=>setCreateStep("details")} style={{...NOISE_BG,border:"none",color:T.white,borderRadius:R,padding:"6px 14px",fontSize:10,cursor:"pointer",fontFamily:"'Geist',sans-serif",fontWeight:800}}>
+                  NEXT →
+                </button>
               </div>
-              <button onClick={()=>setDraftClimb(c=>({...c,match:!c.match}))} style={{
-                width:42, height:22, borderRadius:999, border:"none", cursor:"pointer",
-                ...(draftClimb.match?NOISE_BG:{background:T.bg3}),
-                position:"relative", flexShrink:0,
-              }}>
-                <div style={{
-                  width:16, height:16, background:T.white, borderRadius:"50%",
-                  position:"absolute", top:3, transition:"left 0.18s",
-                  left:draftClimb.match ? 23 : 3,
-                }}/>
-              </button>
-            </div>
-          </div>
+
+              {/* Board — fills remaining space */}
+              <div style={{flex:1,display:"flex",flexDirection:"column",overflow:"hidden"}}>
+                {createView3d ? (
+                  <Suspense fallback={<div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",color:T.text3,fontSize:11}}>Loading 3D…</div>}>
+                    <Board3D problem={draftClimb} placements={isMirror ? PLACEMENTS_MIRROR : PLACEMENTS}/>
+                  </Suspense>
+                ) : (
+                  <div style={{flex:1,overflow:"hidden",padding:"10px 14px 0"}}>
+                    <Board problem={draftClimb} editMode={true} editRole={draftRole} onHoldTap={tapDraftHold} placements={isMirror ? PLACEMENTS_MIRROR : PLACEMENTS} mirrorLayout={isMirror}/>
+                  </div>
+                )}
+
+                {/* Role selector — pinned at bottom */}
+                {!createView3d && (
+                  <div style={{padding:"10px 14px 14px",background:T.bg,flexShrink:0,display:"flex",gap:5}}>
+                    {ROLES.map(role => (
+                      <button key={role} onClick={()=>setDraftRole(role)} style={{
+                        flex:1, padding:"8px 0", fontSize:9, borderRadius:R, cursor:"pointer",
+                        fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, textTransform:"uppercase",
+                        background:draftRole===role ? ROLE_COLOR[role]+"28" : T.bg3,
+                        border:`1px solid ${draftRole===role ? ROLE_COLOR[role] : T.border}`,
+                        color:draftRole===role ? ROLE_COLOR[role] : T.text3,
+                      }}>{role}</button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* ── STEP 2: Details ── */}
+          {createStep === "details" && (
+            <>
+              {/* Header */}
+              <div style={{padding:"11px 14px",borderBottom:`1px solid ${T.border}`,display:"flex",alignItems:"center",gap:10,background:T.bg2,flexShrink:0}}>
+                <button onClick={()=>setCreateStep("board")} style={{background:"none",border:"none",color:T.text2,fontSize:22,lineHeight:1,cursor:"pointer",padding:"0 2px"}}>←</button>
+                <div style={{flex:1,fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13,textTransform:"uppercase",letterSpacing:"0.01em"}}>Details</div>
+                <button onClick={()=>{
+                  if (!draftClimb.name.trim()) return;
+                  const p = {...draftClimb, id:`my-${Date.now()}`, name:draftClimb.name.trim(), style:[draftClimb.style], attempts:0, sends:0, liked:false};
+                  setMyProblems(prev=>[p,...prev]);
+                  setCreateOpen(false);
+                }} style={{...NOISE_BG,border:"none",color:T.white,borderRadius:R,padding:"6px 14px",fontSize:10,cursor:"pointer",fontFamily:"'Geist',sans-serif",fontWeight:800,opacity:draftClimb.name.trim()?1:0.35}}>
+                  SAVE
+                </button>
+              </div>
+
+              {/* Scrollable fields */}
+              <div style={{flex:1,overflowY:"auto",padding:"18px 14px 48px"}}>
+
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:5}}>NAME</div>
+                <input value={draftClimb.name} onChange={e=>setDraftClimb(c=>({...c,name:e.target.value}))}
+                  placeholder="What do you call it?" style={{...inp,marginBottom:16,fontSize:14}}/>
+
+                <div style={{...card(), marginBottom:16}}><AngleSel value={draftClimb.angle} onChange={v=>setDraftClimb(c=>({...c,angle:v}))}/></div>
+
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:6}}>GRADE</div>
+                <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:16}}>
+                  {GRADES.map(g => (
+                    <button key={g} onClick={()=>setDraftClimb(c=>({...c,grade:g}))} style={{
+                      padding:"5px 11px", borderRadius:R, fontSize:10, cursor:"pointer",
+                      fontFamily:"'Space Grotesk',sans-serif", fontWeight:700,
+                      ...(draftClimb.grade===g?NOISE_BG:{background:T.bg3}),
+                      border:`1px solid ${draftClimb.grade===g?T.purple:T.border}`,
+                      color:draftClimb.grade===g?T.white:T.text3,
+                    }}>{g}</button>
+                  ))}
+                </div>
+
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:5}}>DESCRIPTION</div>
+                <textarea value={draftClimb.notes} onChange={e=>setDraftClimb(c=>({...c,notes:e.target.value}))}
+                  placeholder="Beta, key positions, sequences…" rows={3} style={{...inp,marginBottom:16,resize:"none"}}/>
+
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",background:T.bg2,border:`1px solid ${T.border}`,borderRadius:R,padding:"12px 14px"}}>
+                  <div>
+                    <div style={{fontSize:12,color:T.text,marginBottom:2}}>Match finish</div>
+                    <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif"}}>Both hands allowed on top hold</div>
+                  </div>
+                  <button onClick={()=>setDraftClimb(c=>({...c,match:!c.match}))} style={{
+                    width:42, height:22, borderRadius:999, border:"none", cursor:"pointer",
+                    ...(draftClimb.match?NOISE_BG:{background:T.bg3}),
+                    position:"relative", flexShrink:0,
+                  }}>
+                    <div style={{
+                      width:16, height:16, background:T.white, borderRadius:"50%",
+                      position:"absolute", top:3, transition:"left 0.18s",
+                      left:draftClimb.match ? 23 : 3,
+                    }}/>
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
 
