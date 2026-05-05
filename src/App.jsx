@@ -2123,7 +2123,7 @@ export default function App() {
                     <Board3D problem={draftClimb} placements={isMirror ? PLACEMENTS_MIRROR : PLACEMENTS}/>
                   </Suspense>
                 ) : (
-                  <div style={{flex:1,overflow:"hidden",padding:"10px 14px 0"}}>
+                  <div style={{flex:1,overflow:"hidden",padding:"10px 14px 0",display:"flex",flexDirection:"column",justifyContent:"center"}}>
                     <Board problem={draftClimb} editMode={true} editRole={draftRole} onHoldTap={tapDraftHold} placements={isMirror ? PLACEMENTS_MIRROR : PLACEMENTS} mirrorLayout={isMirror}/>
                   </div>
                 )}
