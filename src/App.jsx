@@ -2089,13 +2089,13 @@ export default function App() {
           <div onClick={e=>e.stopPropagation()} style={{background:T.bg2,borderRadius:`${R*2}px ${R*2}px 0 0`,border:`1px solid ${T.border}`,borderBottom:"none",padding:"20px 16px 36px",width:"100%",boxSizing:"border-box"}}>
             <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:16,textTransform:"uppercase",marginBottom:16}}>LOG SESSION</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
-              <div>
+              <div style={{minWidth:0}}>
                 <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:4}}>DATE</div>
-                <input type="date" value={newSess.date} onChange={e=>setNewSess(s=>({...s,date:e.target.value}))} style={inp}/>
+                <input type="date" value={newSess.date} onChange={e=>setNewSess(s=>({...s,date:e.target.value}))} style={{...inp,height:38,textAlign:"center"}}/>
               </div>
-              <div>
+              <div style={{minWidth:0}}>
                 <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:4}}>DURATION (MIN)</div>
-                <input type="number" value={newSess.duration} onChange={e=>setNewSess(s=>({...s,duration:Number(e.target.value)}))} style={inp}/>
+                <input type="number" value={newSess.duration} onChange={e=>setNewSess(s=>({...s,duration:Number(e.target.value)}))} style={{...inp,height:38,textAlign:"center"}}/>
               </div>
             </div>
             <div style={{marginBottom:12}}>
