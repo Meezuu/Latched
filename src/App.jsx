@@ -614,14 +614,17 @@ function GradePill({ grade, sent, small }) {
 
 function Feel({ val, onClick }) {
   return (
-    <div style={{ display:"flex", gap:3 }}>
+    <div style={{ display:"flex", justifyContent:"space-between" }}>
       {[1,2,3,4,5].map(i => (
         <div key={i} onClick={onClick?()=>onClick(i):undefined} style={{
-          width:6, height:6, borderRadius:"50%",
+          width:32, height:32, borderRadius:"50%",
           background:i<=val?T.white:T.bg3,
           border:`1px solid ${i<=val?T.white:T.border}`,
           cursor:onClick?"pointer":"default",
-        }}/>
+          display:"flex", alignItems:"center", justifyContent:"center",
+          fontSize:10, fontFamily:"'Space Grotesk',sans-serif",
+          fontWeight:700, color:i<=val?T.bg:T.text3,
+        }}>{i}</div>
       ))}
     </div>
   );
