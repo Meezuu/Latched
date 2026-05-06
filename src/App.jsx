@@ -2103,11 +2103,11 @@ export default function App() {
               <Feel val={newSess.feel} onClick={n=>setNewSess(s=>({...s,feel:n}))}/>
             </div>
             <textarea value={newSess.notes} onChange={e=>setNewSess(s=>({...s,notes:e.target.value}))}
-              placeholder="Session notes…" rows={2} style={{...inp,marginBottom:14,resize:"none"}}/>
+              placeholder="Session notes…" rows={2} style={{...inp,marginBottom:14,resize:"none",width:"100%"}}/>
             <div style={{display:"flex",gap:8}}>
-              <button onClick={()=>setLogOpen(false)} style={{flex:1,background:T.bg3,border:`1px solid ${T.border}`,color:T.text,borderRadius:R,padding:"11px",cursor:"pointer",fontSize:11,fontFamily:"'Space Grotesk',sans-serif"}}>CANCEL</button>
+              <button onClick={()=>setLogOpen(false)} style={{flex:1,...btnSec,padding:"13px",fontSize:11,borderRadius:R}}>CANCEL</button>
               <button onClick={()=>{setSessions(p=>[{...newSess,totalAttempts:0,sends:0},...p]);setLogOpen(false);}}
-                style={{flex:2,...btnPri,padding:"11px",fontSize:12}}>SAVE SESSION</button>
+                style={{flex:1,...btnPri,padding:"13px",fontSize:11,borderRadius:R}}>SAVE SESSION</button>
             </div>
           </div>
         </div>
