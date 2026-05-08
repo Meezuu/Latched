@@ -2222,7 +2222,7 @@ export default function App() {
                   <div style={{fontSize:12,color:T.text}}>Matching allowed?</div>
                   <button onClick={()=>setDraftClimb(c=>({...c,match:!c.match}))} style={{
                     width:42, height:22, borderRadius:999, border:"none", cursor:"pointer",
-                    ...(draftClimb.match?NOISE_BG:{background:T.bg3}),
+                    background:draftClimb.match ? T.purple : T.bg3,
                     position:"relative", flexShrink:0,
                   }}>
                     <div style={{
