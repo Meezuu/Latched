@@ -1004,7 +1004,7 @@ function GymMap({ homeGym, onSetHomeGym, onSeeGymClimbs }) {
         style={{ background:T.bg3, border:`1px solid ${T.border}`, color:T.text, borderRadius:R,
           padding:"9px 11px", fontSize:12, outline:"none", fontFamily:"'Geist',sans-serif", width:"100%", boxSizing:"border-box" }}/>
 
-      <style>{`.carto-tiles { filter: sepia(1) saturate(2.2) hue-rotate(195deg) brightness(0.68); }`}</style>
+      <style>{`.carto-tiles { filter: sepia(1) saturate(6) hue-rotate(195deg) brightness(0.8); }`}</style>
       <div ref={containerRef} style={{ flex:1, minHeight:200, borderRadius:R, overflow:"hidden", border:`1px solid ${T.border}` }}/>
 
       {search && filtered.length > 0 && (
