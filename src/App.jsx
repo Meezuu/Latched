@@ -2219,10 +2219,7 @@ export default function App() {
                   placeholder="Beta, key positions, sequences…" rows={3} style={{...inp,marginBottom:16,resize:"none"}}/>
 
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",background:T.bg2,border:`1px solid ${T.border}`,borderRadius:R,padding:"12px 14px"}}>
-                  <div>
-                    <div style={{fontSize:12,color:T.text,marginBottom:2}}>Match finish</div>
-                    <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif"}}>Both hands allowed on top hold</div>
-                  </div>
+                  <div style={{fontSize:12,color:T.text}}>Matching allowed?</div>
                   <button onClick={()=>setDraftClimb(c=>({...c,match:!c.match}))} style={{
                     width:42, height:22, borderRadius:999, border:"none", cursor:"pointer",
                     ...(draftClimb.match?NOISE_BG:{background:T.bg3}),
