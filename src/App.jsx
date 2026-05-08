@@ -84,6 +84,32 @@ const ALL_ANGLES = [0,5,10,15,20,25,30,35,40,45,50,55,60,65];
 const ANGLES = [20,25,30,35,40,45,50,55];
 
 const TABS   = ["Map","Climbs","Profile","Stats"];
+
+const LANGUAGES = [
+  { code:"en", name:"English",    flag:"🇬🇧" },
+  { code:"es", name:"Español",    flag:"🇪🇸" },
+  { code:"fr", name:"Français",   flag:"🇫🇷" },
+  { code:"de", name:"Deutsch",    flag:"🇩🇪" },
+  { code:"pt", name:"Português",  flag:"🇧🇷" },
+  { code:"it", name:"Italiano",   flag:"🇮🇹" },
+  { code:"nl", name:"Nederlands", flag:"🇳🇱" },
+  { code:"ja", name:"日本語",      flag:"🇯🇵" },
+  { code:"ko", name:"한국어",      flag:"🇰🇷" },
+  { code:"zh", name:"中文",        flag:"🇨🇳" },
+];
+
+const TRANSLATIONS = {
+  en: { tab_map:"Map", tab_climbs:"Climbs", tab_profile:"Profile", tab_stats:"Stats", session:"SESSION", cancel:"CANCEL", filter:"FILTER", save_session:"SAVE SESSION", community:"COMMUNITY", my_climbs:"MY CLIMBS", log_session:"LOG SESSION", filter_climbs:"FILTER CLIMBS", sends:"SENDS", attempts:"ATTEMPTS", sessions:"SESSIONS", climbs:"CLIMBS", send_rate:"SEND RATE", date:"DATE", duration_min:"DURATION (MIN)", feel:"FEEL", matching_allowed:"Matching allowed?", settings:"Settings", grades:"GRADES", language:"LANGUAGE", consensus_grade:"Consensus Grade", consensus_grade_desc:"Show community consensus grade alongside the setter grade on climb cards" },
+  es: { tab_map:"Mapa", tab_climbs:"Rutas", tab_profile:"Perfil", tab_stats:"Stats", session:"SESIÓN", cancel:"CANCELAR", filter:"FILTRAR", save_session:"GUARDAR SESIÓN", community:"COMUNIDAD", my_climbs:"MIS RUTAS", log_session:"REGISTRAR SESIÓN", filter_climbs:"FILTRAR RUTAS", sends:"ENCADENADOS", attempts:"INTENTOS", sessions:"SESIONES", climbs:"RUTAS", send_rate:"TASA", date:"FECHA", duration_min:"DURACIÓN (MIN)", feel:"SENSACIÓN", matching_allowed:"¿Matchear permitido?", settings:"Ajustes", grades:"GRADOS", language:"IDIOMA", consensus_grade:"Grado Consensuado", consensus_grade_desc:"Mostrar el grado consensuado junto al grado del creador en las rutas" },
+  fr: { tab_map:"Carte", tab_climbs:"Voies", tab_profile:"Profil", tab_stats:"Stats", session:"SESSION", cancel:"ANNULER", filter:"FILTRER", save_session:"SAUVEGARDER", community:"COMMUNAUTÉ", my_climbs:"MES VOIES", log_session:"ENREGISTRER SESSION", filter_climbs:"FILTRER VOIES", sends:"RÉUSSITES", attempts:"TENTATIVES", sessions:"SESSIONS", climbs:"VOIES", send_rate:"TAUX", date:"DATE", duration_min:"DURÉE (MIN)", feel:"RESSENTI", matching_allowed:"Matching autorisé ?", settings:"Paramètres", grades:"NIVEAUX", language:"LANGUE", consensus_grade:"Niveau Consensus", consensus_grade_desc:"Afficher le niveau consensuel à côté du niveau attribué sur les cartes de voies" },
+  de: { tab_map:"Karte", tab_climbs:"Routen", tab_profile:"Profil", tab_stats:"Stats", session:"SESSION", cancel:"ABBRECHEN", filter:"FILTERN", save_session:"SPEICHERN", community:"COMMUNITY", my_climbs:"MEINE ROUTEN", log_session:"SESSION LOGGEN", filter_climbs:"ROUTEN FILTERN", sends:"SENDS", attempts:"VERSUCHE", sessions:"SESSIONS", climbs:"ROUTEN", send_rate:"SEND-RATE", date:"DATUM", duration_min:"DAUER (MIN)", feel:"GEFÜHL", matching_allowed:"Matching erlaubt?", settings:"Einstellungen", grades:"SCHWIERIGKEITEN", language:"SPRACHE", consensus_grade:"Konsens-Grad", consensus_grade_desc:"Zeige den Community-Konsens-Grad neben dem Setter-Grad auf Kletterkarten" },
+  pt: { tab_map:"Mapa", tab_climbs:"Vias", tab_profile:"Perfil", tab_stats:"Stats", session:"SESSÃO", cancel:"CANCELAR", filter:"FILTRAR", save_session:"SALVAR SESSÃO", community:"COMUNIDADE", my_climbs:"MINHAS VIAS", log_session:"REGISTRAR SESSÃO", filter_climbs:"FILTRAR VIAS", sends:"ENCADEAMENTOS", attempts:"TENTATIVAS", sessions:"SESSÕES", climbs:"VIAS", send_rate:"TAXA", date:"DATA", duration_min:"DURAÇÃO (MIN)", feel:"SENSAÇÃO", matching_allowed:"Matching permitido?", settings:"Configurações", grades:"GRADUAÇÕES", language:"IDIOMA", consensus_grade:"Graduação Consensual", consensus_grade_desc:"Mostrar a graduação consensual ao lado da graduação do criador nas vias" },
+  it: { tab_map:"Mappa", tab_climbs:"Vie", tab_profile:"Profilo", tab_stats:"Stats", session:"SESSIONE", cancel:"ANNULLA", filter:"FILTRA", save_session:"SALVA SESSIONE", community:"COMMUNITY", my_climbs:"LE MIE VIE", log_session:"REGISTRA SESSIONE", filter_climbs:"FILTRA VIE", sends:"SALITE", attempts:"TENTATIVI", sessions:"SESSIONI", climbs:"VIE", send_rate:"TASSO", date:"DATA", duration_min:"DURATA (MIN)", feel:"SENSAZIONE", matching_allowed:"Matching permesso?", settings:"Impostazioni", grades:"GRADI", language:"LINGUA", consensus_grade:"Grado Consensuale", consensus_grade_desc:"Mostra il grado consensuale accanto al grado del setter sulle schede delle vie" },
+  nl: { tab_map:"Kaart", tab_climbs:"Routes", tab_profile:"Profiel", tab_stats:"Stats", session:"SESSIE", cancel:"ANNULEREN", filter:"FILTER", save_session:"SESSIE OPSLAAN", community:"COMMUNITY", my_climbs:"MIJN ROUTES", log_session:"SESSIE LOGGEN", filter_climbs:"ROUTES FILTEREN", sends:"TOPS", attempts:"POGINGEN", sessions:"SESSIES", climbs:"ROUTES", send_rate:"TOPSCORE", date:"DATUM", duration_min:"DUUR (MIN)", feel:"GEVOEL", matching_allowed:"Matchen toegestaan?", settings:"Instellingen", grades:"GRADEN", language:"TAAL", consensus_grade:"Consensus Graad", consensus_grade_desc:"Toon de community consensus graad naast de setter graad op klimkaarten" },
+  ja: { tab_map:"マップ", tab_climbs:"課題", tab_profile:"プロフィール", tab_stats:"統計", session:"セッション", cancel:"キャンセル", filter:"フィルター", save_session:"保存", community:"コミュニティ", my_climbs:"自分の課題", log_session:"セッションを記録", filter_climbs:"課題を絞り込む", sends:"完登", attempts:"トライ", sessions:"セッション", climbs:"課題", send_rate:"完登率", date:"日付", duration_min:"時間（分）", feel:"感触", matching_allowed:"マッチング可？", settings:"設定", grades:"グレード", language:"言語", consensus_grade:"コンセンサスグレード", consensus_grade_desc:"課題カードにセッターのグレードとともにコミュニティの合意グレードを表示" },
+  ko: { tab_map:"지도", tab_climbs:"문제", tab_profile:"프로필", tab_stats:"통계", session:"세션", cancel:"취소", filter:"필터", save_session:"세션 저장", community:"커뮤니티", my_climbs:"내 문제", log_session:"세션 기록", filter_climbs:"문제 필터", sends:"완등", attempts:"시도", sessions:"세션", climbs:"문제", send_rate:"완등률", date:"날짜", duration_min:"시간(분)", feel:"컨디션", matching_allowed:"매칭 허용?", settings:"설정", grades:"등급", language:"언어", consensus_grade:"합의 등급", consensus_grade_desc:"문제 카드에 세터 등급 옆에 커뮤니티 합의 등급 표시" },
+  zh: { tab_map:"地图", tab_climbs:"线路", tab_profile:"个人", tab_stats:"统计", session:"训练", cancel:"取消", filter:"筛选", save_session:"保存训练", community:"社区", my_climbs:"我的线路", log_session:"记录训练", filter_climbs:"筛选线路", sends:"完攀", attempts:"尝试", sessions:"训练", climbs:"线路", send_rate:"完攀率", date:"日期", duration_min:"时长(分钟)", feel:"状态", matching_allowed:"允许叠手？", settings:"设置", grades:"难度", language:"语言", consensus_grade:"社区难度", consensus_grade_desc:"在线路卡片上显示社区共识难度" },
+};
 const ROLES  = ["start","hand","finish","foot"];
 
 
@@ -1145,7 +1171,7 @@ export default function App() {
 
   // Felt grade + settings
   const [feltGradeLog, setFeltGradeLog] = useState(() => lsGet(FELT_GRADE_KEY, {}));
-  const [settings, setSettings]         = useState(() => lsGet(SETTINGS_KEY, { showFeltGrade: false }));
+  const [settings, setSettings]         = useState(() => lsGet(SETTINGS_KEY, { showFeltGrade: false, language: "en" }));
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   // Beta logging
@@ -1411,6 +1437,7 @@ export default function App() {
     setSettings(updated);
     lsSet(SETTINGS_KEY, updated);
   }
+  const t = (key) => (TRANSLATIONS[settings.language || "en"] || TRANSLATIONS.en)[key] || key;
 
   function commitSend(problem, grade, notes, holdQuality) {
     if (holdQuality && problem.uuid &&
@@ -1589,7 +1616,7 @@ export default function App() {
           {/* right: SESSION button */}
           <div style={{ display:"flex", justifyContent:"flex-end" }}>
             {tab !== "Map" && (
-              <button onClick={() => setLogOpen(true)} style={{ background:T.bg3, border:`1px solid ${T.border}`, color:T.text, borderRadius:4, padding:"5px 11px", fontSize:9, cursor:"pointer", fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, letterSpacing:"0.06em" }}>SESSION</button>
+              <button onClick={() => setLogOpen(true)} style={{ background:T.bg3, border:`1px solid ${T.border}`, color:T.text, borderRadius:4, padding:"5px 11px", fontSize:9, cursor:"pointer", fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, letterSpacing:"0.06em" }}>{t("session")}</button>
             )}
           </div>
         </div>
@@ -1597,13 +1624,13 @@ export default function App() {
 
       {/* NAV */}
       <div style={{ display:"flex", background:T.bg, borderBottom:`1px solid ${T.border}` }}>
-        {TABS.map(t => (
-          <button key={t} onClick={() => setTab(t)} style={{
-            flex:1, background:"none", border:"none", color:tab===t?T.white:T.text3,
+        {TABS.map(tabKey => (
+          <button key={tabKey} onClick={() => setTab(tabKey)} style={{
+            flex:1, background:"none", border:"none", color:tab===tabKey?T.white:T.text3,
             padding:"8px 0", cursor:"pointer", fontSize:8,
             fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, letterSpacing:"0.08em", textTransform:"uppercase",
-            borderBottom:`1px solid ${tab===t?T.purple:"transparent"}`, transition:"color 0.1s",
-          }}>{t}</button>
+            borderBottom:`1px solid ${tab===tabKey?T.purple:"transparent"}`, transition:"color 0.1s",
+          }}>{t(`tab_${tabKey.toLowerCase()}`)}</button>
         ))}
       </div>
 
@@ -1621,7 +1648,7 @@ export default function App() {
         {tab === "Climbs" && (
           <div style={{ flex:1, overflowY:"auto", padding:"14px 14px 20px", boxSizing:"border-box" }}>
             <div style={{ display:"flex", gap:3, marginBottom:10 }}>
-              {[["community","COMMUNITY"],["mine","MY CLIMBS"]].map(([key,label]) => (
+              {[["community",t("community")],["mine",t("my_climbs")]].map(([key,label]) => (
                 <button key={key} onClick={() => setClimbSource(key)} style={{
                   flex:1, padding:"7px 0", borderRadius:4, cursor:"pointer",
                   background: climbSource===key ? T.bg3 : "transparent",
@@ -1651,7 +1678,7 @@ export default function App() {
                     color:anyFilter?T.white:T.text2,
                     borderRadius:R, padding:"0 12px", cursor:"pointer",
                     fontSize:9, fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, flexShrink:0,
-                  }}>{anyFilter ? `FILTER ·${[gradeMin||gradeMax?` ${gradeMin||"V0"}–${gradeMax||"V15"}`:"", filterAngle!==null?` ${filterAngle}°`:"", filterSent?` ${filterSent}`:"", classicsOnly?" classic":""].filter(Boolean).join("")}` : "FILTER"}</button>
+                  }}>{anyFilter ? `${t("filter")} ·${[gradeMin||gradeMax?` ${gradeMin||"V0"}–${gradeMax||"V15"}`:"", filterAngle!==null?` ${filterAngle}°`:"", filterSent?` ${filterSent}`:"", classicsOnly?" classic":""].filter(Boolean).join("")}` : t("filter")}</button>
                 );
               })()}
             </div>
@@ -1900,7 +1927,7 @@ export default function App() {
 
               {/* Divider + stat row */}
               <div style={{borderTop:`1px solid ${T.border}`,marginTop:14,paddingTop:12,display:"flex",gap:0}}>
-                {[["SENDS",totalSends],["ATTEMPTS",totalAtt],["CLIMBS",myProblems.length],["SESSIONS",sessions.length]].map(([l,v],i,arr) => (
+                {[[t("sends"),totalSends],[t("attempts"),totalAtt],[t("climbs"),myProblems.length],[t("sessions"),sessions.length]].map(([l,v],i,arr) => (
                   <div key={l} style={{flex:1,textAlign:"center",borderRight:i<arr.length-1?`1px solid ${T.border}`:"none"}}>
                     <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:20,color:T.white,lineHeight:1}}>{v}</div>
                     <div style={{fontSize:7,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginTop:3}}>{l}</div>
@@ -2019,7 +2046,7 @@ export default function App() {
             })()}
             {/* Stat tiles */}
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}}>
-              {[["SENDS",totalSends],["ATTEMPTS",totalAtt],["SEND RATE",sendRate+"%"],["MY CLIMBS",myProblems.length]].map(([l,v]) => (
+              {[[t("sends"),totalSends],[t("attempts"),totalAtt],[t("send_rate"),sendRate+"%"],[t("my_climbs"),myProblems.length]].map(([l,v]) => (
                 <div key={l} style={card({textAlign:"center"})}>
                   <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:30,color:T.white,lineHeight:1}}>{v}</div>
                   <div style={{fontSize:8,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginTop:4}}>{l}</div>
@@ -2092,27 +2119,27 @@ export default function App() {
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",zIndex:100,display:"flex",alignItems:"flex-end"}}
           onClick={()=>setLogOpen(false)}>
           <div onClick={e=>e.stopPropagation()} style={{background:T.bg2,borderRadius:`${R*2}px ${R*2}px 0 0`,border:`1px solid ${T.border}`,borderBottom:"none",padding:"20px 16px 36px",width:"100%",boxSizing:"border-box"}}>
-            <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:16,textTransform:"uppercase",marginBottom:16}}>LOG SESSION</div>
+            <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:16,textTransform:"uppercase",marginBottom:16}}>{t("log_session")}</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
               <div style={{minWidth:0}}>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:4}}>DATE</div>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:4}}>{t("date")}</div>
                 <input type="date" value={newSess.date} onChange={e=>setNewSess(s=>({...s,date:e.target.value}))} style={{...inp,height:38,textAlign:"center"}}/>
               </div>
               <div style={{minWidth:0}}>
-                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:4}}>DURATION (MIN)</div>
+                <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:4}}>{t("duration_min")}</div>
                 <input type="number" value={newSess.duration} onChange={e=>setNewSess(s=>({...s,duration:Number(e.target.value)}))} style={{...inp,height:38,textAlign:"center"}}/>
               </div>
             </div>
             <div style={{marginBottom:12}}>
-              <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:6}}>FEEL</div>
+              <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.1em",marginBottom:6}}>{t("feel")}</div>
               <Feel val={newSess.feel} onClick={n=>setNewSess(s=>({...s,feel:n}))}/>
             </div>
             <textarea value={newSess.notes} onChange={e=>setNewSess(s=>({...s,notes:e.target.value}))}
               placeholder="Session notes…" rows={2} style={{...inp,marginBottom:14,resize:"none",width:"100%"}}/>
             <div style={{display:"flex",gap:8}}>
-              <button onClick={()=>setLogOpen(false)} style={{flex:1,...btnSec,padding:"13px",fontSize:11,borderRadius:R}}>CANCEL</button>
+              <button onClick={()=>setLogOpen(false)} style={{flex:1,...btnSec,padding:"13px",fontSize:11,borderRadius:R}}>{t("cancel")}</button>
               <button onClick={()=>{setSessions(p=>[{...newSess,totalAttempts:0,sends:0},...p]);setLogOpen(false);}}
-                style={{flex:1,...btnPri,padding:"13px",fontSize:11,borderRadius:R}}>SAVE SESSION</button>
+                style={{flex:1,...btnPri,padding:"13px",fontSize:11,borderRadius:R}}>{t("save_session")}</button>
             </div>
           </div>
         </div>
@@ -2219,7 +2246,7 @@ export default function App() {
                   placeholder="Beta, key positions, sequences…" rows={3} style={{...inp,marginBottom:16,resize:"none"}}/>
 
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",background:T.bg2,border:`1px solid ${T.border}`,borderRadius:R,padding:"12px 14px"}}>
-                  <div style={{fontSize:12,color:T.text}}>Matching allowed?</div>
+                  <div style={{fontSize:12,color:T.text}}>{t("matching_allowed")}</div>
                   <button onClick={()=>setDraftClimb(c=>({...c,match:!c.match}))} style={{
                     width:42, height:22, borderRadius:999, border:"none", cursor:"pointer",
                     background:draftClimb.match ? T.purple : T.bg3,
@@ -2758,15 +2785,15 @@ export default function App() {
         <div style={{position:"fixed",inset:0,background:T.bg,zIndex:700,display:"flex",flexDirection:"column",overflow:"hidden"}}>
           <div style={{padding:"12px 14px",borderBottom:`1px solid ${T.border}`,display:"flex",alignItems:"center",gap:10,background:T.bg2,flexShrink:0}}>
             <button onClick={()=>setSettingsOpen(false)} style={{background:"none",border:"none",color:T.text2,fontSize:22,cursor:"pointer",padding:"0 4px",lineHeight:1}}>←</button>
-            <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13,textTransform:"uppercase"}}>Settings</div>
+            <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13,textTransform:"uppercase"}}>{t("settings")}</div>
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"20px 14px"}}>
-            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:10}}>GRADES</div>
-            <div style={card({marginBottom:8})}>
+            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:10}}>{t("grades")}</div>
+            <div style={card({marginBottom:16})}>
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
                 <div>
-                  <div style={{fontSize:13,color:T.text,fontWeight:600,marginBottom:3}}>Consensus Grade</div>
-                  <div style={{fontSize:10,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",lineHeight:1.5}}>Show community consensus grade alongside the setter grade on climb cards</div>
+                  <div style={{fontSize:13,color:T.text,fontWeight:600,marginBottom:3}}>{t("consensus_grade")}</div>
+                  <div style={{fontSize:10,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",lineHeight:1.5}}>{t("consensus_grade_desc")}</div>
                 </div>
                 <button onClick={()=>updateSetting("showFeltGrade", !settings.showFeltGrade)} style={{
                   width:46, height:26, borderRadius:999, border:"none", cursor:"pointer",
@@ -2782,6 +2809,25 @@ export default function App() {
                   }}/>
                 </button>
               </div>
+            </div>
+
+            <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:10}}>{t("language")}</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
+              {LANGUAGES.map(lang => {
+                const active = (settings.language||"en") === lang.code;
+                return (
+                  <button key={lang.code} onClick={()=>updateSetting("language", lang.code)} style={{
+                    display:"flex", alignItems:"center", gap:8,
+                    background: active ? T.purpleDim : T.bg3,
+                    border:`1px solid ${active ? T.purpleBrd : T.border}`,
+                    borderRadius:R, padding:"10px 12px", cursor:"pointer",
+                    textAlign:"left",
+                  }}>
+                    <span style={{fontSize:18,lineHeight:1}}>{lang.flag}</span>
+                    <span style={{fontSize:11,color:active?T.white:T.text2,fontFamily:"'Geist',sans-serif",fontWeight:active?700:400}}>{lang.name}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
