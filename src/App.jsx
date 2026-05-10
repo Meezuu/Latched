@@ -1125,6 +1125,8 @@ export default function App() {
   const [angle, setAngle]           = useState(() => lsGet(ANGLE_KEY, 40));
   const [boardProblem, setBoardProblem] = useState(null);
   const [editMode, setEditMode]     = useState(false);
+  const [bleDevice, setBleDevice]   = useState(null);   // connected BT device
+  const [bleStatus, setBleStatus]   = useState("off");  // "off"|"connecting"|"on"|"error"
   const [editRole, setEditRole]     = useState("start");
   const [homeGym, setHomeGymState]  = useState(() => {
     try { return JSON.parse(localStorage.getItem(HOME_GYM_KEY)) || null; } catch { return null; }
@@ -1439,6 +1441,32 @@ export default function App() {
     lsSet(SETTINGS_KEY, updated);
   }
   const t = (key) => (TRANSLATIONS[settings.language || "en"] || TRANSLATIONS.en)[key] || key;
+
+  async function bleConnect() {
+    if (!navigator.bluetooth) { setBleStatus("error"); return; }
+    if (bleDevice) {
+      bleDevice.gatt?.disconnect();
+      setBleDevice(null);
+      setBleStatus("off");
+      return;
+    }
+    try {
+      setBleStatus("connecting");
+      const device = await navigator.bluetooth.requestDevice({
+        filters: [{ namePrefix: "Tension" }, { namePrefix: "tension" }],
+        optionalServices: ["6e400001-b5a3-f393-e0a9-e50e24dcca9e"],
+      });
+      device.addEventListener("gattserverdisconnected", () => {
+        setBleDevice(null); setBleStatus("off");
+      });
+      await device.gatt.connect();
+      setBleDevice(device);
+      setBleStatus("on");
+    } catch (e) {
+      if (e.name !== "NotFoundError") setBleStatus("error");
+      else setBleStatus("off");
+    }
+  }
 
   function commitSend(problem, grade, notes, holdQuality) {
     if (holdQuality && problem.uuid &&
@@ -2287,6 +2315,20 @@ export default function App() {
                 </>
               ) : <div style={{fontFamily:"'Geist',sans-serif",fontWeight:800,fontSize:13}}>BOARD</div>}
             </div>
+            <button onClick={bleConnect} title={bleStatus==="on"?"Disconnect board":"Connect to board"} style={{
+              background: bleStatus==="on" ? T.purpleDim : bleStatus==="error" ? "rgba(239,68,68,0.12)" : T.bg3,
+              border: `1px solid ${bleStatus==="on" ? T.purpleBrd : bleStatus==="error" ? "rgba(239,68,68,0.4)" : T.border}`,
+              borderRadius:R, padding:"6px 8px", cursor:"pointer", display:"flex", alignItems:"center", flexShrink:0,
+            }}>
+              <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 1C5.24 1 3 3.24 3 6c0 1.9 1.02 3.56 2.55 4.49L5 13h6l-.55-2.51C11.98 9.56 13 7.9 13 6c0-2.76-2.24-5-5-5z"
+                  fill={bleStatus==="on" ? T.purple : bleStatus==="error" ? "#ef4444" : bleStatus==="connecting" ? T.text2 : T.text3}/>
+                <rect x="5.5" y="13.5" width="5" height="1.2" rx="0.6"
+                  fill={bleStatus==="on" ? T.purple : T.border}/>
+                <rect x="6" y="15.2" width="4" height="1.2" rx="0.6"
+                  fill={bleStatus==="on" ? T.purple : T.border}/>
+              </svg>
+            </button>
             {boardProblem && !boardProblem.uuid && !view3d && (
               <button onClick={()=>setEditMode(v=>!v)} style={{
                 ...(editMode?NOISE_BG:{background:T.bg3}), border:`1px solid ${editMode?T.purple:T.border}`,
