@@ -1173,6 +1173,7 @@ export default function App() {
   const [feltGradeLog, setFeltGradeLog] = useState(() => lsGet(FELT_GRADE_KEY, {}));
   const [settings, setSettings]         = useState(() => lsGet(SETTINGS_KEY, { showFeltGrade: false, language: "en" }));
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [langPickerOpen, setLangPickerOpen] = useState(false);
 
   // Beta logging
   const [betaLog, setBetaLog]     = useState(() => lsGet("tt_beta_v1", {}));
@@ -2812,22 +2813,34 @@ export default function App() {
             </div>
 
             <div style={{fontSize:9,color:T.text3,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"0.12em",marginBottom:10}}>{t("language")}</div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
-              {LANGUAGES.map(lang => {
-                const active = (settings.language||"en") === lang.code;
-                return (
-                  <button key={lang.code} onClick={()=>updateSetting("language", lang.code)} style={{
-                    display:"flex", alignItems:"center", gap:8,
-                    background: active ? T.purpleDim : T.bg3,
-                    border:`1px solid ${active ? T.purpleBrd : T.border}`,
-                    borderRadius:R, padding:"10px 12px", cursor:"pointer",
-                    textAlign:"left",
-                  }}>
-                    <span style={{fontSize:18,lineHeight:1}}>{lang.flag}</span>
-                    <span style={{fontSize:11,color:active?T.white:T.text2,fontFamily:"'Geist',sans-serif",fontWeight:active?700:400}}>{lang.name}</span>
-                  </button>
-                );
-              })}
+            <div style={{border:`1px solid ${T.border}`,borderRadius:R,overflow:"hidden"}}>
+              <button onClick={()=>setLangPickerOpen(o=>!o)} style={{
+                width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between",
+                background:T.bg3, border:"none", padding:"12px 14px", cursor:"pointer",
+              }}>
+                <span style={{fontSize:12,color:T.white,fontFamily:"'Geist',sans-serif",fontWeight:600}}>
+                  {LANGUAGES.find(l=>l.code===(settings.language||"en"))?.name || "English"}
+                </span>
+                <span style={{fontSize:10,color:T.text3,transform:langPickerOpen?"rotate(180deg)":"rotate(0deg)",transition:"transform 0.2s"}}>▼</span>
+              </button>
+              {langPickerOpen && (
+                <div style={{borderTop:`1px solid ${T.border}`}}>
+                  {LANGUAGES.map((lang,i) => {
+                    const active = (settings.language||"en") === lang.code;
+                    return (
+                      <button key={lang.code} onClick={()=>{updateSetting("language",lang.code);setLangPickerOpen(false);}} style={{
+                        width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between",
+                        background: active ? T.purpleDim : "transparent",
+                        border:"none", borderTop: i>0 ? `1px solid ${T.border}` : "none",
+                        padding:"11px 14px", cursor:"pointer", textAlign:"left",
+                      }}>
+                        <span style={{fontSize:12,color:active?T.white:T.text2,fontFamily:"'Geist',sans-serif",fontWeight:active?600:400}}>{lang.name}</span>
+                        {active && <span style={{fontSize:10,color:T.purple}}>✓</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
