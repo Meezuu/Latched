@@ -1125,8 +1125,9 @@ export default function App() {
   const [angle, setAngle]           = useState(() => lsGet(ANGLE_KEY, 40));
   const [boardProblem, setBoardProblem] = useState(null);
   const [editMode, setEditMode]     = useState(false);
-  const [bleDevice, setBleDevice]   = useState(null);   // connected BT device
+  const [bleDevice, setBleDevice]   = useState(null);
   const [bleStatus, setBleStatus]   = useState("off");  // "off"|"connecting"|"on"|"error"
+  const bleCharRef                  = useRef(null);
   const [editRole, setEditRole]     = useState("start");
   const [homeGym, setHomeGymState]  = useState(() => {
     try { return JSON.parse(localStorage.getItem(HOME_GYM_KEY)) || null; } catch { return null; }
@@ -1241,6 +1242,7 @@ export default function App() {
   useEffect(() => { lsSet(SEND_LOG_KEY, sendLog); }, [sendLog]);
   useEffect(() => { lsSet(FIRST_ASCENTS_KEY, firstAscents); }, [firstAscents]);
   useEffect(() => { setBetaMode(false); setBetaDraft({}); }, [boardProblem]);
+  useEffect(() => { if (bleStatus === "on") bleLight(boardProblem); }, [boardProblem, bleStatus]);
 
   const myClimbMap = useMemo(() => {
     const m = {};
@@ -1442,29 +1444,69 @@ export default function App() {
   }
   const t = (key) => (TRANSLATIONS[settings.language || "en"] || TRANSLATIONS.en)[key] || key;
 
+  // ── BLE constants ──────────────────────────────────────────────────────────
+  const BLE_SERVICE = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+  const BLE_CHAR_TX = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+  const ROLE_RGB    = { start:[0,255,0], hand:[0,0,255], finish:[255,0,0], foot:[255,255,0] };
+
+  function buildBlePacket(holds) {
+    const bytes = [];
+    for (const {id, role} of holds) {
+      const [r,g,b] = ROLE_RGB[role] || [255,255,255];
+      bytes.push(id & 0xFF, (id >> 8) & 0xFF, ((r>>5)<<5)|((g>>5)<<2)|(b>>6));
+    }
+    let sum = 0;
+    for (const b of bytes) sum = (sum + b) & 0xFF;
+    const chk = (~sum) & 0xFF;
+    return new Uint8Array([0x01, bytes.length, chk, ...bytes, 0x03]);
+  }
+
+  async function bleSend(body) {
+    const char = bleCharRef.current;
+    if (!char) return;
+    const N = 19;
+    const chunks = Math.ceil(body.length / N);
+    for (let i = 0; i < body.length; i += N) {
+      const slice = body.slice(i, i + N);
+      const isFirst = i === 0, isLast = i + N >= body.length;
+      const pos = (isFirst && isLast) ? 0x54 : isFirst ? 0x52 : isLast ? 0x53 : 0x51;
+      const chunk = new Uint8Array(slice.length + 1);
+      chunk[0] = pos; chunk.set(slice, 1);
+      await char.writeValueWithoutResponse(chunk);
+    }
+  }
+
+  async function bleLight(problem) {
+    if (bleStatus !== "on" || !problem?.holds?.length) return;
+    const holds = problem.holds.map(h => ({ id: Number(h.id ?? h), role: h.role ?? "hand" }));
+    await bleSend(buildBlePacket(holds));
+  }
+
   async function bleConnect() {
     if (!navigator.bluetooth) { setBleStatus("error"); return; }
     if (bleDevice) {
+      bleCharRef.current = null;
       bleDevice.gatt?.disconnect();
-      setBleDevice(null);
-      setBleStatus("off");
+      setBleDevice(null); setBleStatus("off");
       return;
     }
     try {
       setBleStatus("connecting");
       const device = await navigator.bluetooth.requestDevice({
         filters: [{ namePrefix: "Tension" }, { namePrefix: "tension" }],
-        optionalServices: ["6e400001-b5a3-f393-e0a9-e50e24dcca9e"],
+        optionalServices: [BLE_SERVICE],
       });
       device.addEventListener("gattserverdisconnected", () => {
-        setBleDevice(null); setBleStatus("off");
+        bleCharRef.current = null; setBleDevice(null); setBleStatus("off");
       });
-      await device.gatt.connect();
+      const server = await device.gatt.connect();
+      const svc    = await server.getPrimaryService(BLE_SERVICE);
+      const char   = await svc.getCharacteristic(BLE_CHAR_TX);
+      bleCharRef.current = char;
       setBleDevice(device);
       setBleStatus("on");
     } catch (e) {
-      if (e.name !== "NotFoundError") setBleStatus("error");
-      else setBleStatus("off");
+      setBleStatus(e.name === "NotFoundError" ? "off" : "error");
     }
   }
 
